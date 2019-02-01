@@ -1,12 +1,16 @@
 package fi.jubic.resteasy.auth;
 
+import org.jboss.resteasy.core.ResourceMethodInvoker;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
+import java.lang.reflect.Method;
 import java.security.Principal;
 import java.util.Optional;
 
@@ -24,18 +28,45 @@ public class AuthFilter<U extends UserPrincipal> implements ContainerRequestFilt
 
     @Override
     public void filter(ContainerRequestContext containerRequestContext) {
-        String authHeader = containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-        Optional<U> user = authenticator.authenticate(authHeader);
+        Method method = ((ResourceMethodInvoker) containerRequestContext.getProperty(
+                "org.jboss.resteasy.core.ResourceMethodInvoker"
+        )).getMethod();
 
-        if (!user.isPresent()) {
-            containerRequestContext.abortWith(
-                    Response.status(Response.Status.FORBIDDEN)
-                            .build()
-            );
+        if (method.isAnnotationPresent(DenyAll.class)) {
+            unauthorized(containerRequestContext);
             return;
         }
 
-        ResteasyProviderFactory.pushContext(clazz, user.get());
+        String authHeader = containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+        Optional<U> user = authenticator.authenticate(authHeader);
+
+        user.ifPresent(u -> ResteasyProviderFactory.pushContext(clazz, u));
+
+        if (method.isAnnotationPresent(PermitAll.class)) {
+            return;
+        }
+
+        Class resource = method.getDeclaringClass();
+
+        if (resource.isAnnotationPresent(DenyAll.class)) {
+            unauthorized(containerRequestContext);
+            return;
+        }
+
+        if (resource.isAnnotationPresent(PermitAll.class)) {
+            return;
+        }
+
+        if (!user.isPresent()) {
+            unauthorized(containerRequestContext);
+        }
+    }
+
+    private void unauthorized(ContainerRequestContext containerRequestContext) {
+        containerRequestContext.abortWith(
+                Response.status(Response.Status.FORBIDDEN)
+                    .build()
+        );
     }
 
     public static class Builder<U extends UserPrincipal> {
