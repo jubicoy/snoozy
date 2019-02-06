@@ -19,11 +19,18 @@ import java.util.Optional;
 public class AuthFilter<U extends UserPrincipal> implements ContainerRequestFilter {
     private IAuthenticator<U> authenticator;
     private IAuthorizer<U> authorizer;
+    private ITokenParser tokenParser;
     private Class<U> clazz;
 
-    private AuthFilter(IAuthenticator<U> authenticator, IAuthorizer<U> authorizer, Class<U> clazz) {
+    private AuthFilter(
+            IAuthenticator<U> authenticator,
+            IAuthorizer<U> authorizer,
+            ITokenParser tokenParser,
+            Class<U> clazz
+    ) {
         this.authenticator = authenticator;
         this.authorizer = authorizer;
+        this.tokenParser = tokenParser;
         this.clazz = clazz;
     }
 
@@ -38,8 +45,8 @@ public class AuthFilter<U extends UserPrincipal> implements ContainerRequestFilt
             return;
         }
 
-        String authHeader = containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-        Optional<U> user = authenticator.authenticate(authHeader);
+        String token = tokenParser.parse(containerRequestContext);
+        Optional<U> user = authenticator.authenticate(token);
 
         user.ifPresent(u -> ResteasyProviderFactory.pushContext(clazz, u));
 
@@ -110,10 +117,14 @@ public class AuthFilter<U extends UserPrincipal> implements ContainerRequestFilt
     public static class Builder<U extends UserPrincipal> {
         private IAuthenticator<U> authenticator;
         private IAuthorizer<U> authorizer;
+        private ITokenParser tokenParser;
         private Class<U> clazz;
 
         public Builder() {
             authorizer = new DefaultAuthorizer<>();
+            tokenParser = HeaderParser.builder()
+                    .setHeader(HttpHeaders.AUTHORIZATION)
+                    .build();
         }
 
         public Builder<U> setAuthenticator(IAuthenticator<U> authenticator) {
@@ -126,13 +137,18 @@ public class AuthFilter<U extends UserPrincipal> implements ContainerRequestFilt
             return this;
         }
 
+        public Builder<U> setTokenParser(ITokenParser tokenParser) {
+            this.tokenParser = tokenParser;
+            return this;
+        }
+
         public Builder<U> setPrincipalClass(Class<U> clazz) {
             this.clazz = clazz;
             return this;
         }
 
         public AuthFilter<U> build() {
-            return new AuthFilter<>(authenticator, authorizer, clazz);
+            return new AuthFilter<>(authenticator, authorizer, tokenParser, clazz);
         }
     }
 }
