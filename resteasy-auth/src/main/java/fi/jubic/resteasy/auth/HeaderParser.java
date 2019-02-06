@@ -1,5 +1,7 @@
 package fi.jubic.resteasy.auth;
 
+import io.undertow.server.HttpServerExchange;
+
 import javax.ws.rs.container.ContainerRequestContext;
 
 public class HeaderParser implements ITokenParser {
@@ -12,6 +14,12 @@ public class HeaderParser implements ITokenParser {
     @Override
     public String parse(ContainerRequestContext containerRequestContext) {
         return containerRequestContext.getHeaderString(header);
+    }
+
+    @Override
+    public String parse(HttpServerExchange httpServerExchange) {
+        return httpServerExchange.getRequestHeaders()
+                .getFirst(header);
     }
 
     public static Builder builder() {

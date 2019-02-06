@@ -1,5 +1,7 @@
 package fi.jubic.resteasy.auth;
 
+import io.undertow.server.HttpServerExchange;
+
 import javax.ws.rs.container.ContainerRequestContext;
 
 public class CookieParser implements ITokenParser {
@@ -9,15 +11,22 @@ public class CookieParser implements ITokenParser {
         this.cookie = cookie;
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
     @Override
     public String parse(ContainerRequestContext containerRequestContext) {
         return containerRequestContext.getCookies()
                 .get(cookie)
                 .getValue();
+    }
+
+    @Override
+    public String parse(HttpServerExchange httpServerExchange) {
+        return httpServerExchange.getRequestCookies()
+                .get(cookie)
+                .getValue();
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public static class Builder {

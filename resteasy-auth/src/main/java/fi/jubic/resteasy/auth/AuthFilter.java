@@ -109,7 +109,7 @@ public class AuthFilter<U extends UserPrincipal> implements ContainerRequestFilt
 
     private void unauthorized(ContainerRequestContext containerRequestContext) {
         containerRequestContext.abortWith(
-                Response.status(Response.Status.FORBIDDEN)
+                Response.status(Response.Status.UNAUTHORIZED)
                     .build()
         );
     }
