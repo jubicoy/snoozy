@@ -5,13 +5,14 @@ import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.lang.reflect.Method;
-import java.security.Principal;
+import java.util.Arrays;
 import java.util.Optional;
 
 @Provider
@@ -43,10 +44,29 @@ public class AuthFilter<U extends UserPrincipal> implements ContainerRequestFilt
         user.ifPresent(u -> ResteasyProviderFactory.pushContext(clazz, u));
 
         if (method.isAnnotationPresent(PermitAll.class)) {
+            if (!user.isPresent()) {
+                unauthorized(containerRequestContext);
+                return;
+            }
+
             return;
         }
 
-        Class resource = method.getDeclaringClass();
+        if (method.isAnnotationPresent(RolesAllowed.class)) {
+            if (!user.isPresent()) {
+                unauthorized(containerRequestContext);
+                return;
+            }
+
+            if (isUnauthorized(method.getAnnotation(RolesAllowed.class).value(), user.get())) {
+                unauthorized(containerRequestContext);
+                return;
+            }
+
+            return;
+        }
+
+        Class<?> resource = method.getDeclaringClass();
 
         if (resource.isAnnotationPresent(DenyAll.class)) {
             unauthorized(containerRequestContext);
@@ -54,12 +74,30 @@ public class AuthFilter<U extends UserPrincipal> implements ContainerRequestFilt
         }
 
         if (resource.isAnnotationPresent(PermitAll.class)) {
+            if (!user.isPresent()) {
+                unauthorized(containerRequestContext);
+                return;
+            }
+
             return;
         }
 
-        if (!user.isPresent()) {
-            unauthorized(containerRequestContext);
+        if (resource.isAnnotationPresent(RolesAllowed.class)) {
+            if (!user.isPresent()) {
+                unauthorized(containerRequestContext);
+                return;
+            }
+
+            if (isUnauthorized(resource.getAnnotation(RolesAllowed.class).value(), user.get())) {
+                unauthorized(containerRequestContext);
+            }
         }
+    }
+
+    private boolean isUnauthorized(String[] roles, U user) {
+        return Arrays.stream(roles)
+                .map(role -> !authorizer.authorize(user, role))
+                .reduce(true, Boolean::logicalAnd);
     }
 
     private void unauthorized(ContainerRequestContext containerRequestContext) {
