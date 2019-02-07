@@ -41,8 +41,12 @@ public class LoggingFilter implements ContainerRequestFilter, ContainerResponseF
                 "[{}] {} {} {} {} {} {}",
                 DateTime.now().toDateTimeISO(),
                 containerRequestContext.getMethod(),
-                containerRequestContext.getUriInfo()
-                        .getPath(),
+                String.format(
+                        "%s%s",
+                        request.getContextPath(),
+                        containerRequestContext.getUriInfo()
+                                .getPath()
+                ),
                 containerResponseContext.getStatus(),
                 request.getRemoteHost(),
                 containerRequestContext.getHeaderString(HttpHeaders.USER_AGENT),
