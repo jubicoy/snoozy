@@ -37,15 +37,29 @@ public class RestrictedResourceHandler extends ResourceHandler {
     public void handleRequest(HttpServerExchange httpServerExchange) throws Exception {
         String path = httpServerExchange.getRelativePath();
 
+        for (String exclude : excludes) {
+            if (path.matches(exclude)) {
+                super.handleRequest(httpServerExchange);
+                return;
+            }
+        }
+
+        if (includes.size() == 0) {
+            if (auth(httpServerExchange)) {
+                super.handleRequest(httpServerExchange);
+                return;
+            } else {
+                httpServerExchange.setStatusCode(StatusCodes.UNAUTHORIZED);
+                return;
+            }
+        }
+
         for (String include : includes) {
             if (!path.matches(include)) {
                 continue;
             }
 
-            String token = tokenParser.parse(httpServerExchange);
-            Optional user = authenticator.authenticate(token);
-
-            if (user.isPresent()) {
+            if (auth(httpServerExchange)) {
                 break;
             }
 
@@ -54,6 +68,13 @@ public class RestrictedResourceHandler extends ResourceHandler {
         }
 
         super.handleRequest(httpServerExchange);
+    }
+
+    private boolean auth(HttpServerExchange httpServerExchange) {
+        String token = tokenParser.parse(httpServerExchange);
+        Optional user = authenticator.authenticate(token);
+
+        return user.isPresent();
     }
 
     public static Builder builder() {

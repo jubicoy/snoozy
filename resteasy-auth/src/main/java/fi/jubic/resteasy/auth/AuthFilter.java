@@ -114,6 +114,10 @@ public class AuthFilter<U extends UserPrincipal> implements ContainerRequestFilt
         );
     }
 
+    public static <U extends UserPrincipal> Builder<U> builder() {
+        return new AuthFilter.Builder<>();
+    }
+
     public static class Builder<U extends UserPrincipal> {
         private IAuthenticator<U> authenticator;
         private IAuthorizer<U> authorizer;
