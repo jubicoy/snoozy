@@ -3,11 +3,17 @@ package fi.jubic.resteasy.server;
 import fi.jubic.resteasy.auth.Auth;
 import fi.jubic.resteasy.auth.AuthFilter;
 import fi.jubic.resteasy.auth.UserPrincipal;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.appender.ConsoleAppender;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.builder.api.AppenderComponentBuilder;
+import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder;
+import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
+import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
 
 import javax.annotation.Nullable;
 import javax.ws.rs.container.ContainerRequestFilter;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -21,14 +27,30 @@ public abstract class Application<U extends UserPrincipal> extends javax.ws.rs.c
 
     @Override
     public Set<Object> getSingletons() {
-        Optional<ContainerRequestFilter> filter = getAuthFilter();
+        Set<Object> filters = new HashSet<>();
+        filters.add(new LoggingFilter());
 
-        return filter.map(
-                containerRequestFilter -> Stream.concat(getResources().stream(), Stream.of(containerRequestFilter)
-        )
-                .collect(Collectors.toSet()))
-                .orElseGet(this::getResources);
+        getAuthFilter().ifPresent(filters::add);
 
+        return Stream.concat(getResources().stream(), filters.stream())
+            .collect(Collectors.toSet());
+    }
+
+    public Configuration getLoggerConfiguration() {
+        ConfigurationBuilder<BuiltConfiguration> builder = ConfigurationBuilderFactory.newConfigurationBuilder()
+                .setStatusLevel(Level.INFO);
+
+        AppenderComponentBuilder appenderBuilder = builder.newAppender("Stdout", "CONSOLE")
+                .addAttribute("target", ConsoleAppender.Target.SYSTEM_OUT);
+
+        builder.add(appenderBuilder);
+
+        builder.add(
+                builder.newRootLogger(Level.INFO)
+                    .add(builder.newAppenderRef("Stdout"))
+        );
+
+        return builder.build();
     }
 
     private Optional<ContainerRequestFilter> getAuthFilter() {

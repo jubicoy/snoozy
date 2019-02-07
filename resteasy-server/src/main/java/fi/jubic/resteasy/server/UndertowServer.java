@@ -6,6 +6,7 @@ import io.undertow.Handlers;
 import io.undertow.Undertow;
 import io.undertow.server.handlers.resource.ClassPathResourceManager;
 import io.undertow.server.handlers.resource.ResourceHandler;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
 
 import java.util.Optional;
@@ -47,6 +48,8 @@ public class UndertowServer implements IServer {
     }
 
     public void start(Application application) {
+        Configurator.initialize(application.getLoggerConfiguration());
+
         UndertowJaxrsServer server = new UndertowJaxrsServer()
                 .deploy(application)
                 .start(
