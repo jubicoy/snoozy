@@ -27,7 +27,14 @@ public class LoggingFilter implements ContainerRequestFilter, ContainerResponseF
             ContainerRequestContext containerRequestContext,
             ContainerResponseContext containerResponseContext
     ) {
-        long startTime = (long) containerRequestContext.getProperty(START_TIME);
+        long startTime = System.currentTimeMillis();
+
+        try {
+            startTime = (long) containerRequestContext.getProperty(START_TIME);
+        } catch (NullPointerException ignored) {
+
+        }
+
         long duration = System.currentTimeMillis() - startTime;
 
         LogManager.getLogger(LoggingFilter.class).info(
@@ -40,6 +47,7 @@ public class LoggingFilter implements ContainerRequestFilter, ContainerResponseF
                 request.getRemoteHost(),
                 containerRequestContext.getHeaderString(HttpHeaders.USER_AGENT),
                 String.format("%dms", duration)
+
         );
     }
 }
