@@ -6,6 +6,8 @@ import fi.jubic.easyvalue.EasyValue;
 @EasyValue
 public abstract class StaticFiles {
     @EasyProperty
+    public abstract String path();
+    @EasyProperty
     public abstract String prefix();
     @EasyProperty
     public abstract ClassLoader classLoader();
@@ -14,6 +16,7 @@ public abstract class StaticFiles {
 
     public static Builder builder() {
         return new Builder()
+                .setPath("/")
                 .setPrefix("");
     }
 

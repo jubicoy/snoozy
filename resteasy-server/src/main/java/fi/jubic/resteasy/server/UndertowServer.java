@@ -50,13 +50,22 @@ public class UndertowServer implements IServer {
     public void start(Application application) {
         Configurator.initialize(application.getLoggerConfiguration());
 
+        ServerConfiguration configuration = application.getConfiguration()
+                .serverConfiguration();
+
         UndertowJaxrsServer server = new UndertowJaxrsServer()
                 .deploy(application)
                 .start(
                         Undertow.builder()
-                            .addHttpListener(8080, "localhost")
+                            .addHttpListener(configuration.getPort(), configuration.getHostname())
                 );
 
-        getStaticResourceHandler(application).ifPresent(h -> server.addResourcePrefixPath("/", h));
+        StaticFiles staticFiles = application.getStaticFiles();
+
+        if (staticFiles != null) {
+            getStaticResourceHandler(application).ifPresent(
+                    h -> server.addResourcePrefixPath(staticFiles.path(), h)
+            );
+        }
     }
 }

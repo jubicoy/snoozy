@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 
 public abstract class Application<U extends UserPrincipal> extends javax.ws.rs.core.Application {
     public abstract Set<Object> getResources();
+    public abstract IConfiguration getConfiguration();
 
     @Nullable
     public abstract Auth<U> getAuth();
