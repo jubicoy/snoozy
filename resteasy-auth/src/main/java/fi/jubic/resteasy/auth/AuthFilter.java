@@ -8,6 +8,7 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
@@ -17,10 +18,10 @@ import java.util.Optional;
 
 @Provider
 public class AuthFilter<U extends UserPrincipal> implements ContainerRequestFilter {
-    private IAuthenticator<U> authenticator;
-    private IAuthorizer<U> authorizer;
-    private ITokenParser tokenParser;
-    private Class<U> clazz;
+    private final IAuthenticator<U> authenticator;
+    private final IAuthorizer<U> authorizer;
+    private final ITokenParser tokenParser;
+    private final Class<U> clazz;
 
     private AuthFilter(
             IAuthenticator<U> authenticator,
