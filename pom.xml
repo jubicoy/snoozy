@@ -37,6 +37,8 @@
 
     <modules>
         <module>resteasy-auth</module>
-        <module>resteasy-server</module>
+        <module>resteasy-core</module>
+        <module>resteasy-example</module>
+        <module>resteasy-undertow</module>
     </modules>
 </project>

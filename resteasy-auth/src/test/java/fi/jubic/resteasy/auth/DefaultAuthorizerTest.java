@@ -3,6 +3,7 @@ package fi.jubic.resteasy.auth;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import fi.jubic.resteasy.auth.implementation.DefaultAuthorizer;
 import org.junit.Test;
 
 public class DefaultAuthorizerTest {
