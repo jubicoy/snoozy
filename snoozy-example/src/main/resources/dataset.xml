@@ -1,0 +1,10 @@
+<!DOCTYPE dataset SYSTEM "dataset.dtd">
+<dataset>
+    <user
+            id="1"
+            name="admin"
+            role="admin"
+            hash="HnmrFgnP62HrSPp+4b0vuA=="
+            salt="HnmrFgnP62HrSPp+4b0vuA=="
+    />
+</dataset>

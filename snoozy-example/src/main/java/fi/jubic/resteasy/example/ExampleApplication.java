@@ -1,5 +1,7 @@
 package fi.jubic.resteasy.example;
 
+import fi.jubic.easyconfig.ConfigMapper;
+import fi.jubic.easyconfig.MappingException;
 import fi.jubic.resteasy.MethodAccess;
 import fi.jubic.resteasy.StaticFiles;
 import fi.jubic.resteasy.auth.AuthenticatedApplication;
@@ -8,9 +10,12 @@ import fi.jubic.resteasy.auth.implementation.DefaultAuthorizer;
 import fi.jubic.resteasy.auth.implementation.HeaderParser;
 import fi.jubic.resteasy.auth.implementation.StatefulAuthenticator;
 import fi.jubic.resteasy.undertow.UndertowServer;
+import fi.jubic.snoozy.StartupScheduler;
+import fi.jubic.snoozy.TaskScheduler;
+import fi.jubic.snoozy.dbunit.DbUnitTask;
+import fi.jubic.snoozy.liquibase.LiquibaseTask;
 
 import javax.ws.rs.ApplicationPath;
-import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -58,8 +63,27 @@ public class ExampleApplication extends AuthenticatedApplication<User> {
                 .build();
     }
 
-    public static void main(String[] args) {
-        Configuration config = new Configuration();
+    public static void main(String[] args) throws MappingException {
+        Configuration config = new ConfigMapper()
+                .read(Configuration.class);
+
+        TaskScheduler scheduler = new StartupScheduler()
+                .registerStartupTask(
+                        new LiquibaseTask(
+                                config.getJooqConfiguration(),
+                                "migrations.xml"
+                        )
+                )
+                .registerStartupTask(
+                        new DbUnitTask(
+                                config.getJooqConfiguration(),
+                                ExampleApplication.class.getClassLoader(),
+                                "dataset.xml",
+                                "dataset.dtd"
+                        )
+                );
+        scheduler.start();
+
         ExampleApplication application = new ExampleApplication();
 
         new UndertowServer().start(application, config);

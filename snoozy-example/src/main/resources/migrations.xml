@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet id="1" author="Vilppu Vuorinen">
+        <createTable tableName="user">
+            <column name="id" type="bigint">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="role" type="varchar(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="hash" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="salt" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="user" columnNames="id" constraintName="pk_user" />
+
+        <createTable tableName="todo">
+            <column name="id" type="bigint">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="title" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="body" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="todo" columnNames="id" constraintName="pk_todo" />
+
+        <addForeignKeyConstraint
+                baseTableName="todo"
+                baseColumnNames="user_id"
+                constraintName="fk_todo_user_id"
+                referencedTableName="user"
+                referencedColumnNames="id" />
+    </changeSet>
+</databaseChangeLog>

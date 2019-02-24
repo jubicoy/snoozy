@@ -12,6 +12,14 @@
     <artifactId>snoozy-example</artifactId>
     <packaging>jar</packaging>
 
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>fi.jubic</groupId>
@@ -32,5 +40,118 @@
             <groupId>fi.jubic</groupId>
             <artifactId>easyconfig-core</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>fi.jubic</groupId>
+            <artifactId>easyschedule-liquibase</artifactId>
+            <version>0.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>fi.jubic</groupId>
+            <artifactId>easyschedule-dbunit</artifactId>
+            <version>0.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>fi.jubic</groupId>
+            <artifactId>easyconfig-jooq</artifactId>
+            <version>0.1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.43</version>
+        </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>shade</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <configuration>
+                            <createDependencyReducedPom>true</createDependencyReducedPom>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <transformers>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                            <mainClass>fi.jubic.resteasy.example.ExampleApplication</mainClass>
+                                        </transformer>
+                                    </transformers>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>jooq-class-generation</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jooq</groupId>
+                        <artifactId>jooq-codegen-maven</artifactId>
+                        <version>3.11.9</version>
+
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+
+                        <configuration>
+                            <jdbc>
+                                <driver>com.mysql.jdbc.Driver</driver>
+                                <url>jdbc:mysql://127.0.0.1:3306/test</url>
+                                <user>test</user>
+                                <password>test</password>
+                            </jdbc>
+                            <generator>
+                                <name>org.jooq.codegen.JavaGenerator</name>
+                                <generate>
+                                    <daos>true</daos>
+                                </generate>
+                                <database>
+                                    <name>org.jooq.meta.mysql.MySQLDatabase</name>
+                                    <includes>USER | TODO</includes>
+                                    <excludes>
+                                        DATABASECHANGELOG
+                                        | DATABASECHANGELOGLOCK
+                                    </excludes>
+                                    <inputSchema>test</inputSchema>
+                                </database>
+                                <target>
+                                    <packageName>fi.jubic.resteasy.example.db</packageName>
+                                    <directory>src/main/java</directory>
+                                </target>
+                            </generator>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

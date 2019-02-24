@@ -1,0 +1,20 @@
+<!ELEMENT dataset (
+        user*,
+        todo*)>
+
+<!ELEMENT user EMPTY>
+<!ATTLIST user
+        id CDATA #REQUIRED
+        name CDATA #REQUIRED
+        role CDATA #REQUIRED
+        hash CDATA #IMPLIED
+        salt CDATA #IMPLIED
+        >
+
+<!ELEMENT todo EMPTY>
+<!ATTLIST todo
+        id CDATA #REQUIRED
+        title CDATA #REQUIRED
+        body CDATA #REQUIRED
+        user_id CDATA #IMPLIED
+        >
