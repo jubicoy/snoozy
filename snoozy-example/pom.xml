@@ -95,7 +95,7 @@
                                     <transformers>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                            <mainClass>fi.jubic.resteasy.example.ExampleApplication</mainClass>
+                                            <mainClass>fi.jubic.snoozy.example.ExampleApplication</mainClass>
                                         </transformer>
                                     </transformers>
                                 </configuration>
@@ -144,7 +144,7 @@
                                     <inputSchema>test</inputSchema>
                                 </database>
                                 <target>
-                                    <packageName>fi.jubic.resteasy.example.db</packageName>
+                                    <packageName>fi.jubic.snoozy.example.db</packageName>
                                     <directory>src/main/java</directory>
                                 </target>
                             </generator>
