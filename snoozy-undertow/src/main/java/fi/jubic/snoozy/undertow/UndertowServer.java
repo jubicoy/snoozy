@@ -47,7 +47,7 @@ public class UndertowServer implements Server {
         AuthFilterAdapter<P> authFilterAdapter = AuthFilterAdapter.of(
                 application.getAuthentication(),
                 crc -> ((ResourceMethodInvoker) crc.getProperty(
-                        "org.jboss.snoozy.core.ResourceMethodInvoker"
+                        "org.jboss.resteasy.core.ResourceMethodInvoker"
                 )).getMethod(),
                 ResteasyProviderFactory::pushContext
         );
