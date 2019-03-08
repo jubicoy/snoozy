@@ -7,6 +7,29 @@
     <version>0.1.0</version>
     <packaging>pom</packaging>
 
+    <name>snoozy</name>
+    <description>Web application library</description>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <url>https://github.com/jubicoy/snoozy</url>
+    </scm>
+    <developers>
+        <developer>
+            <name>Aleksi Gold</name>
+            <email>aleksi.gold@jubic.fi</email>
+        </developer>
+        <developer>
+            <name>Vilppu Vuorinen</name>
+            <email>vilppu.vuorinen@jubic.fi</email>
+        </developer>
+    </developers>
+
     <repositories>
         <repository>
             <id>jcenter</id>
