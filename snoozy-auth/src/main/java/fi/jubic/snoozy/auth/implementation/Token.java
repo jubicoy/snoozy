@@ -2,15 +2,15 @@ package fi.jubic.snoozy.auth.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fi.jubic.snoozy.auth.UserPrincipal;
-import org.joda.time.DateTime;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class Token<P extends UserPrincipal> {
     @JsonProperty
     private String token;
     @JsonProperty
-    private DateTime expires;
+    private LocalDateTime expires;
     @JsonProperty
     private P user;
 
@@ -19,10 +19,10 @@ public class Token<P extends UserPrincipal> {
     }
 
     public Token(P user, String token) {
-        this(user, token, DateTime.now().plusHours(1));
+        this(user, token, LocalDateTime.now().plusHours(1));
     }
 
-    public Token(P user, String token, DateTime expires) {
+    public Token(P user, String token, LocalDateTime expires) {
         this.user = user;
         this.token = token;
         this.expires = expires;
@@ -36,11 +36,11 @@ public class Token<P extends UserPrincipal> {
         this.token = token;
     }
 
-    public DateTime getExpires() {
+    public LocalDateTime getExpires() {
         return expires;
     }
 
-    public void setExpires(DateTime expires) {
+    public void setExpires(LocalDateTime expires) {
         this.expires = expires;
     }
 

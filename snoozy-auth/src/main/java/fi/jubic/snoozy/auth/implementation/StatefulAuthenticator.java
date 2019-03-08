@@ -2,10 +2,10 @@ package fi.jubic.snoozy.auth.implementation;
 
 import fi.jubic.snoozy.auth.Authenticator;
 import fi.jubic.snoozy.auth.UserPrincipal;
-import org.joda.time.DateTime;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,7 +33,8 @@ public class StatefulAuthenticator<P extends UserPrincipal> implements Authentic
         Token<P> t = optionalToken.get();
         int index = tokens.indexOf(t);
 
-        t.setExpires(DateTime.now().plusHours(1));
+
+        t.setExpires(LocalDateTime.now().plusHours(1L));
 
         tokens.set(index, t);
 
@@ -55,8 +56,9 @@ public class StatefulAuthenticator<P extends UserPrincipal> implements Authentic
     }
 
     private void filterExpired() {
+        LocalDateTime now = LocalDateTime.now();
         tokens = tokens.stream()
-                .filter(t -> t.getExpires().isAfterNow())
+                .filter(t -> t.getExpires().isAfter(now))
                 .collect(Collectors.toList());
     }
 }

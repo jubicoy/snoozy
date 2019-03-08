@@ -1,7 +1,6 @@
 package fi.jubic.snoozy;
 
 import org.apache.logging.log4j.LogManager;
-import org.joda.time.DateTime;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -10,10 +9,12 @@ import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import java.time.LocalDateTime;
 
 public class LoggingFilter implements ContainerRequestFilter, ContainerResponseFilter {
     private static final String START_TIME = "start-time";
 
+    @SuppressWarnings("unused")
     @Context
     private HttpServletRequest request;
 
@@ -39,7 +40,7 @@ public class LoggingFilter implements ContainerRequestFilter, ContainerResponseF
 
         LogManager.getLogger(LoggingFilter.class).info(
                 "[{}] {} {} {} {} {} {}",
-                DateTime.now().toDateTimeISO(),
+                LocalDateTime.now().toString(),
                 containerRequestContext.getMethod(),
                 String.format(
                         "%s%s",
