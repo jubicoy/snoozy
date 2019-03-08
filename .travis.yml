@@ -1,0 +1,44 @@
+language: java
+jdk:
+- oraclejdk8
+script:
+- mvn clean install
+before_deploy:
+- RELEASED_DATE=$(date +%Y-%m-%d) envsubst < .bintray.json.tmpl > parent-bintray.json
+- RELEASED_DATE=$(date +%Y-%m-%d) envsubst < snoozy-core/.bintray.json.tmpl > core-bintray.json
+- RELEASED_DATE=$(date +%Y-%m-%d) envsubst < snoozy-auth/.bintray.json.tmpl > auth-bintray.json
+- RELEASED_DATE=$(date +%Y-%m-%d) envsubst < snoozy-undertow/.bintray.json.tmpl > undertow-bintray.json
+deploy:
+  - provider: bintray
+    file: "parent-bintray.json"
+    user: vilppuvuorinen
+    skip_cleanup: true
+    on:
+      tags: true
+    key:
+      secure: "r9v4+SfmhNrHCsvVjtsIF5Dj9LGLYlUYflQcXuODwiAN1q0K4voXyriPF1xYuExXjKM42rYPZRszEZHZRoD0Sqq9achsbuHYhfD4nqKZ7g1pHKI6zu3p8w5oWDvI5MbQCpCDDjCGIi4bVzRb2/W6vMEi4dHqCunXCpCfNajmWy8xB980lSCtLoPf04afjcPkAuwC22krFcnA/2VYJyjTSi/XM4hS7+N5SqZeBAvnb28DzqdYjHB14TE5t0PYHtZMFPO6iuexks9XvxwJrEUFrK8bNSbt4xbDgOdPCgDbhTosoqXq96b9iSEUOsn0xtr6LMt1c2kw2PQA/l5dF8vSXelx9kqTplu8AoPQZmWfT8lgq9ahx9SymJ+knoCd+Yi9uquj2MCKwPQpksBE1e0XxjqHYV3NgZ3Bu8LfnIUwq/wyUfqbULT6WnO30FuxQRRKLx/han1NGVx10RqVmCdA3VWtdbhQfS6sMA58LI1fsxossbgL7Ibsed30MTLPUcbVUuao0+eEmp+LTdnZIYS93GboXcLTn6HHj+pfOqj51yJncHup7J08QOfDrn2/B8d4DyXSte3cBIeqX93cFL6xrgfED4gqx2qRoB6z0iWIEnY0H3dBPXBN6P590OU1ekzAmIFy1zRC7q0O1dDmgTznBN5ikUO4H58lAr+0jFjTgSc="
+  - provider: bintray
+    file: "core-bintray.json"
+    user: vilppuvuorinen
+    skip_cleanup: true
+    on:
+      tags: true
+    key:
+      secure: "r9v4+SfmhNrHCsvVjtsIF5Dj9LGLYlUYflQcXuODwiAN1q0K4voXyriPF1xYuExXjKM42rYPZRszEZHZRoD0Sqq9achsbuHYhfD4nqKZ7g1pHKI6zu3p8w5oWDvI5MbQCpCDDjCGIi4bVzRb2/W6vMEi4dHqCunXCpCfNajmWy8xB980lSCtLoPf04afjcPkAuwC22krFcnA/2VYJyjTSi/XM4hS7+N5SqZeBAvnb28DzqdYjHB14TE5t0PYHtZMFPO6iuexks9XvxwJrEUFrK8bNSbt4xbDgOdPCgDbhTosoqXq96b9iSEUOsn0xtr6LMt1c2kw2PQA/l5dF8vSXelx9kqTplu8AoPQZmWfT8lgq9ahx9SymJ+knoCd+Yi9uquj2MCKwPQpksBE1e0XxjqHYV3NgZ3Bu8LfnIUwq/wyUfqbULT6WnO30FuxQRRKLx/han1NGVx10RqVmCdA3VWtdbhQfS6sMA58LI1fsxossbgL7Ibsed30MTLPUcbVUuao0+eEmp+LTdnZIYS93GboXcLTn6HHj+pfOqj51yJncHup7J08QOfDrn2/B8d4DyXSte3cBIeqX93cFL6xrgfED4gqx2qRoB6z0iWIEnY0H3dBPXBN6P590OU1ekzAmIFy1zRC7q0O1dDmgTznBN5ikUO4H58lAr+0jFjTgSc="
+  - provider: bintray
+    file: "auth-bintray.json"
+    user: vilppuvuorinen
+    skip_cleanup: true
+    on:
+      tags: true
+    key:
+      secure: "r9v4+SfmhNrHCsvVjtsIF5Dj9LGLYlUYflQcXuODwiAN1q0K4voXyriPF1xYuExXjKM42rYPZRszEZHZRoD0Sqq9achsbuHYhfD4nqKZ7g1pHKI6zu3p8w5oWDvI5MbQCpCDDjCGIi4bVzRb2/W6vMEi4dHqCunXCpCfNajmWy8xB980lSCtLoPf04afjcPkAuwC22krFcnA/2VYJyjTSi/XM4hS7+N5SqZeBAvnb28DzqdYjHB14TE5t0PYHtZMFPO6iuexks9XvxwJrEUFrK8bNSbt4xbDgOdPCgDbhTosoqXq96b9iSEUOsn0xtr6LMt1c2kw2PQA/l5dF8vSXelx9kqTplu8AoPQZmWfT8lgq9ahx9SymJ+knoCd+Yi9uquj2MCKwPQpksBE1e0XxjqHYV3NgZ3Bu8LfnIUwq/wyUfqbULT6WnO30FuxQRRKLx/han1NGVx10RqVmCdA3VWtdbhQfS6sMA58LI1fsxossbgL7Ibsed30MTLPUcbVUuao0+eEmp+LTdnZIYS93GboXcLTn6HHj+pfOqj51yJncHup7J08QOfDrn2/B8d4DyXSte3cBIeqX93cFL6xrgfED4gqx2qRoB6z0iWIEnY0H3dBPXBN6P590OU1ekzAmIFy1zRC7q0O1dDmgTznBN5ikUO4H58lAr+0jFjTgSc="
+  - provider: bintray
+    file: "undertow-bintray.json"
+    user: vilppuvuorinen
+    skip_cleanup: true
+    on:
+      tags: true
+    key:
+      secure: "r9v4+SfmhNrHCsvVjtsIF5Dj9LGLYlUYflQcXuODwiAN1q0K4voXyriPF1xYuExXjKM42rYPZRszEZHZRoD0Sqq9achsbuHYhfD4nqKZ7g1pHKI6zu3p8w5oWDvI5MbQCpCDDjCGIi4bVzRb2/W6vMEi4dHqCunXCpCfNajmWy8xB980lSCtLoPf04afjcPkAuwC22krFcnA/2VYJyjTSi/XM4hS7+N5SqZeBAvnb28DzqdYjHB14TE5t0PYHtZMFPO6iuexks9XvxwJrEUFrK8bNSbt4xbDgOdPCgDbhTosoqXq96b9iSEUOsn0xtr6LMt1c2kw2PQA/l5dF8vSXelx9kqTplu8AoPQZmWfT8lgq9ahx9SymJ+knoCd+Yi9uquj2MCKwPQpksBE1e0XxjqHYV3NgZ3Bu8LfnIUwq/wyUfqbULT6WnO30FuxQRRKLx/han1NGVx10RqVmCdA3VWtdbhQfS6sMA58LI1fsxossbgL7Ibsed30MTLPUcbVUuao0+eEmp+LTdnZIYS93GboXcLTn6HHj+pfOqj51yJncHup7J08QOfDrn2/B8d4DyXSte3cBIeqX93cFL6xrgfED4gqx2qRoB6z0iWIEnY0H3dBPXBN6P590OU1ekzAmIFy1zRC7q0O1dDmgTznBN5ikUO4H58lAr+0jFjTgSc="
+

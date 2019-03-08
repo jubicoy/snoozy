@@ -1,0 +1,28 @@
+{
+  "package": {
+    "name": "snoozy-core",
+    "repo": "maven",
+    "subject": "jubicoy"
+  },
+
+  "version": {
+    "name": "${TRAVIS_TAG}",
+    "desc": "Tagged build",
+    "released": "${RELEASED_DATE}",
+    "vcs_tag": "${TRAVIS_TAG}",
+    "attributes": [],
+    "gpgSign": false
+  },
+
+  "files": [
+    {
+      "includePattern": "snoozy-core/target/(snoozy-core-${TRAVIS_TAG}(.*)\.jar)",
+      "uploadPattern": "/fi/jubic/snoozy-core/${TRAVIS_TAG}/$1"
+    },
+    {
+      "includePattern": "snoozy-core/(pom.xml)",
+      "uploadPattern": "/fi/jubic/snoozy-core/${TRAVIS_TAG}/snoozy-core-${TRAVIS_TAG}.pom"
+    }
+  ],
+  "publish": true
+}

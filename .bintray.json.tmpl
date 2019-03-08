@@ -1,0 +1,24 @@
+{
+  "package": {
+    "name": "snoozy-parent",
+    "repo": "maven",
+    "subject": "jubicoy"
+  },
+
+  "version": {
+    "name": "${TRAVIS_TAG}",
+    "desc": "Tagged build",
+    "released": "${RELEASED_DATE}",
+    "vcs_tag": "${TRAVIS_TAG}",
+    "attributes": [],
+    "gpgSign": false
+  },
+
+  "files": [
+    {
+      "includePattern": "pom.xml",
+      "uploadPattern": "/fi/jubic/snoozy-parent/${TRAVIS_TAG}/snoozy-parent-${TRAVIS_TAG}.pom"
+    }
+  ],
+  "publish": true
+}

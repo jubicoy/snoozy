@@ -1,0 +1,28 @@
+{
+  "package": {
+    "name": "snoozy-undertow",
+    "repo": "maven",
+    "subject": "jubicoy"
+  },
+
+  "version": {
+    "name": "${TRAVIS_TAG}",
+    "desc": "Tagged build",
+    "released": "${RELEASED_DATE}",
+    "vcs_tag": "${TRAVIS_TAG}",
+    "attributes": [],
+    "gpgSign": false
+  },
+
+  "files": [
+    {
+      "includePattern": "snoozy-undertow/target/(snoozy-undertow-${TRAVIS_TAG}(.*)\.jar)",
+      "uploadPattern": "/fi/jubic/snoozy-undertow/${TRAVIS_TAG}/$1"
+    },
+    {
+      "includePattern": "snoozy-undertow/(pom.xml)",
+      "uploadPattern": "/fi/jubic/snoozy-undertow/${TRAVIS_TAG}/snoozy-undertow-${TRAVIS_TAG}.pom"
+    }
+  ],
+  "publish": true
+}
