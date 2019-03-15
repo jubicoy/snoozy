@@ -4,6 +4,7 @@ import fi.jubic.snoozy.auth.implementation.StatefulAuthenticator;
 import fi.jubic.snoozy.auth.implementation.Token;
 
 import javax.annotation.security.PermitAll;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.Response;
 public class HelloWorldResource {
     private StatefulAuthenticator<User> authenticator;
 
+    @Inject
     public HelloWorldResource(StatefulAuthenticator<User> authenticator) {
         this.authenticator = authenticator;
     }

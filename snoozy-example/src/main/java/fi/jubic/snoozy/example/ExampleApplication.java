@@ -16,6 +16,7 @@ import fi.jubic.snoozy.TaskScheduler;
 import fi.jubic.snoozy.dbunit.DbUnitTask;
 import fi.jubic.snoozy.liquibase.LiquibaseTask;
 
+import javax.inject.Inject;
 import javax.ws.rs.ApplicationPath;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,17 +24,19 @@ import java.util.stream.Stream;
 
 @ApplicationPath("/api")
 public class ExampleApplication extends AuthenticatedApplication<User> {
-    private StatefulAuthenticator<User> authenticator;
+    @Inject
+    StatefulAuthenticator<User> authenticator;
+    @Inject
+    HelloWorldResource helloWorldResource;
 
-    public ExampleApplication() {
-        authenticator = new StatefulAuthenticator<>();
+    @Inject
+    ExampleApplication() {
     }
 
     @Override
     public Set<Object> getSingletons() {
-        return Stream.of(
-                new HelloWorldResource(authenticator)
-        ).collect(Collectors.toSet());
+        return Stream.of(helloWorldResource)
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -91,7 +94,9 @@ public class ExampleApplication extends AuthenticatedApplication<User> {
                 );
         scheduler.start();
 
-        ExampleApplication application = new ExampleApplication();
+        ExampleApplication application = DaggerExampleApplicationComponent
+                .create()
+                .getApplication();
 
         new UndertowServer().start(application, config);
     }
