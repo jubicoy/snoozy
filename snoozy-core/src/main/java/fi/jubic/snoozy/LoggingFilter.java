@@ -1,17 +1,17 @@
 package fi.jubic.snoozy;
 
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.container.ContainerResponseContext;
-import javax.ws.rs.container.ContainerResponseFilter;
+import javax.ws.rs.container.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
-import java.time.LocalDateTime;
 
 public class LoggingFilter implements ContainerRequestFilter, ContainerResponseFilter {
+    private static final Logger logger = LoggerFactory.getLogger(
+        LoggingFilter.class
+    );
     private static final String START_TIME = "start-time";
 
     @SuppressWarnings("unused")
@@ -38,9 +38,8 @@ public class LoggingFilter implements ContainerRequestFilter, ContainerResponseF
 
         long duration = System.currentTimeMillis() - startTime;
 
-        LogManager.getLogger(LoggingFilter.class).info(
-                "[{}] {} {} {} {} {} {}",
-                LocalDateTime.now().toString(),
+        logger.info(
+                "{} {} {} {} {} {}",
                 containerRequestContext.getMethod(),
                 String.format(
                         "%s%s",
@@ -52,7 +51,6 @@ public class LoggingFilter implements ContainerRequestFilter, ContainerResponseF
                 request.getRemoteHost(),
                 containerRequestContext.getHeaderString(HttpHeaders.USER_AGENT),
                 String.format("%dms", duration)
-
         );
     }
 }
