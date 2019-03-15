@@ -1,7 +1,9 @@
 package fi.jubic.snoozy.example;
 
-import fi.jubic.easyconfig.ConfigMapper;
-import fi.jubic.easyconfig.MappingException;
+import fi.jubic.easyschedule.StartupScheduler;
+import fi.jubic.easyschedule.TaskScheduler;
+import fi.jubic.easyschedule.dbunit.DbUnitTask;
+import fi.jubic.easyschedule.liquibase.LiquibaseTask;
 import fi.jubic.snoozy.MethodAccess;
 import fi.jubic.snoozy.StaticFiles;
 import fi.jubic.snoozy.auth.AuthenticatedApplication;
@@ -9,12 +11,10 @@ import fi.jubic.snoozy.auth.Authentication;
 import fi.jubic.snoozy.auth.implementation.DefaultAuthorizer;
 import fi.jubic.snoozy.auth.implementation.HeaderParser;
 import fi.jubic.snoozy.auth.implementation.StatefulAuthenticator;
+import fi.jubic.snoozy.example.resources.AuthenticationResource;
+import fi.jubic.snoozy.example.resources.HelloWorldResource;
 import fi.jubic.snoozy.filters.UrlRewrite;
 import fi.jubic.snoozy.undertow.UndertowServer;
-import fi.jubic.snoozy.StartupScheduler;
-import fi.jubic.snoozy.TaskScheduler;
-import fi.jubic.snoozy.dbunit.DbUnitTask;
-import fi.jubic.snoozy.liquibase.LiquibaseTask;
 
 import javax.inject.Inject;
 import javax.ws.rs.ApplicationPath;
@@ -25,9 +25,15 @@ import java.util.stream.Stream;
 @ApplicationPath("/api")
 public class ExampleApplication extends AuthenticatedApplication<User> {
     @Inject
+    Configuration configuration;
+
+    @Inject
     StatefulAuthenticator<User> authenticator;
+
     @Inject
     HelloWorldResource helloWorldResource;
+    @Inject
+    AuthenticationResource authenticationResource;
 
     @Inject
     ExampleApplication() {
@@ -35,7 +41,7 @@ public class ExampleApplication extends AuthenticatedApplication<User> {
 
     @Override
     public Set<Object> getSingletons() {
-        return Stream.of(helloWorldResource)
+        return Stream.of(helloWorldResource, authenticationResource)
                 .collect(Collectors.toSet());
     }
 
@@ -73,9 +79,11 @@ public class ExampleApplication extends AuthenticatedApplication<User> {
                 .build();
     }
 
-    public static void main(String[] args) throws MappingException {
-        Configuration config = new ConfigMapper()
-                .read(Configuration.class);
+    public static void main(String[] args) {
+        ExampleApplication application = DaggerExampleApplicationComponent
+                .create()
+                .getApplication();
+        Configuration config = application.configuration;
 
         TaskScheduler scheduler = new StartupScheduler()
                 .registerStartupTask(
@@ -93,10 +101,6 @@ public class ExampleApplication extends AuthenticatedApplication<User> {
                         )
                 );
         scheduler.start();
-
-        ExampleApplication application = DaggerExampleApplicationComponent
-                .create()
-                .getApplication();
 
         new UndertowServer().start(application, config);
     }

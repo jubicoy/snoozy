@@ -6,7 +6,9 @@ import fi.jubic.snoozy.auth.UserPrincipal;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -15,7 +17,7 @@ public class StatefulAuthenticator<P extends UserPrincipal> implements Authentic
 
     @Inject
     public StatefulAuthenticator() {
-        tokens = new ArrayList<>();
+        tokens = new CopyOnWriteArrayList<>();
     }
 
     @Override

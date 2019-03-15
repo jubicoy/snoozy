@@ -7,9 +7,15 @@ import fi.jubic.snoozy.auth.UserPrincipal;
 @EasyValue(excludeJson = true)
 public abstract class User implements UserPrincipal {
     @EasyProperty
+    public abstract Long id();
+    @EasyProperty
     public abstract String name();
     @EasyProperty
     public abstract String role();
+    @EasyProperty
+    public abstract String hash();
+    @EasyProperty
+    public abstract String salt();
 
     public static Builder builder() {
         return new Builder();
