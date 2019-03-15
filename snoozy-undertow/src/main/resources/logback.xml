@@ -8,10 +8,23 @@
         </encoder>
     </appender>
 
-    <root level="info">
+    <root level="INFO">
         <appender-ref ref="STDOUT" />
     </root>
 
+    <variable name="DEPLOYMENT_ENVIRONMENT" value="${DEPLOYMENT_ENVIRONMENT:-development}" />
+    <if condition='"${DEPLOYMENT_ENVIRONMENT}".equals("development")'>
+        <then>
+            <variable name="JOOQ_LOGLEVEL" value="DEBUG" />
+        </then>
+        <else>
+            <variable name="JOOQ_LOGLEVEL" value="INFO" />
+        </else>
+    </if>
+
     <logger name="org.xnio" level="WARN" />
     <logger name="org.jboss.resteasy" level="WARN" />
+    <logger name="com.zaxxer.hikari.HikariDataSource" level="WARN" />
+    <logger name="org.jooq" level="${JOOQ_LOGLEVEL}" />
+    <logger name="org.jooq.Constants" level="WARN" />
 </configuration>
