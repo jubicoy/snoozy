@@ -5,7 +5,7 @@ import fi.jubic.snoozy.LoggingFilter;
 import fi.jubic.snoozy.auth.AuthenticatedApplication;
 import fi.jubic.snoozy.auth.UserPrincipal;
 
-import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -34,7 +34,9 @@ public class ApplicationAdapter extends javax.ws.rs.core.Application {
             AuthenticatedApplication<P> application,
             AuthFilterAdapter<P> authFilterAdapter
     ) {
-        ApplicationAdapter applicationAdapter = new ApplicationAdapter(application);
+        ApplicationAdapter applicationAdapter = new ApplicationAdapter(
+                application
+        );
         applicationAdapter.filters.add(authFilterAdapter);
 
         return applicationAdapter;
@@ -46,6 +48,31 @@ public class ApplicationAdapter extends javax.ws.rs.core.Application {
                 filters.stream(),
                 application.getSingletons().stream()
         ).collect(Collectors.toSet());
+    }
+
+    public List<RegisteredResource> getRegisteredResources() {
+        String prefix = application.getClass()
+                .getAnnotation(ApplicationPath.class)
+                .value();
+
+        return Stream.concat(
+                this.getSingletons()
+                        .stream()
+                        .map(Object::getClass),
+                application.getClasses()
+                        .stream()
+        )
+                .map(c -> Stream.of(c.getMethods())
+                        .map(m -> RegisteredResource.of(
+                                prefix,
+                                m
+                        ))
+                )
+                .flatMap(s -> s)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .sorted(Comparator.comparing(RegisteredResource::path))
+                .collect(Collectors.toList());
     }
 
     private void setApplicationPath() {
@@ -60,14 +87,23 @@ public class ApplicationAdapter extends javax.ws.rs.core.Application {
             method.setAccessible(true);
 
             Object annotationData = method.invoke(ApplicationAdapter.class);
-            Field annotations = annotationData.getClass().getDeclaredField("annotations");
+            Field annotations = annotationData.getClass()
+                    .getDeclaredField("annotations");
             annotations.setAccessible(true);
 
             Map<Class<? extends Annotation>, Annotation> map = new HashMap<>();
-            map.put(ApplicationPath.class, clazz.getAnnotation(ApplicationPath.class));
+            map.put(
+                    ApplicationPath.class,
+                    clazz.getAnnotation(ApplicationPath.class)
+            );
 
             annotations.set(annotationData, map);
-        } catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+        } catch (
+                NoSuchFieldException
+                | IllegalAccessException
+                | NoSuchMethodException
+                | InvocationTargetException e
+        ) {
             e.printStackTrace();
         }
     }

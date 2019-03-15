@@ -6,27 +6,29 @@ import fi.jubic.snoozy.auth.UserPrincipal;
 import fi.jubic.snoozy.filters.StaticFilesFilter;
 import fi.jubic.snoozy.server.ApplicationAdapter;
 import fi.jubic.snoozy.server.AuthFilterAdapter;
+import fi.jubic.snoozy.server.RegisteredResource;
 import io.undertow.Undertow;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.core.appender.ConsoleAppender;
-import org.apache.logging.log4j.core.config.Configurator;
-import org.apache.logging.log4j.core.config.builder.api.AppenderComponentBuilder;
-import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder;
-import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
-import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
 import org.jboss.resteasy.core.ResourceMethodInvoker;
 import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Set;
 
 public class UndertowServer implements Server {
+    private static final Logger logger = LoggerFactory
+            .getLogger(UndertowServer.class);
+
     @Override
     public void start(
             Application application,
             ServerConfigurator serverConfigurator
     ) {
-        ApplicationAdapter applicationAdapter = ApplicationAdapter.of(application);
+        ApplicationAdapter applicationAdapter = ApplicationAdapter.of(
+                application
+        );
         UndertowJaxrsServer server = startServer(
                 applicationAdapter,
                 serverConfigurator
@@ -37,6 +39,8 @@ public class UndertowServer implements Server {
                 application.getStaticFiles(),
                 (staticFiles, request) -> true // Allow all filter
         );
+
+        logResources(applicationAdapter.getRegisteredResources());
     }
 
     @Override
@@ -67,28 +71,22 @@ public class UndertowServer implements Server {
                 application.getStaticFiles(),
                 authFilterAdapter
         );
+
+        logResources(applicationAdapter.getRegisteredResources());
     }
 
     private UndertowJaxrsServer startServer(
             javax.ws.rs.core.Application application,
             ServerConfigurator serverConfigurator
     ) {
-        ConfigurationBuilder<BuiltConfiguration> builder = ConfigurationBuilderFactory.newConfigurationBuilder()
-                .setStatusLevel(Level.INFO);
+        ServerConfiguration configuration = serverConfigurator
+                .getServerConfiguration();
 
-        AppenderComponentBuilder appenderBuilder = builder.newAppender("Stdout", "CONSOLE")
-                .addAttribute("target", ConsoleAppender.Target.SYSTEM_OUT);
-
-        builder.add(appenderBuilder);
-
-        builder.add(
-                builder.newRootLogger(Level.INFO)
-                        .add(builder.newAppenderRef("Stdout"))
+        logger.info(
+                "Listening on {}:{}",
+                configuration.getHostname(),
+                configuration.getPort()
         );
-
-        Configurator.initialize(builder.build());
-
-        ServerConfiguration configuration = serverConfigurator.getServerConfiguration();
 
         return new UndertowJaxrsServer()
                 .deploy(application)
@@ -113,5 +111,49 @@ public class UndertowServer implements Server {
                                 .addWelcomeFiles("index.html")
                 )
         );
+
+        logStaticFiles(staticFilesSet);
+    }
+
+    private void logResources(List<RegisteredResource> resources) {
+        String list = resources.stream()
+                .map(RegisteredResource::toString)
+                .reduce("", (a, b) -> a + "\n\t" + b);
+
+        logger.info("The following paths were found: {}", list);
+    }
+
+    private void logStaticFiles(Set<StaticFiles> staticFiles) {
+        int pathWidth = 0;
+        int prefixWidth = 0;
+
+        for (StaticFiles s : staticFiles) {
+            String path = s.path().startsWith("/") ? s.path() : "/" + s.path();
+
+            if (path.length() > pathWidth) {
+                pathWidth = path.length();
+            }
+
+            if (s.prefix().length() > prefixWidth) {
+                prefixWidth = s.prefix().length();
+            }
+        }
+
+        int finalPathWidth = pathWidth;
+        int finalPrefixWidth = prefixWidth;
+        String list = staticFiles.stream()
+                .map(s -> String.format(
+                        "%-"
+                                + finalPathWidth
+                                + "s -> %-"
+                                + finalPrefixWidth
+                                + "s (%s)",
+                        s.path().startsWith("/") ? s.path() : "/" + s.path(),
+                        s.prefix(),
+                        s.methodAccess().level()
+                ))
+                .reduce("", (a, b) -> a + "\n\t" + b);
+
+        logger.info("The following static paths were found: {}", list);
     }
 }
