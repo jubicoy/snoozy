@@ -2,6 +2,9 @@ package fi.jubic.snoozy;
 
 import fi.jubic.easyvalue.EasyProperty;
 import fi.jubic.easyvalue.EasyValue;
+import fi.jubic.snoozy.filters.UrlRewrite;
+
+import javax.annotation.Nullable;
 
 @EasyValue(excludeJson = true)
 public abstract class StaticFiles {
@@ -13,6 +16,9 @@ public abstract class StaticFiles {
     public abstract ClassLoader classLoader();
     @EasyProperty
     public abstract MethodAccess methodAccess();
+    @EasyProperty
+    @Nullable
+    public abstract UrlRewrite rewrite();
 
     public abstract Builder toBuilder();
 

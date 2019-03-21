@@ -9,6 +9,7 @@ import fi.jubic.snoozy.auth.Authentication;
 import fi.jubic.snoozy.auth.implementation.DefaultAuthorizer;
 import fi.jubic.snoozy.auth.implementation.HeaderParser;
 import fi.jubic.snoozy.auth.implementation.StatefulAuthenticator;
+import fi.jubic.snoozy.filters.UrlRewrite;
 import fi.jubic.snoozy.undertow.UndertowServer;
 import fi.jubic.snoozy.StartupScheduler;
 import fi.jubic.snoozy.TaskScheduler;
@@ -41,6 +42,12 @@ public class ExampleApplication extends AuthenticatedApplication<User> {
                 .setPrefix("public")
                 .setClassLoader(this.getClass().getClassLoader())
                 .setMethodAccess(MethodAccess.anonymous())
+                .setRewrite(
+                        UrlRewrite.builder()
+                                .setFrom("^\\/(?!(api|static|img|html|images|fonts)|.*\\.html|.*\\.json).*$")
+                                .setTo("index.html")
+                                .build()
+                )
                 .build();
 
         StaticFiles authFiles = StaticFiles.builder()
