@@ -28,7 +28,9 @@ class FilteredResourceHandler extends ResourceHandler {
     }
 
     @Override
-    public void handleRequest(HttpServerExchange httpServerExchange) throws Exception {
+    public void handleRequest(
+            HttpServerExchange httpServerExchange
+    ) throws Exception {
         HttpServletRequest request = new HttpServletRequestImpl(
                 httpServerExchange,
                 null
@@ -37,6 +39,15 @@ class FilteredResourceHandler extends ResourceHandler {
         if (!filter.filter(staticFiles, request)) {
             httpServerExchange.setStatusCode(401);
             return;
+        }
+
+        if (
+                staticFiles.rewrite() != null
+                && httpServerExchange.getRelativePath()
+                        .matches(staticFiles.rewrite().from())
+        )
+        {
+            httpServerExchange.setRelativePath(staticFiles.rewrite().to());
         }
 
         super.handleRequest(httpServerExchange);
