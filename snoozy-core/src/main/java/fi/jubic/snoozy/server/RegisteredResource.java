@@ -7,6 +7,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.UriBuilder;
 import java.lang.reflect.Method;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @EasyValue
 public abstract class RegisteredResource {
@@ -59,10 +60,16 @@ public abstract class RegisteredResource {
             httpMethod = "DELETE";
         }
 
+        Object[] pathParams = Stream.of(method.getParameterAnnotations())
+                .flatMap(Stream::of)
+                .filter(a -> a.annotationType() == PathParam.class)
+                .map(a -> String.format("{%s}", ((PathParam) a).value()))
+                .toArray();
+
         return Optional.of(
                 RegisteredResource.builder()
                     .setMethod(httpMethod)
-                    .setPath(path.build().getPath())
+                    .setPath(path.build(pathParams).getPath())
                     .setResource(clazz.getName())
                     .build()
         );
