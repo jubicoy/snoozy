@@ -6,6 +6,7 @@ import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -23,6 +24,14 @@ public class HelloWorldResource {
     @PermitAll
     public Response hello() {
         return Response.ok("Hello public world!")
+                .build();
+    }
+
+    @GET
+    @Path("/{name}")
+    @PermitAll
+    public Response param(@PathParam("name") String name) {
+        return Response.ok(String.format("Hello %s", name))
                 .build();
     }
 
