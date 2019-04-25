@@ -14,22 +14,30 @@ import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.ApplicationPath;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class UndertowServer implements Server {
     private static final Logger logger = LoggerFactory
             .getLogger(UndertowServer.class);
 
+    private UndertowJaxrsServer server;
+
     @Override
     public void start(
             Application application,
             ServerConfigurator serverConfigurator
     ) {
-        ApplicationAdapter applicationAdapter = ApplicationAdapter.of(
-                application
-        );
-        UndertowJaxrsServer server = startServer(
+        var adapter = getApplicationAdapter(application);
+
+        if (adapter.isEmpty()) {
+            return;
+        }
+
+        var applicationAdapter = adapter.get();
+        server = startServer(
                 applicationAdapter,
                 serverConfigurator
         );
@@ -56,12 +64,14 @@ public class UndertowServer implements Server {
                 ResteasyProviderFactory::pushContext
         );
 
-        ApplicationAdapter applicationAdapter = ApplicationAdapter.of(
-                application,
-                authFilterAdapter
-        );
+        var adapter = getApplicationAdapter(application, authFilterAdapter);
 
-        UndertowJaxrsServer server = startServer(
+        if (adapter.isEmpty()) {
+            return;
+        }
+
+        var applicationAdapter = adapter.get();
+        server = startServer(
                 applicationAdapter,
                 serverConfigurator
         );
@@ -73,6 +83,11 @@ public class UndertowServer implements Server {
         );
 
         logResources(applicationAdapter.getRegisteredResources());
+    }
+
+    @Override
+    public void stop() {
+        server.stop();
     }
 
     private UndertowJaxrsServer startServer(
@@ -155,5 +170,63 @@ public class UndertowServer implements Server {
                 .reduce("", (a, b) -> a + "\n\t" + b);
 
         logger.info("The following static paths were found: {}", list);
+    }
+
+    private Class<?> getApplicationAdapterClass(
+            Application application
+    ) {
+        if (application.getClass().isAnnotationPresent(ApplicationPath.class)) {
+            try {
+                return Class.forName(
+                        application.getClass().getName() + "Adapter"
+                );
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return ApplicationAdapter.class;
+    }
+
+    private Optional<ApplicationAdapter> getApplicationAdapter(
+            Application application
+    ) {
+        var adapter = getApplicationAdapterClass(application);
+
+        try {
+            var ctor = adapter.getConstructor(Application.class);
+
+            return Optional.of(
+                    (ApplicationAdapter) ctor.newInstance(application)
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
+
+    private <P extends UserPrincipal> Optional<? extends ApplicationAdapter> getApplicationAdapter(
+            AuthenticatedApplication<P> application,
+            AuthFilterAdapter authFilterAdapter
+    ) {
+        var adapter = getApplicationAdapterClass(application);
+        try {
+            var ctor = adapter.getConstructor(
+                    AuthenticatedApplication.class,
+                    AuthFilterAdapter.class
+            );
+
+            return Optional.of(
+                    (ApplicationAdapter) ctor.newInstance(
+                            application,
+                            authFilterAdapter
+                    )
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
     }
 }
