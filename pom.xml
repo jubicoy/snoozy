@@ -37,6 +37,14 @@
         </repository>
     </repositories>
 
+    <distributionManagement>
+        <repository>
+            <id>bintray-jubicoy-maven</id>
+            <name>jubicoy-maven</name>
+            <url>https://api.bintray.com/maven/jubicoy/maven/snoozy-parent/;publish=1</url>
+        </repository>
+    </distributionManagement>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -139,7 +147,6 @@
     <modules>
         <module>snoozy-auth</module>
         <module>snoozy-core</module>
-        <module>snoozy-example</module>
         <module>snoozy-undertow</module>
     </modules>
 </project>
