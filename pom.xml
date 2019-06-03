@@ -54,12 +54,12 @@
             <dependency>
                 <groupId>fi.jubic</groupId>
                 <artifactId>easyconfig-core</artifactId>
-                <version>0.1.7</version>
+                <version>0.1.10</version>
             </dependency>
             <dependency>
                 <groupId>fi.jubic</groupId>
                 <artifactId>easyvalue</artifactId>
-                <version>0.2.2</version>
+                <version>0.2.6</version>
             </dependency>
             <dependency>
                 <groupId>javax.annotation</groupId>
@@ -97,7 +97,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.0</version>
+                    <version>3.8.1</version>
                     <configuration>
                         <source>1.8</source>
                         <target>1.8</target>
@@ -106,7 +106,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>3.0.1</version>
+                    <version>3.1.0</version>
                     <executions>
                         <execution>
                             <id>attach-sources</id>
@@ -119,12 +119,12 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>appassembler-maven-plugin</artifactId>
-                    <version>2.0.0</version>
+                    <version>2.1.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>versions-maven-plugin</artifactId>
-                    <version>2.3</version>
+                    <version>2.7</version>
                     <configuration>
                         <rulesUri>
                             file:///${session.executionRootDirectory}/rules.xml
