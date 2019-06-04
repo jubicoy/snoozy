@@ -16,6 +16,7 @@ public interface ExampleApplicationComponent {
     @Module
     class ExampleApplicationModule {
         @Provides
+        @Singleton
         static Configuration providerConfiguration() {
             try {
                 return new ConfigMapper().read(Configuration.class);

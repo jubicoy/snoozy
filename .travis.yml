@@ -5,7 +5,7 @@ jdk:
   - openjdk11
 script:
   - mvn clean install
-  - cd snoozy-example && mvn clean install && cd ..
+  - cd examples/all-in-one && mvn clean install && cd ../..
 
 jobs:
   include:

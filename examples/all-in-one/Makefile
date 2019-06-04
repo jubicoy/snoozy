@@ -8,7 +8,7 @@ start:
 						JOOQ_USER=test \
 						JOOQ_PASSWORD=test \
 						JOOQ_DIALECT=MYSQL \
-						java -jar target/snoozy-example-*.jar
+						java -jar target/all-in-one-*.jar
 
 .PHONY: bootstrap-local
 bootstrap-local: start-local-db

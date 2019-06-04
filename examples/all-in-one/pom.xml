@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>fi.jubic</groupId>
+        <artifactId>snoozy-starter-jooq</artifactId>
+        <version>0.1.0</version>
+    </parent>
+
+    <groupId>fi.jubic.examples</groupId>
+    <artifactId>all-in-one</artifactId>
+    <version>0.1.0</version>
+    <packaging>jar</packaging>
+
+    <repositories>
+        <repository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
+        </repository>
+    </repositories>
+
+    <properties>
+        <snoozy.mainClass>fi.jubic.snoozy.example.ExampleApplication</snoozy.mainClass>
+        <snoozy.jooq.jdbcUrl>jdbc:mysql://127.0.0.1:3306/test</snoozy.jooq.jdbcUrl>
+        <snoozy.jooq.user>test</snoozy.jooq.user>
+        <snoozy.jooq.password>test</snoozy.jooq.password>
+        <snoozy.jooq.includes>.*</snoozy.jooq.includes>
+        <snoozy.jooq.excludes>
+            DATABASECHANGELOG
+            | DATABASECHANGELOGLOCK
+        </snoozy.jooq.excludes>
+        <snoozy.jooq.inputSchema>test</snoozy.jooq.inputSchema>
+        <snoozy.jooq.targetPackage>fi.jubic.snoozy.example.db</snoozy.jooq.targetPackage>
+    </properties>
+</project>
