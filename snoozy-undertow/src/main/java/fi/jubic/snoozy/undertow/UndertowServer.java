@@ -9,8 +9,8 @@ import fi.jubic.snoozy.server.AuthFilterAdapter;
 import fi.jubic.snoozy.server.RegisteredResource;
 import io.undertow.Undertow;
 import org.jboss.resteasy.core.ResourceMethodInvoker;
+import org.jboss.resteasy.core.ResteasyContext;
 import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
-import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +53,7 @@ public class UndertowServer implements Server {
                 crc -> ((ResourceMethodInvoker) crc.getProperty(
                         "org.jboss.resteasy.core.ResourceMethodInvoker"
                 )).getMethod(),
-                ResteasyProviderFactory::pushContext
+                ResteasyContext::pushContext
         );
 
         ApplicationAdapter applicationAdapter = ApplicationAdapter.of(
