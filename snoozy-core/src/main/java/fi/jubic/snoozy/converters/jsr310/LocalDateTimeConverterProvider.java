@@ -1,5 +1,6 @@
-package fi.jubic.snoozy.experimental.converters.param;
+package fi.jubic.snoozy.converters.jsr310;
 
+import javax.annotation.Nullable;
 import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
 import java.lang.annotation.Annotation;
@@ -7,6 +8,8 @@ import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 public class LocalDateTimeConverterProvider implements ParamConverterProvider {
     @Override
@@ -17,13 +20,22 @@ public class LocalDateTimeConverterProvider implements ParamConverterProvider {
     ) {
         if (!LocalDateTime.class.equals(aClass)) return null;
 
+        boolean isNullable = Stream.of(annotations)
+                .anyMatch(
+                        annotation -> Objects.equals(
+                                annotation.annotationType(),
+                                Nullable.class
+                        )
+                );
+
         return new ParamConverter<T>() {
             @Override
             public T fromString(String s) {
+                if (s == null && isNullable) {
+                    return aClass.cast(null);
+                }
                 return aClass.cast(
-                        OffsetDateTime.parse(s)
-                                .atZoneSameInstant(ZoneId.systemDefault())
-                                .toLocalDateTime()
+                        ParseUtil.parseLocalDateTime(s)
                 );
             }
 

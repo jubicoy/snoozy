@@ -1,4 +1,4 @@
-package fi.jubic.snoozy.experimental.jackson;
+package fi.jubic.snoozy.mappers.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
