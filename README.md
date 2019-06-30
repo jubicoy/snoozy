@@ -1,5 +1,7 @@
 # Snoozy
 
+[![Build Status](https://travis-ci.org/jubicoy/snoozy.svg?branch=master)](https://travis-ci.org/jubicoy/snoozy)
+
 Snoozy allows building JAX-RS applications without depending on the
 specific app-server or Servlet container implementation.
 
@@ -24,7 +26,7 @@ public class App extends Application {
                 // Place your filter, provider and resource classes here
         ).collect(Collectors.toSet());
     }
-    
+
     @Override
     public Set<Object> getSingletons() {
         return Stream.of(
@@ -60,7 +62,7 @@ public class App extends AuthenticatedApplication<User> {
                 // Place your filter, provider and resource classes here
         ).collect(Collectors.toSet());
     }
-    
+
     @Override
     public Set<Object> getSingletons() {
         return Stream.of(
