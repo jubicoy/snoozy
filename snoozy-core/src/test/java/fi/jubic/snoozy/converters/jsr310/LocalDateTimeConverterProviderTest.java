@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 import javax.ws.rs.ext.ParamConverter;
 import java.lang.annotation.Annotation;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -61,7 +60,10 @@ class LocalDateTimeConverterProviderTest {
         );
         assertEquals(
                 converter.fromString("1546336800000"),
-                LocalDateTime.of(2019, 1, 1, 12, 0 ,0)
+                LocalDateTime.ofInstant(
+                        Instant.parse("2019-01-01T10:00:00.000Z"),
+                        ZoneId.systemDefault()
+                )
         );
     }
 
