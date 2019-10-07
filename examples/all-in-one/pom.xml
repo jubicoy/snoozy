@@ -7,7 +7,7 @@
     <parent>
         <groupId>fi.jubic</groupId>
         <artifactId>snoozy-starter-jooq</artifactId>
-        <version>0.1.0</version>
+        <version>0.1.2</version>
     </parent>
 
     <groupId>fi.jubic.examples</groupId>
@@ -24,9 +24,11 @@
 
     <properties>
         <snoozy.mainClass>fi.jubic.snoozy.example.ExampleApplication</snoozy.mainClass>
+        <snoozy.jooq.jdbcDriver>com.mysql.jdbc.Driver</snoozy.jooq.jdbcDriver>
         <snoozy.jooq.jdbcUrl>jdbc:mysql://127.0.0.1:3306/test</snoozy.jooq.jdbcUrl>
         <snoozy.jooq.user>test</snoozy.jooq.user>
         <snoozy.jooq.password>test</snoozy.jooq.password>
+        <snoozy.jooq.databaseMetaName>org.jooq.meta.mysql.MySQLDatabase</snoozy.jooq.databaseMetaName>
         <snoozy.jooq.includes>.*</snoozy.jooq.includes>
         <snoozy.jooq.excludes>
             DATABASECHANGELOG
