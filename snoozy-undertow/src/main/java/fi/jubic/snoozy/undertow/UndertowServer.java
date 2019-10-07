@@ -56,6 +56,12 @@ public class UndertowServer implements Server {
                 ResteasyContext::pushContext
         );
 
+        logger.info(
+                "\n\t::\n\t:: {}: v{} ::\n\t::\n",
+                application.getClass().getPackage().getImplementationTitle(),
+                application.getClass().getPackage().getImplementationVersion()
+        );
+
         ApplicationAdapter applicationAdapter = ApplicationAdapter.of(
                 application,
                 authFilterAdapter
