@@ -13,4 +13,6 @@ public interface Server {
         AuthenticatedApplication<P> application,
         ServerConfigurator serverConfigurator
     );
+
+    void stop();
 }
