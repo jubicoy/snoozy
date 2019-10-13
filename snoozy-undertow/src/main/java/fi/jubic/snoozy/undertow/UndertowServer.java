@@ -14,25 +14,31 @@ import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.ApplicationPath;
+import java.lang.reflect.Constructor;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class UndertowServer implements Server {
     private static final Logger logger = LoggerFactory
             .getLogger(UndertowServer.class);
 
+    private UndertowJaxrsServer server;
+
     @Override
     public void start(
             Application application,
             ServerConfigurator serverConfigurator
     ) {
-        ApplicationAdapter applicationAdapter = ApplicationAdapter.of(
-                application
-        );
-        UndertowJaxrsServer server = startServer(
-                applicationAdapter,
-                serverConfigurator
-        );
+        Optional<ApplicationAdapter> adapter = getApplicationAdapter(application);
+
+        if (!adapter.isPresent()) {
+            return;
+        }
+
+        ApplicationAdapter applicationAdapter = adapter.get();
+        server = startServer(applicationAdapter, serverConfigurator);
 
         addStaticFiles(
                 server,
@@ -62,12 +68,14 @@ public class UndertowServer implements Server {
                 application.getClass().getPackage().getImplementationVersion()
         );
 
-        ApplicationAdapter applicationAdapter = ApplicationAdapter.of(
-                application,
-                authFilterAdapter
-        );
+        Optional<? extends ApplicationAdapter> adapter = getApplicationAdapter(application, authFilterAdapter);
 
-        UndertowJaxrsServer server = startServer(
+        if (!adapter.isPresent()) {
+            return;
+        }
+
+        ApplicationAdapter applicationAdapter = adapter.get();
+        server = startServer(
                 applicationAdapter,
                 serverConfigurator
         );
@@ -80,6 +88,12 @@ public class UndertowServer implements Server {
 
         logResources(applicationAdapter.getRegisteredResources());
     }
+
+    @Override
+    public void stop() {
+        server.stop();
+    }
+
 
     private UndertowJaxrsServer startServer(
             javax.ws.rs.core.Application application,
@@ -103,6 +117,60 @@ public class UndertowServer implements Server {
                                         configuration.getHostname()
                                 )
                 );
+    }
+
+    private Class<?> getApplicationAdapterClass(Application application) {
+        if (application.getClass().isAnnotationPresent(ApplicationPath.class)) {
+            try {
+                return Class.forName(application.getClass().getName() + "Adapter");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return ApplicationAdapter.class;
+    }
+
+    private Optional<ApplicationAdapter> getApplicationAdapter(
+            Application application
+    ) {
+        Class<?> adapter = getApplicationAdapterClass(application);
+
+        try {
+            Constructor<?> ctor = adapter.getConstructor(Application.class);
+
+            return Optional.of(
+                    (ApplicationAdapter) ctor.newInstance(application)
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
+
+    private <P extends UserPrincipal> Optional<? extends ApplicationAdapter> getApplicationAdapter(
+            AuthenticatedApplication<P> application,
+            AuthFilterAdapter authFilterAdapter
+    ) {
+        Class<?> adapter = getApplicationAdapterClass(application);
+        try {
+            Constructor<?> ctor = adapter.getConstructor(
+                    AuthenticatedApplication.class,
+                    AuthFilterAdapter.class
+            );
+
+            return Optional.of(
+                    (ApplicationAdapter) ctor.newInstance(
+                            application,
+                            authFilterAdapter
+                    )
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
     }
 
     private void addStaticFiles(
