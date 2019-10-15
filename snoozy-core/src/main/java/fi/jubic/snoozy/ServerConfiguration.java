@@ -1,6 +1,6 @@
 package fi.jubic.snoozy;
 
-import fi.jubic.easyconfig.annontations.EasyConfigProperty;
+import fi.jubic.easyconfig.annotations.EasyConfigProperty;
 
 public class ServerConfiguration {
     private String hostname;
