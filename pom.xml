@@ -54,12 +54,12 @@
             <dependency>
                 <groupId>fi.jubic</groupId>
                 <artifactId>easyconfig-core</artifactId>
-                <version>0.1.10</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>fi.jubic</groupId>
                 <artifactId>easyvalue</artifactId>
-                <version>0.2.6</version>
+                <version>0.2.8</version>
             </dependency>
             <dependency>
                 <groupId>javax.annotation</groupId>
