@@ -1,6 +1,6 @@
 package fi.jubic.snoozy.example;
 
-import fi.jubic.easyconfig.annontations.EasyConfigProperty;
+import fi.jubic.easyconfig.annotations.EasyConfigProperty;
 import fi.jubic.easyconfig.jooq.JooqConfiguration;
 import fi.jubic.snoozy.ServerConfiguration;
 import fi.jubic.snoozy.ServerConfigurator;
