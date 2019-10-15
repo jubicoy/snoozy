@@ -2,13 +2,11 @@
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
-        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
     <changeSet id="1" author="Vilppu Vuorinen">
         <createTable tableName="user">
-            <column name="id" type="bigint">
-                <constraints nullable="false" unique="true" />
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" />
             </column>
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" unique="true" />
@@ -23,11 +21,10 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-        <addPrimaryKey tableName="user" columnNames="id" constraintName="pk_user" />
 
         <createTable tableName="todo">
-            <column name="id" type="bigint">
-                <constraints nullable="false" unique="true" />
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" />
             </column>
             <column name="title" type="varchar(255)">
                 <constraints nullable="false" />
@@ -39,7 +36,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-        <addPrimaryKey tableName="todo" columnNames="id" constraintName="pk_todo" />
 
         <addForeignKeyConstraint
                 baseTableName="todo"
