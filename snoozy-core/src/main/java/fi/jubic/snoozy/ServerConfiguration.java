@@ -6,6 +6,15 @@ public class ServerConfiguration {
     private String hostname;
     private int port;
 
+    public ServerConfiguration() {
+
+    }
+
+    public ServerConfiguration(String hostname, int port) {
+        this.hostname = hostname;
+        this.port = port;
+    }
+
     public String getHostname() {
         return hostname;
     }
