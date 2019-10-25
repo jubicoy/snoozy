@@ -9,6 +9,7 @@ import fi.jubic.snoozy.server.AuthFilterAdapter;
 
 import javax.annotation.processing.*;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
@@ -16,6 +17,8 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.ws.rs.ApplicationPath;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @AutoService(Processor.class)
@@ -105,7 +108,26 @@ public class ApplicationAdapterProcessor extends AbstractProcessor {
     }
 
     private <T extends Element> void writeAnnotation(T element) {
-        String name = element.getSimpleName().toString();
+        String name;
+        {
+            List<String> elementPath = new ArrayList<>();
+            Element enclosing = element.getEnclosingElement();
+            ElementKind enclosingKind = enclosing.getKind();
+            while (
+                    enclosingKind == ElementKind.CLASS
+                            || enclosingKind == ElementKind.INTERFACE
+                            || enclosingKind == ElementKind.ENUM
+            ) {
+                elementPath.add(enclosing.getSimpleName().toString());
+                enclosing = enclosing.getEnclosingElement();
+                enclosingKind = enclosing.getKind();
+            }
+
+            elementPath.add(element.getSimpleName().toString());
+
+            name = String.join("$", elementPath);
+        }
+
         String path = element.getAnnotation(ApplicationPath.class).value();
         TypeSpec typeSpec = generateAdapter(name, path);
         String packageName = elements.getPackageOf(element)
