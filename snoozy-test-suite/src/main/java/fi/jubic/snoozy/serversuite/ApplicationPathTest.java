@@ -60,6 +60,82 @@ public interface ApplicationPathTest<T extends Server> extends BaseTest<T> {
     }
 
     @Test
+    default void annotatedApplicationServedWithLeadingSlashPrefix() throws Exception {
+        withServer(
+                instance(),
+                new LeadingSlashAnnotatedApplication(),
+                (hostname, port) -> {
+                    OkHttpClient client = new OkHttpClient();
+
+                    {
+                        okhttp3.Response response = client.newCall(
+                                new Request.Builder()
+                                        .url(String.format("http://%s:%d/prefix", hostname, port))
+                                        .get()
+                                        .build()
+                        ).execute();
+
+                        assertEquals(200, response.code());
+                        assertEquals("TEST", Objects.requireNonNull(response.body()).string());
+
+                        response.close();
+                    }
+
+                    {
+                        okhttp3.Response response = client.newCall(
+                                new Request.Builder()
+                                        .url(String.format("http://%s:%d/", hostname, port))
+                                        .get()
+                                        .build()
+                        ).execute();
+
+                        assertEquals(404, response.code());
+
+                        response.close();
+                    }
+                }
+        );
+    }
+
+    @Test
+    default void annotatedApplicationServedWithLongPrefix() throws Exception {
+        withServer(
+                instance(),
+                new LongPathAnnotatedApplication(),
+                (hostname, port) -> {
+                    OkHttpClient client = new OkHttpClient();
+
+                    {
+                        okhttp3.Response response = client.newCall(
+                                new Request.Builder()
+                                        .url(String.format("http://%s:%d/long/prefix", hostname, port))
+                                        .get()
+                                        .build()
+                        ).execute();
+
+                        assertEquals(200, response.code());
+                        assertEquals("TEST", Objects.requireNonNull(response.body()).string());
+
+                        response.close();
+                    }
+
+                    {
+                        okhttp3.Response response = client.newCall(
+                                new Request.Builder()
+                                        .url(String.format("http://%s:%d/", hostname, port))
+                                        .get()
+                                        .build()
+                        ).execute();
+
+                        assertEquals(404, response.code());
+
+                        response.close();
+                    }
+                }
+        );
+    }
+
+    @Test
     default void plainApplicationServedWithoutPrefix() throws Exception {
         withServer(
                 instance(),
@@ -112,6 +188,22 @@ public interface ApplicationPathTest<T extends Server> extends BaseTest<T> {
         }
     }
 
+    @ApplicationPath("/prefix")
+    class LeadingSlashAnnotatedApplication extends Application {
+        @Override
+        public Set<Object> getSingletons() {
+            return Collections.singleton(new ResourceClass());
+        }
+    }
+
+    @ApplicationPath("/long/prefix")
+    class LongPathAnnotatedApplication extends Application {
+        @Override
+        public Set<Object> getSingletons() {
+            return Collections.singleton(new ResourceClass());
+        }
+    }
+
     @Path("")
     @Produces(MediaType.TEXT_PLAIN)
     class ResourceClass {
@@ -121,6 +213,5 @@ public interface ApplicationPathTest<T extends Server> extends BaseTest<T> {
             return Response.ok("TEST")
                     .build();
         }
-
     }
 }

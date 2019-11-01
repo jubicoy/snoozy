@@ -117,8 +117,8 @@ public class UndertowServer implements Server {
                         application.getClass().getAnnotation(ApplicationPath.class)
                 )
                 .map(ApplicationPath::value)
-                .orElse("/")
-                .replaceAll("//", "/");
+                .orElse("")
+                .replaceAll("^/", "");
 
         UndertowJaxrsServer undertowJaxrsServer = new UndertowJaxrsServer();
 
