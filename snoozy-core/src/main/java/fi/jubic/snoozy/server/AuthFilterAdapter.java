@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -79,7 +78,7 @@ public class AuthFilterAdapter<P extends UserPrincipal>
         principal.ifPresent(p -> contextPusher.push(authentication.userClass(), p));
 
         if (!isAuthorized(methodAccess, principal)) {
-            unauthorized(containerRequestContext);
+            authentication.getUnauthorized().accept(containerRequestContext);
         }
     }
 
@@ -114,12 +113,5 @@ public class AuthFilterAdapter<P extends UserPrincipal>
         }
 
         return false;
-    }
-
-    private void unauthorized(ContainerRequestContext containerRequestContext) {
-        containerRequestContext.abortWith(
-                Response.status(Response.Status.UNAUTHORIZED)
-                        .build()
-        );
     }
 }
