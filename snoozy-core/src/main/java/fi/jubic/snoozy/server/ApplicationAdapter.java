@@ -64,7 +64,7 @@ public class ApplicationAdapter extends javax.ws.rs.core.Application {
                 .flatMap(s -> s)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .sorted(Comparator.comparing(RegisteredResource::path))
+                .sorted(Comparator.comparing(RegisteredResource::getPath))
                 .collect(Collectors.toList());
     }
 }

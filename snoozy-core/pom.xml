@@ -40,11 +40,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>fi.jubic</groupId>
-            <artifactId>easyvalue</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
         </dependency>

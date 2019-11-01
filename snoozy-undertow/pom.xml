@@ -50,11 +50,6 @@
             <version>0.4.0</version>
         </dependency>
         <dependency>
-            <groupId>fi.jubic</groupId>
-            <artifactId>easyvalue</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
         </dependency>

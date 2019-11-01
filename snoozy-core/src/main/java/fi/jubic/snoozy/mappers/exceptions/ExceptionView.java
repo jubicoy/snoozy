@@ -1,22 +1,25 @@
 package fi.jubic.snoozy.mappers.exceptions;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import fi.jubic.easyvalue.EasyProperty;
-import fi.jubic.easyvalue.EasyValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@EasyValue
-@JsonSerialize(as = EasyValue_ExceptionView.class)
-public abstract class ExceptionView {
-    @EasyProperty
-    public abstract int code();
-    @EasyProperty
-    public abstract String message();
+public class ExceptionView {
+    private final int code;
+    private final String message;
 
-    public static Builder builder() {
-        return new Builder();
+    public ExceptionView(
+            @JsonProperty int code,
+            @JsonProperty String message
+    ) {
+        this.code = code;
+        this.message = message;
     }
 
-    public static class Builder extends EasyValue_ExceptionView.Builder {
-
+    @JsonProperty
+    public int getCode() {
+        return code;
+    }
+    @JsonProperty
+    public String getMessage() {
+        return message;
     }
 }

@@ -1,56 +1,72 @@
 package fi.jubic.snoozy;
 
-import fi.jubic.easyvalue.EasyProperty;
-import fi.jubic.easyvalue.EasyValue;
-
 import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@EasyValue(excludeJson = true)
-public abstract class MethodAccess {
+public class MethodAccess {
     public enum Level {
         DenyAll,
         Anonymous,
         Authenticated,
         Roles
     }
-    @EasyProperty
-    public abstract Level level();
-    @EasyProperty
-    public abstract Set<String> values();
+
+    private final Level level;
+    private final Set<String> values;
+
+    private MethodAccess(
+            Level level,
+            Set<String> values
+    ) {
+        this.level = level;
+        this.values = values;
+    }
+
+    @Deprecated
+    public Level level() {
+        return getLevel();
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    @Deprecated
+    public Set<String> values() {
+        return getValues();
+    }
+
+    public Set<String> getValues() {
+        return values;
+    }
 
     public static MethodAccess denyAll() {
-        // return new EasyValue_MethodAccess(Level.DenyAll, Collections.emptySet());
-        return new Builder()
-                .setLevel(Level.DenyAll)
-                .setValues(Collections.emptySet())
-                .build();
+        return new MethodAccess(
+                Level.DenyAll,
+                Collections.emptySet()
+        );
     }
 
     public static MethodAccess anonymous() {
-        return new Builder()
-                .setLevel(Level.Anonymous)
-                .setValues(Collections.emptySet())
-                .build();
+        return new MethodAccess(
+                Level.Anonymous,
+                Collections.emptySet()
+        );
     }
 
     public static MethodAccess authenticated() {
-        return new Builder()
-                .setLevel(Level.Authenticated)
-                .setValues(Collections.emptySet())
-                .build();
+        return new MethodAccess(
+                Level.Authenticated,
+                Collections.emptySet()
+        );
     }
 
     public static MethodAccess roles(String... roles) {
-        return new Builder()
-                .setLevel(Level.Roles)
-                .setValues(Stream.of(roles).collect(Collectors.toSet()))
-                .build();
-    }
-
-    static class Builder extends EasyValue_MethodAccess.Builder {
-
+        return new MethodAccess(
+                Level.Roles,
+                Stream.of(roles).collect(Collectors.toSet())
+        );
     }
 }

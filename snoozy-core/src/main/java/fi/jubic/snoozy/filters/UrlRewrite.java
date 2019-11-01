@@ -1,22 +1,70 @@
 package fi.jubic.snoozy.filters;
 
-import fi.jubic.easyvalue.EasyProperty;
-import fi.jubic.easyvalue.EasyValue;
+public class UrlRewrite {
+    private final String from;
+    private final String to;
 
-@EasyValue(excludeJson = true)
-public abstract class UrlRewrite {
-    @EasyProperty
-    public abstract String from();
-    @EasyProperty
-    public abstract String to();
+    private UrlRewrite(String from, String to) {
+        this.from = from;
+        this.to = to;
+    }
 
-    public abstract Builder toBuilder();
+    public static UrlRewrite of(String from, String to) {
+        return new UrlRewrite(from, to);
+    }
 
+    @Deprecated
+    public String from() {
+        return getFrom();
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    @Deprecated
+    public String to() {
+        return getTo();
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    @Deprecated
+    public Builder toBuilder() {
+        return new Builder(from, to);
+    }
+
+    @Deprecated
     public static Builder builder() {
         return new Builder();
     }
 
-    public static class Builder extends EasyValue_UrlRewrite.Builder {
+    @Deprecated
+    public static class Builder {
+        private final String from;
+        private final String to;
 
+        private Builder() {
+            this(null, null);
+        }
+
+        private Builder(String from, String to) {
+            this.from = from;
+            this.to = to;
+        }
+
+        public Builder setFrom(String from) {
+            return new Builder(from, to);
+        }
+
+        public Builder setTo(String to) {
+            return new Builder(from, to);
+        }
+
+        public UrlRewrite build() {
+            return new UrlRewrite(from, to);
+        }
     }
 }

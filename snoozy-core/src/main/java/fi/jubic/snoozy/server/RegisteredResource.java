@@ -1,26 +1,41 @@
 package fi.jubic.snoozy.server;
 
-import fi.jubic.easyvalue.EasyProperty;
-import fi.jubic.easyvalue.EasyValue;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.UriBuilder;
 import java.lang.reflect.Method;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-@EasyValue
-public abstract class RegisteredResource {
-    @EasyProperty
-    public abstract String method();
-    @EasyProperty
-    public abstract String path();
-    @EasyProperty
-    public abstract String resource();
+public class RegisteredResource {
+    private final String method;
+    private final String path;
+    private final String resource;
+
+    private RegisteredResource(
+            String method,
+            String path,
+            String resource
+    ) {
+        this.method = method;
+        this.path = path;
+        this.resource = resource;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public String getResource() {
+        return resource;
+    }
 
     @Override
     public String toString() {
-        return String.format("%-6s %s (%s)", method(), path(), resource());
+        return String.format("%-6s %s (%s)", method, path, resource);
     }
 
     public static Optional<RegisteredResource> of(
@@ -67,19 +82,11 @@ public abstract class RegisteredResource {
                 .toArray();
 
         return Optional.of(
-                RegisteredResource.builder()
-                    .setMethod(httpMethod)
-                    .setPath(path.build(pathParams).getPath())
-                    .setResource(clazz.getName())
-                    .build()
+                new RegisteredResource(
+                        httpMethod,
+                        path.build(pathParams).getPath(),
+                        clazz.getName()
+                )
         );
-    }
-
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    public static class Builder extends EasyValue_RegisteredResource.Builder {
-
     }
 }

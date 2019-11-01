@@ -18,10 +18,10 @@ public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplica
         Response.ResponseBuilder builder = Response.status(status)
                 .type(headers.getMediaType())
                 .entity(
-                        ExceptionView.builder()
-                                .setCode(status.getStatusCode())
-                                .setMessage(exception.getMessage())
-                                .build()
+                        new ExceptionView(
+                                status.getStatusCode(),
+                                exception.getMessage()
+                        )
                 );
 
         if (status == Response.Status.FOUND) {

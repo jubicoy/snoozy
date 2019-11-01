@@ -52,11 +52,6 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>fi.jubic</groupId>
-                <artifactId>easyvalue</artifactId>
-                <version>0.2.8</version>
-            </dependency>
-            <dependency>
                 <groupId>javax.annotation</groupId>
                 <artifactId>javax.annotation-api</artifactId>
                 <version>1.3.2</version>
