@@ -1,29 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>snoozy-auth</artifactId>
-    <packaging>jar</packaging>
-
     <parent>
-        <groupId>fi.jubic</groupId>
         <artifactId>snoozy-parent</artifactId>
+        <groupId>fi.jubic</groupId>
         <version>0.3.1</version>
     </parent>
+    <modelVersion>4.0.0</modelVersion>
 
-    <repositories>
-        <repository>
-            <id>jcenter</id>
-            <url>https://jcenter.bintray.com/</url>
-        </repository>
-    </repositories>
+    <artifactId>snoozy-test-suite</artifactId>
+    <packaging>jar</packaging>
 
     <distributionManagement>
         <repository>
             <id>bintray-jubicoy-maven</id>
             <name>jubicoy-maven</name>
-            <url>https://api.bintray.com/maven/jubicoy/maven/snoozy-auth/;publish=1</url>
+            <url>https://api.bintray.com/maven/jubicoy/maven/snoozy-test-suite/;publish=1</url>
         </repository>
     </distributionManagement>
 
@@ -38,10 +31,6 @@
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-            </plugin>
         </plugins>
     </build>
 
@@ -53,26 +42,29 @@
         </dependency>
         <dependency>
             <groupId>fi.jubic</groupId>
-            <artifactId>easyvalue</artifactId>
+            <artifactId>snoozy-test</artifactId>
+            <version>0.3.1</version>
         </dependency>
         <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-            <scope>provided</scope>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-            <scope>provided</scope>
-        </dependency>
+
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.14.3</version>
         </dependency>
     </dependencies>
 </project>

@@ -53,11 +53,6 @@
         <dependencies>
             <dependency>
                 <groupId>fi.jubic</groupId>
-                <artifactId>easyconfig-core</artifactId>
-                <version>0.3.2</version>
-            </dependency>
-            <dependency>
-                <groupId>fi.jubic</groupId>
                 <artifactId>easyvalue</artifactId>
                 <version>0.2.8</version>
             </dependency>
@@ -80,6 +75,12 @@
                 <groupId>javax.inject</groupId>
                 <artifactId>javax.inject</artifactId>
                 <version>1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.auto.service</groupId>
+                <artifactId>auto-service</artifactId>
+                <version>1.0-rc6</version>
+                <scope>provided</scope>
             </dependency>
 
             <dependency>
@@ -151,6 +152,25 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.8.4</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>report</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -158,6 +178,8 @@
     <modules>
         <module>snoozy-auth</module>
         <module>snoozy-core</module>
+        <module>snoozy-test</module>
+        <module>snoozy-test-suite</module>
         <module>snoozy-undertow</module>
     </modules>
 </project>

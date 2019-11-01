@@ -8,12 +8,16 @@ import fi.jubic.snoozy.server.ApplicationAdapter;
 import fi.jubic.snoozy.server.AuthFilterAdapter;
 import fi.jubic.snoozy.server.RegisteredResource;
 import io.undertow.Undertow;
+import io.undertow.servlet.api.DeploymentInfo;
 import org.jboss.resteasy.core.ResourceMethodInvoker;
 import org.jboss.resteasy.core.ResteasyContext;
+import org.jboss.resteasy.core.ResteasyDeploymentImpl;
 import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
+import org.jboss.resteasy.spi.ResteasyDeployment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.MultipartConfigElement;
 import javax.ws.rs.ApplicationPath;
 import java.lang.reflect.Constructor;
 import java.util.List;
@@ -108,8 +112,34 @@ public class UndertowServer implements Server {
                 configuration.getPort()
         );
 
-        return new UndertowJaxrsServer()
-                .deploy(application)
+        String path = "/"
+                + Optional.ofNullable(
+                        application.getClass().getAnnotation(ApplicationPath.class)
+                )
+                .map(ApplicationPath::value)
+                .orElse("/")
+                .replaceAll("//", "/");
+
+        UndertowJaxrsServer undertowJaxrsServer = new UndertowJaxrsServer();
+
+        MultipartConfig multipartConfig = configuration.getMultipartConfig();
+
+        ResteasyDeployment deployment = new ResteasyDeploymentImpl();
+        deployment.setApplication(application);
+        DeploymentInfo deploymentInfo = undertowJaxrsServer.undertowDeployment(deployment);
+        deploymentInfo.setClassLoader(application.getClass().getClassLoader());
+        deploymentInfo.setContextPath(path);
+        deploymentInfo.setDeploymentName("Snoozy" + path);
+        deploymentInfo.setDefaultMultipartConfig(
+                new MultipartConfigElement(
+                        multipartConfig.getCacheLocation(),
+                        multipartConfig.getMaxFileSize(),
+                        multipartConfig.getMaxRequestSize(),
+                        multipartConfig.getSizeThreshold()
+                )
+        );
+
+        return undertowJaxrsServer.deploy(deploymentInfo)
                 .start(
                         Undertow.builder()
                                 .addHttpListener(

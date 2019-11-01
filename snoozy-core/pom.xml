@@ -31,14 +31,14 @@
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>fi.jubic</groupId>
-            <artifactId>easyconfig-core</artifactId>
-        </dependency>
         <dependency>
             <groupId>fi.jubic</groupId>
             <artifactId>easyvalue</artifactId>
@@ -69,14 +69,11 @@
         <dependency>
             <groupId>com.google.auto.service</groupId>
             <artifactId>auto-service</artifactId>
-            <version>1.0-rc5</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.squareup</groupId>
             <artifactId>javapoet</artifactId>
             <version>1.11.1</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
