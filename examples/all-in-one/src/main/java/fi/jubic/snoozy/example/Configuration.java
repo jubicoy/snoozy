@@ -2,6 +2,7 @@ package fi.jubic.snoozy.example;
 
 import fi.jubic.easyconfig.annotations.EasyConfigProperty;
 import fi.jubic.easyconfig.jooq.JooqConfiguration;
+import fi.jubic.easyconfig.snoozy.SnoozyServerConfiguration;
 import fi.jubic.snoozy.ServerConfiguration;
 import fi.jubic.snoozy.ServerConfigurator;
 
@@ -11,7 +12,7 @@ public class Configuration implements ServerConfigurator {
 
     public Configuration(
             @EasyConfigProperty("SERVER_")
-            ServerConfiguration serverConfiguration,
+            SnoozyServerConfiguration serverConfiguration,
             @EasyConfigProperty("")
             JooqConfiguration jooqConfiguration
     ) {
