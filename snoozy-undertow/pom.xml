@@ -51,10 +51,6 @@
         </dependency>
         <dependency>
             <groupId>fi.jubic</groupId>
-            <artifactId>easyconfig-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>fi.jubic</groupId>
             <artifactId>easyvalue</artifactId>
             <scope>provided</scope>
         </dependency>

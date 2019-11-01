@@ -122,6 +122,8 @@ public class UndertowServer implements Server {
 
         UndertowJaxrsServer undertowJaxrsServer = new UndertowJaxrsServer();
 
+        MultipartConfig multipartConfig = configuration.getMultipartConfig();
+
         ResteasyDeployment deployment = new ResteasyDeploymentImpl();
         deployment.setApplication(application);
         DeploymentInfo deploymentInfo = undertowJaxrsServer.undertowDeployment(deployment);
@@ -130,10 +132,10 @@ public class UndertowServer implements Server {
         deploymentInfo.setDeploymentName("Snoozy" + path);
         deploymentInfo.setDefaultMultipartConfig(
                 new MultipartConfigElement(
-                        "",
-                        1024 * 1024,
-                        10 * 1024 * 1024,
-                        20 * 1024 * 1024
+                        multipartConfig.getCacheLocation(),
+                        multipartConfig.getMaxFileSize(),
+                        multipartConfig.getMaxRequestSize(),
+                        multipartConfig.getSizeThreshold()
                 )
         );
 

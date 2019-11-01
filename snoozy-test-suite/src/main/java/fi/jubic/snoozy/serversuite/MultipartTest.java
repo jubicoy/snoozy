@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Test;
 import javax.annotation.security.PermitAll;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collections;
-import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,6 +36,9 @@ public interface MultipartTest<T extends Server> extends BaseTest<T> {
                 (hostname, port) -> {
                     OkHttpClient client = new OkHttpClient();
 
+                    String fileContent = "date;title;description\n" +
+                            "2019-11-01;Support Multipart;Add multipart support to Snoozy";
+
                     MultipartBody body = new MultipartBody.Builder()
                             .setType(MultipartBody.FORM)
                             .addFormDataPart("title", "TEST")
@@ -46,11 +47,7 @@ public interface MultipartTest<T extends Server> extends BaseTest<T> {
                                     "test.csv",
                                     RequestBody.create(
                                             okhttp3.MediaType.parse("text/csv"),
-                                            new File(
-                                                    getClass().getClassLoader()
-                                                            .getResource("test.csv")
-                                                            .getFile()
-                                            )
+                                            fileContent
                                     )
                             )
                             .build();
@@ -65,7 +62,7 @@ public interface MultipartTest<T extends Server> extends BaseTest<T> {
 
 
                     assertEquals(200, response.code());
-                    System.out.println(response.body().toString());
+                    assertEquals(fileContent, Objects.requireNonNull(response.body()).string());
                 }
         );
     }
@@ -82,19 +79,9 @@ public interface MultipartTest<T extends Server> extends BaseTest<T> {
     class MultipartResource {
         @POST
         @PermitAll
-        public Map<String, String> postParts(@Context HttpServletRequest request) throws IOException, ServletException {
-            return request.getParts().stream()
-                    .collect(Collectors.toMap(
-                            Part::getName,
-                            part -> {
-                                try {
-                                    return new BufferedReader(new InputStreamReader(part.getInputStream()))
-                                            .lines().collect(Collectors.joining("\n"));
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }
-                    ));
+        public String postParts(@Context HttpServletRequest request) throws IOException, ServletException {
+            return new BufferedReader(new InputStreamReader(request.getPart("file").getInputStream()))
+                    .lines().collect(Collectors.joining("\n"));
         }
     }
 }

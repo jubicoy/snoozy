@@ -2,7 +2,7 @@ package fi.jubic.snoozy.test;
 
 import fi.jubic.snoozy.Application;
 import fi.jubic.snoozy.Server;
-import fi.jubic.snoozy.ServerConfiguration;
+import fi.jubic.snoozy.DefaultServerConfiguration;
 import fi.jubic.snoozy.ServerConfigurator;
 
 import java.net.ServerSocket;
@@ -26,7 +26,7 @@ public final class TestUtil {
         socket.close();
 
         // Create configuration
-        ServerConfigurator configurator = () -> new ServerConfiguration(hostname, port);
+        ServerConfigurator configurator = () -> new DefaultServerConfiguration(hostname, port);
 
         server.start(application, configurator);
 
