@@ -7,5 +7,8 @@ import fi.jubic.snoozy.Server;
  *
  * @param <T> Server implementation under test
  */
-public interface ServerTestSuite<T extends Server> extends ApplicationPathTest<T> {
+public interface ServerTestSuite<T extends Server> extends
+        ApplicationPathTest<T>,
+        MultipartTest<T>
+{
 }
