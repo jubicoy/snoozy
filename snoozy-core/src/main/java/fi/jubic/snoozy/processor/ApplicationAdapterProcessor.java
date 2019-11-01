@@ -8,6 +8,7 @@ import fi.jubic.snoozy.server.ApplicationAdapter;
 import fi.jubic.snoozy.server.AuthFilterAdapter;
 
 import javax.annotation.processing.*;
+import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
@@ -141,5 +142,10 @@ public class ApplicationAdapterProcessor extends AbstractProcessor {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public SourceVersion getSupportedSourceVersion() {
+        return SourceVersion.latestSupported();
     }
 }
