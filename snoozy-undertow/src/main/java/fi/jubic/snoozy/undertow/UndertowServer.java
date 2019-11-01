@@ -210,7 +210,7 @@ public class UndertowServer implements Server {
     ) {
         staticFilesSet.forEach(
                 staticFiles -> server.addResourcePrefixPath(
-                        staticFiles.path(),
+                        staticFiles.getPath(),
                         new FilteredResourceHandler(filter, staticFiles)
                                 .addWelcomeFiles("index.html")
                 )
@@ -232,14 +232,14 @@ public class UndertowServer implements Server {
         int prefixWidth = 0;
 
         for (StaticFiles s : staticFiles) {
-            String path = s.path().startsWith("/") ? s.path() : "/" + s.path();
+            String path = s.getPath().startsWith("/") ? s.getPath() : "/" + s.getPath();
 
             if (path.length() > pathWidth) {
                 pathWidth = path.length();
             }
 
-            if (s.prefix().length() > prefixWidth) {
-                prefixWidth = s.prefix().length();
+            if (s.getPrefix().length() > prefixWidth) {
+                prefixWidth = s.getPrefix().length();
             }
         }
 
@@ -252,9 +252,9 @@ public class UndertowServer implements Server {
                                 + "s -> %-"
                                 + finalPrefixWidth
                                 + "s (%s)",
-                        s.path().startsWith("/") ? s.path() : "/" + s.path(),
-                        s.prefix(),
-                        s.methodAccess().level()
+                        s.getPath().startsWith("/") ? s.getPath() : "/" + s.getPath(),
+                        s.getPrefix(),
+                        s.getMethodAccess().getLevel()
                 ))
                 .reduce("", (a, b) -> a + "\n\t" + b);
 

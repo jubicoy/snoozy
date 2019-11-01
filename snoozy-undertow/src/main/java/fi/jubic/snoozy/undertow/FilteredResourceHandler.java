@@ -19,8 +19,8 @@ class FilteredResourceHandler extends ResourceHandler {
     ) {
         super(
                 new ClassPathResourceManager(
-                        staticFiles.classLoader(),
-                        staticFiles.prefix()
+                        staticFiles.getClassLoader(),
+                        staticFiles.getPrefix()
                 )
         );
         this.filter = filter;
@@ -42,12 +42,12 @@ class FilteredResourceHandler extends ResourceHandler {
         }
 
         if (
-                staticFiles.rewrite() != null
+                staticFiles.getRewrite() != null
                 && httpServerExchange.getRelativePath()
-                        .matches(staticFiles.rewrite().from())
+                        .matches(staticFiles.getRewrite().getFrom())
         )
         {
-            httpServerExchange.setRelativePath(staticFiles.rewrite().to());
+            httpServerExchange.setRelativePath(staticFiles.getRewrite().getTo());
         }
 
         super.handleRequest(httpServerExchange);

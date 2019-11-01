@@ -177,7 +177,7 @@ public class StaticFiles {
                     Objects.requireNonNull(prefix),
                     Objects.requireNonNull(classLoader),
                     Objects.requireNonNull(methodAccess),
-                    Objects.requireNonNull(rewrite)
+                    rewrite
             );
         }
     }

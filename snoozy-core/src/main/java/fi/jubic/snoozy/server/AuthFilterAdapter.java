@@ -37,8 +37,8 @@ public class AuthFilterAdapter<P extends UserPrincipal>
             ContextPusher contextPusher
     ) {
         this.authentication = authentication;
-        this.authenticator = authentication.authenticator();
-        this.authorizer = authentication.authorizer();
+        this.authenticator = authentication.getAuthenticator();
+        this.authorizer = authentication.getAuthorizer();
         this.resourceMethodGetter = resourceMethodGetter;
         this.contextPusher = contextPusher;
 
@@ -71,11 +71,11 @@ public class AuthFilterAdapter<P extends UserPrincipal>
             methodAccessCache.put(method, methodAccess);
         }
 
-        Optional<P> principal = authentication.tokenParser()
+        Optional<P> principal = authentication.getTokenParser()
                 .parse(servletRequest)
                 .flatMap(authenticator::authenticate);
 
-        principal.ifPresent(p -> contextPusher.push(authentication.userClass(), p));
+        principal.ifPresent(p -> contextPusher.push(authentication.getUserClass(), p));
 
         if (!isAuthorized(methodAccess, principal)) {
             authentication.getUnauthorized().accept(containerRequestContext);
@@ -84,30 +84,30 @@ public class AuthFilterAdapter<P extends UserPrincipal>
 
     @Override
     public boolean filter(StaticFiles staticFiles, HttpServletRequest request) {
-        Optional<P> principal = authentication.tokenParser()
+        Optional<P> principal = authentication.getTokenParser()
                 .parse(request)
                 .flatMap(authenticator::authenticate);
 
-        return isAuthorized(staticFiles.methodAccess(), principal);
+        return isAuthorized(staticFiles.getMethodAccess(), principal);
     }
 
     private boolean isAuthorized(MethodAccess methodAccess, Optional<P> principal) {
-        if (methodAccess.level().equals(MethodAccess.Level.DenyAll)) {
+        if (methodAccess.getLevel().equals(MethodAccess.Level.DenyAll)) {
             return false;
         }
 
-        if (methodAccess.level().equals(MethodAccess.Level.Anonymous)) {
+        if (methodAccess.getLevel().equals(MethodAccess.Level.Anonymous)) {
             return true;
         }
 
         if (!principal.isPresent()) return false;
 
-        if (methodAccess.level().equals(MethodAccess.Level.Authenticated)) {
+        if (methodAccess.getLevel().equals(MethodAccess.Level.Authenticated)) {
             return true;
         }
 
-        if (methodAccess.level().equals(MethodAccess.Level.Roles)) {
-            return methodAccess.values()
+        if (methodAccess.getLevel().equals(MethodAccess.Level.Roles)) {
+            return methodAccess.getValues()
                     .stream()
                     .anyMatch(role -> authorizer.authorize(principal.get(), role));
         }
