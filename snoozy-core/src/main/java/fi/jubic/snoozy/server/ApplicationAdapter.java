@@ -29,6 +29,10 @@ public class ApplicationAdapter extends javax.ws.rs.core.Application {
         filters.add(authFilterAdapter);
     }
 
+    public Class<?> getApplicationClass() {
+        return application.getClass();
+    }
+
     @Override
     public Set<Object> getSingletons() {
         return Stream.concat(

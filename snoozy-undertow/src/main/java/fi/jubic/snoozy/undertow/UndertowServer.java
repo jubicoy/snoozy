@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.MultipartConfigElement;
 import javax.ws.rs.ApplicationPath;
-import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -35,13 +34,8 @@ public class UndertowServer implements Server {
             Application application,
             ServerConfigurator serverConfigurator
     ) {
-        Optional<ApplicationAdapter> adapter = getApplicationAdapter(application);
+        ApplicationAdapter applicationAdapter = new ApplicationAdapter(application);
 
-        if (!adapter.isPresent()) {
-            return;
-        }
-
-        ApplicationAdapter applicationAdapter = adapter.get();
         server = startServer(applicationAdapter, serverConfigurator);
 
         addStaticFiles(
@@ -72,13 +66,8 @@ public class UndertowServer implements Server {
                 application.getClass().getPackage().getImplementationVersion()
         );
 
-        Optional<? extends ApplicationAdapter> adapter = getApplicationAdapter(application, authFilterAdapter);
+        ApplicationAdapter applicationAdapter = new ApplicationAdapter(application, authFilterAdapter);
 
-        if (!adapter.isPresent()) {
-            return;
-        }
-
-        ApplicationAdapter applicationAdapter = adapter.get();
         server = startServer(
                 applicationAdapter,
                 serverConfigurator
@@ -100,7 +89,7 @@ public class UndertowServer implements Server {
 
 
     private UndertowJaxrsServer startServer(
-            javax.ws.rs.core.Application application,
+            ApplicationAdapter applicationAdapter,
             ServerConfigurator serverConfigurator
     ) {
         ServerConfiguration configuration = serverConfigurator
@@ -114,7 +103,7 @@ public class UndertowServer implements Server {
 
         String path = "/"
                 + Optional.ofNullable(
-                        application.getClass().getAnnotation(ApplicationPath.class)
+                        applicationAdapter.getApplicationClass().getAnnotation(ApplicationPath.class)
                 )
                 .map(ApplicationPath::value)
                 .orElse("")
@@ -125,9 +114,9 @@ public class UndertowServer implements Server {
         MultipartConfig multipartConfig = configuration.getMultipartConfig();
 
         ResteasyDeployment deployment = new ResteasyDeploymentImpl();
-        deployment.setApplication(application);
+        deployment.setApplication(applicationAdapter);
         DeploymentInfo deploymentInfo = undertowJaxrsServer.undertowDeployment(deployment);
-        deploymentInfo.setClassLoader(application.getClass().getClassLoader());
+        deploymentInfo.setClassLoader(applicationAdapter.getClass().getClassLoader());
         deploymentInfo.setContextPath(path);
         deploymentInfo.setDeploymentName("Snoozy" + path);
         deploymentInfo.setDefaultMultipartConfig(
@@ -147,60 +136,6 @@ public class UndertowServer implements Server {
                                         configuration.getHostname()
                                 )
                 );
-    }
-
-    private Class<?> getApplicationAdapterClass(Application application) {
-        if (application.getClass().isAnnotationPresent(ApplicationPath.class)) {
-            try {
-                return Class.forName(application.getClass().getName() + "Adapter");
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return ApplicationAdapter.class;
-    }
-
-    private Optional<ApplicationAdapter> getApplicationAdapter(
-            Application application
-    ) {
-        Class<?> adapter = getApplicationAdapterClass(application);
-
-        try {
-            Constructor<?> ctor = adapter.getConstructor(Application.class);
-
-            return Optional.of(
-                    (ApplicationAdapter) ctor.newInstance(application)
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return Optional.empty();
-    }
-
-    private <P extends UserPrincipal> Optional<? extends ApplicationAdapter> getApplicationAdapter(
-            AuthenticatedApplication<P> application,
-            AuthFilterAdapter authFilterAdapter
-    ) {
-        Class<?> adapter = getApplicationAdapterClass(application);
-        try {
-            Constructor<?> ctor = adapter.getConstructor(
-                    AuthenticatedApplication.class,
-                    AuthFilterAdapter.class
-            );
-
-            return Optional.of(
-                    (ApplicationAdapter) ctor.newInstance(
-                            application,
-                            authFilterAdapter
-                    )
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return Optional.empty();
     }
 
     private void addStaticFiles(
