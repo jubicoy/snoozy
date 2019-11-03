@@ -1,7 +1,5 @@
 package fi.jubic.snoozy.example;
 
-import fi.jubic.easyschedule.StartupScheduler;
-import fi.jubic.easyschedule.TaskScheduler;
 import fi.jubic.easyschedule.dbunit.DbUnitTask;
 import fi.jubic.easyschedule.liquibase.LiquibaseTask;
 import fi.jubic.snoozy.MethodAccess;
@@ -15,6 +13,7 @@ import fi.jubic.snoozy.example.resources.AuthenticationResource;
 import fi.jubic.snoozy.example.resources.HelloWorldResource;
 import fi.jubic.snoozy.filters.UrlRewrite;
 import fi.jubic.snoozy.undertow.UndertowServer;
+import picocli.CommandLine;
 
 import javax.inject.Inject;
 import javax.ws.rs.ApplicationPath;
@@ -85,23 +84,31 @@ public class ExampleApplication extends AuthenticatedApplication<User> {
                 .getApplication();
         Configuration config = application.configuration;
 
-        TaskScheduler scheduler = new StartupScheduler()
-                .registerStartupTask(
-                        new LiquibaseTask(
-                                config.getJooqConfiguration(),
-                                "migrations.xml"
+        new CommandLine(
+                CommandLine.Model.CommandSpec
+                        .wrapWithoutInspection(
+                                (Runnable)() -> new UndertowServer().start(application, config)
                         )
-                )
-                .registerStartupTask(
-                        new DbUnitTask(
-                                config.getJooqConfiguration(),
-                                ExampleApplication.class.getClassLoader(),
-                                "dataset.xml",
-                                "dataset.dtd"
+                        .addSubcommand(
+                                "migrate",
+                                CommandLine.Model.CommandSpec.wrapWithoutInspection(
+                                        new LiquibaseTask(
+                                                config.getJooqConfiguration(),
+                                                "migrations.xml"
+                                        )
+                                )
                         )
-                );
-        scheduler.start();
-
-        new UndertowServer().start(application, config);
+                        .addSubcommand(
+                                "populate",
+                                CommandLine.Model.CommandSpec.wrapWithoutInspection(
+                                        new DbUnitTask(
+                                                config.getJooqConfiguration(),
+                                                ExampleApplication.class.getClassLoader(),
+                                                "dataset.xml",
+                                                "dataset.dtd"
+                                        )
+                                )
+                        )
+        ).execute(args);
     }
 }

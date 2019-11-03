@@ -7,7 +7,7 @@
     <parent>
         <groupId>fi.jubic</groupId>
         <artifactId>snoozy-starter-jooq</artifactId>
-        <version>0.4.0</version>
+        <version>0.4.2</version>
     </parent>
 
     <groupId>fi.jubic.examples</groupId>
@@ -21,6 +21,14 @@
             <url>https://jcenter.bintray.com/</url>
         </repository>
     </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>info.picocli</groupId>
+            <artifactId>picocli</artifactId>
+            <version>4.0.4</version>
+        </dependency>
+    </dependencies>
 
     <properties>
         <snoozy.mainClass>fi.jubic.snoozy.example.ExampleApplication</snoozy.mainClass>
