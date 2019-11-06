@@ -2,10 +2,11 @@ package fi.jubic.snoozy.server;
 
 import fi.jubic.snoozy.MethodAccess;
 
+import java.lang.reflect.Method;
+
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import java.lang.reflect.Method;
 
 class MethodAccessParser {
     private final boolean permitAllAnonymous;

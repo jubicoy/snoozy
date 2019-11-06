@@ -13,6 +13,7 @@ public abstract class Application extends javax.ws.rs.core.Application {
     public Set<StaticFiles> getStaticFiles() {
         return Collections.emptySet();
     }
+
     public Set<WebSocketHandler> getWebSocketHandlers() {
         return Collections.emptySet();
     }

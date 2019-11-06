@@ -42,6 +42,9 @@ public class MethodAccess {
         return values;
     }
 
+    /**
+     * Creates an access rule denying all access to the resource.
+     */
     public static MethodAccess denyAll() {
         return new MethodAccess(
                 Level.DenyAll,
@@ -49,6 +52,9 @@ public class MethodAccess {
         );
     }
 
+    /**
+     * Creates an access rule allowing all access, including anonymous access.
+     */
     public static MethodAccess anonymous() {
         return new MethodAccess(
                 Level.Anonymous,
@@ -56,6 +62,9 @@ public class MethodAccess {
         );
     }
 
+    /**
+     * Creates an access rule requiring an authenticated user.
+     */
     public static MethodAccess authenticated() {
         return new MethodAccess(
                 Level.Authenticated,
@@ -63,6 +72,10 @@ public class MethodAccess {
         );
     }
 
+    /**
+     * Creates an access rule requiring a principal, authenticated or anonymous,
+     * that maps to any of the given roles.
+     */
     public static MethodAccess roles(String... roles) {
         return new MethodAccess(
                 Level.Roles,

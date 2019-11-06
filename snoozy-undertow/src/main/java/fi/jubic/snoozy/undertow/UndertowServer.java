@@ -1,14 +1,27 @@
 package fi.jubic.snoozy.undertow;
 
-import fi.jubic.snoozy.*;
+import fi.jubic.snoozy.Application;
+import fi.jubic.snoozy.MultipartConfig;
+import fi.jubic.snoozy.Server;
+import fi.jubic.snoozy.ServerConfiguration;
+import fi.jubic.snoozy.ServerConfigurator;
+import fi.jubic.snoozy.StaticFiles;
 import fi.jubic.snoozy.auth.AuthenticatedApplication;
 import fi.jubic.snoozy.auth.UserPrincipal;
 import fi.jubic.snoozy.filters.StaticFilesFilter;
 import fi.jubic.snoozy.server.ApplicationAdapter;
 import fi.jubic.snoozy.server.AuthFilterAdapter;
 import fi.jubic.snoozy.server.RegisteredResource;
+
 import io.undertow.Undertow;
 import io.undertow.servlet.api.DeploymentInfo;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import javax.servlet.MultipartConfigElement;
+import javax.ws.rs.ApplicationPath;
+
 import org.jboss.resteasy.core.ResourceMethodInvoker;
 import org.jboss.resteasy.core.ResteasyContext;
 import org.jboss.resteasy.core.ResteasyDeploymentImpl;
@@ -16,12 +29,6 @@ import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
 import org.jboss.resteasy.spi.ResteasyDeployment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.servlet.MultipartConfigElement;
-import javax.ws.rs.ApplicationPath;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 public class UndertowServer implements Server {
     private static final Logger logger = LoggerFactory
@@ -66,7 +73,10 @@ public class UndertowServer implements Server {
                 application.getClass().getPackage().getImplementationVersion()
         );
 
-        ApplicationAdapter applicationAdapter = new ApplicationAdapter(application, authFilterAdapter);
+        ApplicationAdapter applicationAdapter = new ApplicationAdapter(
+                application,
+                authFilterAdapter
+        );
 
         server = startServer(
                 applicationAdapter,
@@ -103,7 +113,8 @@ public class UndertowServer implements Server {
 
         String path = "/"
                 + Optional.ofNullable(
-                        applicationAdapter.getApplicationClass().getAnnotation(ApplicationPath.class)
+                        applicationAdapter.getApplicationClass()
+                                .getAnnotation(ApplicationPath.class)
                 )
                 .map(ApplicationPath::value)
                 .orElse("")
@@ -111,14 +122,14 @@ public class UndertowServer implements Server {
 
         UndertowJaxrsServer undertowJaxrsServer = new UndertowJaxrsServer();
 
-        MultipartConfig multipartConfig = configuration.getMultipartConfig();
-
         ResteasyDeployment deployment = new ResteasyDeploymentImpl();
         deployment.setApplication(applicationAdapter);
         DeploymentInfo deploymentInfo = undertowJaxrsServer.undertowDeployment(deployment);
         deploymentInfo.setClassLoader(applicationAdapter.getClass().getClassLoader());
         deploymentInfo.setContextPath(path);
         deploymentInfo.setDeploymentName("Snoozy" + path);
+
+        MultipartConfig multipartConfig = configuration.getMultipartConfig();
         deploymentInfo.setDefaultMultipartConfig(
                 new MultipartConfigElement(
                         multipartConfig.getCacheLocation(),

@@ -8,14 +8,15 @@ import fi.jubic.snoozy.auth.Authorizer;
 import fi.jubic.snoozy.auth.UserPrincipal;
 import fi.jubic.snoozy.filters.StaticFilesFilter;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.core.Context;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.Context;
 
 public class AuthFilterAdapter<P extends UserPrincipal>
         implements ContainerRequestFilter, StaticFilesFilter {
@@ -46,6 +47,11 @@ public class AuthFilterAdapter<P extends UserPrincipal>
         this.methodAccessCache = new HashMap<>();
     }
 
+    /**
+     * Creator method for building an auth filter adapter.
+     *
+     * @param <P> User principal type
+     */
     public static <P extends UserPrincipal> AuthFilterAdapter<P> of(
             Authentication<P> authentication,
             ResourceMethodGetter resourceMethodGetter,

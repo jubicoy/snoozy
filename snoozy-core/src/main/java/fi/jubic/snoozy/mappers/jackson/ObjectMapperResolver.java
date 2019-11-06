@@ -9,6 +9,9 @@ import javax.ws.rs.ext.ContextResolver;
 public class ObjectMapperResolver implements ContextResolver<ObjectMapper> {
     private final ObjectMapper objectMapper;
 
+    /**
+     * Construct a resolver for the default {@link ObjectMapper}.
+     */
     public ObjectMapperResolver() {
         this.objectMapper = new ObjectMapper();
         this.objectMapper.registerModule(new JavaTimeModule());
@@ -16,7 +19,7 @@ public class ObjectMapperResolver implements ContextResolver<ObjectMapper> {
     }
 
     @Override
-    public ObjectMapper getContext(Class<?> aClass) {
+    public ObjectMapper getContext(Class<?> clazz) {
         return objectMapper;
     }
 }

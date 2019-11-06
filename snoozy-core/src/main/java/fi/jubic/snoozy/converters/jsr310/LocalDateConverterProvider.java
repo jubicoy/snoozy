@@ -1,22 +1,23 @@
 package fi.jubic.snoozy.converters.jsr310;
 
-import javax.annotation.Nullable;
-import javax.ws.rs.ext.ParamConverter;
-import javax.ws.rs.ext.ParamConverterProvider;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import javax.annotation.Nullable;
+import javax.ws.rs.ext.ParamConverter;
+import javax.ws.rs.ext.ParamConverterProvider;
+
 public class LocalDateConverterProvider implements ParamConverterProvider {
     @Override
     public <T> ParamConverter<T> getConverter(
-            Class<T> aClass,
+            Class<T> clazz,
             Type type,
             Annotation[] annotations
     ) {
-        if (!LocalDate.class.equals(aClass)) return null;
+        if (!LocalDate.class.equals(clazz)) return null;
 
         boolean isNullable = Stream.of(annotations)
                 .anyMatch(
@@ -30,9 +31,9 @@ public class LocalDateConverterProvider implements ParamConverterProvider {
             @Override
             public T fromString(@Nullable String s) {
                 if (s == null && isNullable) {
-                    return aClass.cast(null);
+                    return clazz.cast(null);
                 }
-                return aClass.cast(
+                return clazz.cast(
                         ParseUtil.parseLocalDate(s)
                 );
             }

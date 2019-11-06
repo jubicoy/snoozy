@@ -9,6 +9,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class Converters {
+    /**
+     * Provides built-in parameter converters.
+     */
     public static Set<Object> builtins() {
         return Stream.of(
                 new LocalDateConverterProvider(),

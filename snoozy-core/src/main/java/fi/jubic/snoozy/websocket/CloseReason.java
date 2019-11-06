@@ -25,9 +25,11 @@ public class CloseReason {
     }
 
     /**
-     * Close event status codes
+     * Close event status codes.
      *
-     * https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
+     * <a href="https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent">
+     *     https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
+     * </a>
      */
     public static class StatusCode {
         /**

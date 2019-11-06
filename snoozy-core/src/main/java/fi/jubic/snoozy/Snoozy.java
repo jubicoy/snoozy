@@ -9,6 +9,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class Snoozy {
+    /**
+     * Provide built-in extensions.
+     *
+     * <ul>
+     *     <li>Parameter converters</li>
+     *     <li>Mappers</li>
+     * </ul>
+     */
     public static Set<Object> builtins() {
         return Stream.concat(
                 Converters.builtins().stream(),
@@ -16,6 +24,17 @@ public final class Snoozy {
         ).collect(Collectors.toSet());
     }
 
+    /**
+     * <p>
+     *     {@link StaticFiles} definition for the default frontend server from
+     *     static directory under resources.
+     * </p>
+     *
+     * <ul>
+     *     <li>api, assets, images, fonts and css directories are server normally</li>
+     *     <li>Requests for html files are rewritten to index.html</li>
+     * </ul>
+     */
     public static StaticFiles defaultFrontend() {
         UrlRewrite rewrite = UrlRewrite.of(
                 "^\\/(?!(((api|assets|images|fonts|css).*)|.*\\.(html|js)$)).*$",

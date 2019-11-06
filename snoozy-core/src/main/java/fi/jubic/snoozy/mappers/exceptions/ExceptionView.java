@@ -18,6 +18,7 @@ public class ExceptionView {
     public int getCode() {
         return code;
     }
+
     @JsonProperty
     public String getMessage() {
         return message;

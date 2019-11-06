@@ -10,8 +10,8 @@ public interface Server {
     );
 
     <P extends UserPrincipal> void start(
-        AuthenticatedApplication<P> application,
-        ServerConfigurator serverConfigurator
+            AuthenticatedApplication<P> application,
+            ServerConfigurator serverConfigurator
     );
 
     void stop();

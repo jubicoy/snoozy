@@ -4,10 +4,16 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface WebSocketHandler {
     void onConnect(HttpServletRequest request, Session session);
+
     void onMessage(Session session, String message);
+
     void onClose(Session session, CloseReason closeReason);
+
     void onError(Session session, Throwable throwable);
 
+    /**
+     * Construct a no-op WebSocket handler.
+     */
     static WebSocketHandler defaultHandler() {
         return new WebSocketHandler() {
             @Override

@@ -1,16 +1,19 @@
 package fi.jubic.snoozy;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.container.*;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.ContainerResponseContext;
+import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class LoggingFilter implements ContainerRequestFilter, ContainerResponseFilter {
     private static final Logger logger = LoggerFactory.getLogger(
-        LoggingFilter.class
+            LoggingFilter.class
     );
     private static final String START_TIME = "start-time";
 
@@ -32,7 +35,8 @@ public class LoggingFilter implements ContainerRequestFilter, ContainerResponseF
 
         try {
             startTime = (long) containerRequestContext.getProperty(START_TIME);
-        } catch (NullPointerException ignored) {
+        }
+        catch (NullPointerException ignored) {
 
         }
 

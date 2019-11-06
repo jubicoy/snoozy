@@ -2,10 +2,10 @@ package fi.jubic.snoozy.serversuite;
 
 import fi.jubic.snoozy.Application;
 import fi.jubic.snoozy.Server;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+import java.util.Objects;
+import java.util.Set;
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.GET;
@@ -13,9 +13,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Set;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import org.junit.jupiter.api.Test;
 
 import static fi.jubic.snoozy.test.TestUtil.withServer;
 import static org.junit.jupiter.api.Assertions.assertEquals;

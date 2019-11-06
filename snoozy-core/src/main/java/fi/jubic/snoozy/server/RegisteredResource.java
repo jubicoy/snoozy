@@ -1,10 +1,17 @@
 package fi.jubic.snoozy.server;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.UriBuilder;
 import java.lang.reflect.Method;
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.core.UriBuilder;
 
 public class RegisteredResource {
     private final String method;
@@ -38,6 +45,9 @@ public class RegisteredResource {
         return String.format("%-6s %s (%s)", method, path, resource);
     }
 
+    /**
+     * Parse resource method definition from an annotated Method.
+     */
     public static Optional<RegisteredResource> of(
             String prefix,
             Method method
@@ -67,11 +77,14 @@ public class RegisteredResource {
 
         if (method.isAnnotationPresent(POST.class)) {
             httpMethod = "POST";
-        } else if (method.isAnnotationPresent(PUT.class)) {
+        }
+        else if (method.isAnnotationPresent(PUT.class)) {
             httpMethod = "PUT";
-        } else if (method.isAnnotationPresent(PATCH.class)) {
+        }
+        else if (method.isAnnotationPresent(PATCH.class)) {
             httpMethod = "PATCH";
-        } else if (method.isAnnotationPresent(DELETE.class)) {
+        }
+        else if (method.isAnnotationPresent(DELETE.class)) {
             httpMethod = "DELETE";
         }
 

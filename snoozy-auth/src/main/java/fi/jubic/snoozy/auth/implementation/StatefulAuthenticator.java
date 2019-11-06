@@ -3,13 +3,13 @@ package fi.jubic.snoozy.auth.implementation;
 import fi.jubic.snoozy.auth.Authenticator;
 import fi.jubic.snoozy.auth.UserPrincipal;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 @Singleton
 public class StatefulAuthenticator<P extends UserPrincipal> implements Authenticator<P> {
@@ -43,12 +43,18 @@ public class StatefulAuthenticator<P extends UserPrincipal> implements Authentic
         return Optional.of(t.getUser());
     }
 
+    /**
+     * Add a token to the token collection. Filters expired tokens.
+     */
     public void addToken(Token<P> token) {
         filterExpired();
 
         tokens.add(token);
     }
 
+    /**
+     * Revoke a token. Filters expired tokens.
+     */
     public void revokeToken(Token<P> token) {
         filterExpired();
 

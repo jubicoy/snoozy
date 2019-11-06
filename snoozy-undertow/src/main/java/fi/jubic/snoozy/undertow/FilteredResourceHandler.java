@@ -45,8 +45,7 @@ class FilteredResourceHandler extends ResourceHandler {
                 staticFiles.getRewrite() != null
                 && httpServerExchange.getRelativePath()
                         .matches(staticFiles.getRewrite().getFrom())
-        )
-        {
+        ) {
             httpServerExchange.setRelativePath(staticFiles.getRewrite().getTo());
         }
 

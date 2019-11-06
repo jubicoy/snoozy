@@ -18,10 +18,16 @@ public class Token<P extends UserPrincipal> {
         this(user, UUID.randomUUID().toString());
     }
 
+    /**
+     * Construct a token that will expire in one hour.
+     */
     public Token(P user, String token) {
         this(user, token, LocalDateTime.now().plusHours(1));
     }
 
+    /**
+     * Construct a token with an explicit expiration.
+     */
     public Token(P user, String token, LocalDateTime expires) {
         this.user = user;
         this.token = token;

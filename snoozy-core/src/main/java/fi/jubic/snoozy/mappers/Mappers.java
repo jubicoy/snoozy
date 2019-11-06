@@ -8,6 +8,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class Mappers {
+    /**
+     * Provides built-in mappers.
+     *
+     * <ul>
+     *     <li>Request body mappers</li>
+     *     <li>Exception mappers</li>
+     * </ul>
+     */
     public static Set<Object> builtins() {
         return Stream.of(
                 new WebApplicationExceptionMapper(),

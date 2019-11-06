@@ -1,8 +1,8 @@
 package fi.jubic.snoozy.test;
 
 import fi.jubic.snoozy.Application;
-import fi.jubic.snoozy.Server;
 import fi.jubic.snoozy.DefaultServerConfiguration;
+import fi.jubic.snoozy.Server;
 import fi.jubic.snoozy.ServerConfigurator;
 import fi.jubic.snoozy.auth.AuthenticatedApplication;
 import fi.jubic.snoozy.auth.UserPrincipal;

@@ -2,12 +2,14 @@ package fi.jubic.snoozy.serversuite;
 
 import fi.jubic.snoozy.Application;
 import fi.jubic.snoozy.Server;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import org.junit.jupiter.api.Test;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.annotation.security.PermitAll;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,13 +18,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
+
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import org.junit.jupiter.api.Test;
 
 import static fi.jubic.snoozy.test.TestUtil.withServer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,8 +37,8 @@ public interface MultipartTest<T extends Server> extends BaseTest<T> {
                 (hostname, port) -> {
                     OkHttpClient client = new OkHttpClient();
 
-                    String fileContent = "date;title;description\n" +
-                            "2019-11-01;Support Multipart;Add multipart support to Snoozy";
+                    String fileContent = "date;title;description\n"
+                            + "2019-11-01;Support Multipart;Add multipart support to Snoozy";
 
                     MultipartBody body = new MultipartBody.Builder()
                             .setType(MultipartBody.FORM)
@@ -79,9 +80,12 @@ public interface MultipartTest<T extends Server> extends BaseTest<T> {
     class MultipartResource {
         @POST
         @PermitAll
-        public String postParts(@Context HttpServletRequest request) throws IOException, ServletException {
-            return new BufferedReader(new InputStreamReader(request.getPart("file").getInputStream()))
-                    .lines().collect(Collectors.joining("\n"));
+        public String postParts(
+                @Context HttpServletRequest request
+        ) throws IOException, ServletException {
+            return new BufferedReader(
+                    new InputStreamReader(request.getPart("file").getInputStream())
+            ).lines().collect(Collectors.joining("\n"));
         }
     }
 }

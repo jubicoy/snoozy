@@ -1,7 +1,7 @@
 package fi.jubic.snoozy.auth.implementation;
 
-import fi.jubic.snoozy.auth.UserPrincipal;
 import fi.jubic.snoozy.auth.Authorizer;
+import fi.jubic.snoozy.auth.UserPrincipal;
 
 import java.util.Objects;
 
