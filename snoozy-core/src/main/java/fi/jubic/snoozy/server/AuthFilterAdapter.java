@@ -12,11 +12,13 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 
 public class AuthFilterAdapter<P extends UserPrincipal>
         implements ContainerRequestFilter, StaticFilesFilter {
@@ -84,7 +86,7 @@ public class AuthFilterAdapter<P extends UserPrincipal>
         principal.ifPresent(p -> contextPusher.push(authentication.getUserClass(), p));
 
         if (!isAuthorized(methodAccess, principal)) {
-            authentication.getUnauthorized().accept(containerRequestContext);
+            containerRequestContext.abortWith(authentication.getUnauthorized().get());
         }
     }
 
@@ -95,6 +97,11 @@ public class AuthFilterAdapter<P extends UserPrincipal>
                 .flatMap(authenticator::authenticate);
 
         return isAuthorized(staticFiles.getMethodAccess(), principal);
+    }
+
+    @Override
+    public Supplier<Response> getResponseSupplier() {
+        return authentication.getUnauthorized();
     }
 
     private boolean isAuthorized(MethodAccess methodAccess, Optional<P> principal) {

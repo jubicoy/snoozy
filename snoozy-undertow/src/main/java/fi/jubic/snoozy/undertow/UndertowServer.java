@@ -19,8 +19,11 @@ import io.undertow.servlet.api.DeploymentInfo;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 import javax.servlet.MultipartConfigElement;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.core.ResourceMethodInvoker;
 import org.jboss.resteasy.core.ResteasyContext;
@@ -48,7 +51,19 @@ public class UndertowServer implements Server {
         addStaticFiles(
                 server,
                 application.getStaticFiles(),
-                (staticFiles, request) -> true // Allow all filter
+                // Allow all filter
+                new StaticFilesFilter() {
+                    @Override
+                    public boolean filter(StaticFiles staticFiles, HttpServletRequest request) {
+                        return true;
+                    }
+
+                    @Override
+                    public Supplier<Response> getResponseSupplier() {
+                        return () -> Response.status(Response.Status.UNAUTHORIZED)
+                                .build();
+                    }
+                }
         );
 
         logResources(applicationAdapter.getRegisteredResources());

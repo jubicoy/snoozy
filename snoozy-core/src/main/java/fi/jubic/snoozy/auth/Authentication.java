@@ -1,8 +1,6 @@
 package fi.jubic.snoozy.auth;
 
-import java.util.function.Consumer;
-
-import javax.ws.rs.container.ContainerRequestContext;
+import java.util.function.Supplier;
 import javax.ws.rs.core.Response;
 
 public class Authentication<P extends UserPrincipal> {
@@ -10,14 +8,14 @@ public class Authentication<P extends UserPrincipal> {
     private final Authorizer<P> authorizer;
     private final TokenParser tokenParser;
     private final Class<P> userClass;
-    private final Consumer<ContainerRequestContext> unauthorized;
+    private final Supplier<Response> unauthorized;
 
     private Authentication(
             Authenticator<P> authenticator,
             Authorizer<P> authorizer,
             TokenParser tokenParser,
             Class<P> userClass,
-            Consumer<ContainerRequestContext> unauthorized
+            Supplier<Response> unauthorized
     ) {
         this.authenticator = authenticator;
         this.authorizer = authorizer;
@@ -25,7 +23,6 @@ public class Authentication<P extends UserPrincipal> {
         this.userClass = userClass;
         this.unauthorized = unauthorized;
     }
-
 
     @Deprecated
     public Authenticator<P> authenticator() {
@@ -63,17 +60,15 @@ public class Authentication<P extends UserPrincipal> {
         return userClass;
     }
 
-    public Consumer<ContainerRequestContext> getUnauthorized() {
+    public Supplier<Response> getUnauthorized() {
         return unauthorized;
     }
 
     public static <P extends UserPrincipal> Builder<P> builder() {
         return new Builder<P>()
                 .setUnauthorized(
-                        containerRequestContext -> containerRequestContext.abortWith(
-                                Response.status(Response.Status.UNAUTHORIZED)
-                                        .build()
-                        )
+                        () -> Response.status(Response.Status.UNAUTHORIZED)
+                                .build()
                 );
     }
 
@@ -82,7 +77,7 @@ public class Authentication<P extends UserPrincipal> {
         private final Authorizer<P> authorizer;
         private final TokenParser tokenParser;
         private final Class<P> userClass;
-        private final Consumer<ContainerRequestContext> unauthorized;
+        private final Supplier<Response> unauthorized;
 
         private Builder() {
             this(null, null, null, null, null);
@@ -93,7 +88,7 @@ public class Authentication<P extends UserPrincipal> {
                 Authorizer<P> authorizer,
                 TokenParser tokenParser,
                 Class<P> userClass,
-                Consumer<ContainerRequestContext> unauthorized
+                Supplier<Response> unauthorized
         ) {
             this.authenticator = authenticator;
             this.authorizer = authorizer;
@@ -142,7 +137,7 @@ public class Authentication<P extends UserPrincipal> {
             );
         }
 
-        public Builder<P> setUnauthorized(Consumer<ContainerRequestContext> unauthorized) {
+        public Builder<P> setUnauthorized(Supplier<Response> unauthorized) {
             return new Builder<>(
                     authenticator,
                     authorizer,
