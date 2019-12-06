@@ -1,12 +1,12 @@
 package fi.jubic.snoozy.undertow;
 
 import fi.jubic.snoozy.Application;
+import fi.jubic.snoozy.AuthenticatedApplication;
 import fi.jubic.snoozy.MultipartConfig;
 import fi.jubic.snoozy.Server;
 import fi.jubic.snoozy.ServerConfiguration;
 import fi.jubic.snoozy.ServerConfigurator;
 import fi.jubic.snoozy.StaticFiles;
-import fi.jubic.snoozy.auth.AuthenticatedApplication;
 import fi.jubic.snoozy.auth.UserPrincipal;
 import fi.jubic.snoozy.filters.StaticFilesFilter;
 import fi.jubic.snoozy.server.ApplicationAdapter;

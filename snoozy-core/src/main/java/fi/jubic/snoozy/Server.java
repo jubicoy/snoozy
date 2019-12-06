@@ -1,6 +1,5 @@
 package fi.jubic.snoozy;
 
-import fi.jubic.snoozy.auth.AuthenticatedApplication;
 import fi.jubic.snoozy.auth.UserPrincipal;
 
 public interface Server {

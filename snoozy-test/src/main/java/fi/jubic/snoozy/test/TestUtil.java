@@ -5,7 +5,7 @@ import fi.jubic.snoozy.Application;
 import fi.jubic.snoozy.DefaultServerConfiguration;
 import fi.jubic.snoozy.Server;
 import fi.jubic.snoozy.ServerConfigurator;
-import fi.jubic.snoozy.auth.AuthenticatedApplication;
+import fi.jubic.snoozy.AuthenticatedApplication;
 import fi.jubic.snoozy.auth.UserPrincipal;
 
 import java.net.ServerSocket;

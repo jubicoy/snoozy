@@ -1,6 +1,6 @@
 package fi.jubic.snoozy.test;
 
-import fi.jubic.snoozy.auth.AuthenticatedApplication;
+import fi.jubic.snoozy.AuthenticatedApplication;
 import fi.jubic.snoozy.auth.UserPrincipal;
 import fi.jubic.snoozy.logging.LoggingFilter;
 import fi.jubic.snoozy.logging.NoopLoggingFilter;
