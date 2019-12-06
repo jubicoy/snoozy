@@ -1,9 +1,5 @@
 package fi.jubic.snoozy.server;
 
-import java.lang.reflect.Method;
-import java.util.Optional;
-import java.util.stream.Stream;
-
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PATCH;
@@ -12,6 +8,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.UriBuilder;
+import java.lang.reflect.Method;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 public class RegisteredResource {
     private final String method;

@@ -7,10 +7,11 @@ import javax.ws.rs.ext.ParamConverter;
 import java.lang.annotation.Annotation;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class InstantConverterProviderTest {
     private final InstantConverterProvider provider = new InstantConverterProvider();
@@ -22,7 +23,7 @@ class InstantConverterProviderTest {
     }
 
     @Test
-    void parseCompliantISO8601Dates() {
+    void parseCompliantIso8601Dates() {
         ParamConverter<Instant> converter = provider.getConverter(
                 Instant.class,
                 null,

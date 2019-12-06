@@ -1,7 +1,7 @@
 package fi.jubic.snoozy.auth;
 
-import java.util.function.Supplier;
 import javax.ws.rs.core.Response;
+import java.util.function.Supplier;
 
 public class Authentication<P extends UserPrincipal> {
     private final Authenticator<P> authenticator;

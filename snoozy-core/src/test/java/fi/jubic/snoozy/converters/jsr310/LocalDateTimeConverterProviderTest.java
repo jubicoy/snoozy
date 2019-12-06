@@ -9,8 +9,10 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class LocalDateTimeConverterProviderTest {
     private final LocalDateTimeConverterProvider provider = new LocalDateTimeConverterProvider();
@@ -22,7 +24,7 @@ class LocalDateTimeConverterProviderTest {
     }
 
     @Test
-    void parseCompliantISO8601Dates() {
+    void parseCompliantIso8601Dates() {
         ParamConverter<LocalDateTime> converter = provider.getConverter(
                 LocalDateTime.class,
                 null,
@@ -31,7 +33,7 @@ class LocalDateTimeConverterProviderTest {
 
         assertEquals(
                 converter.fromString("2019-01-01T12:00:00"),
-                LocalDateTime.of(2019, 1, 1, 12, 0 , 0)
+                LocalDateTime.of(2019, 1, 1, 12, 0, 0)
         );
     }
 
@@ -45,7 +47,7 @@ class LocalDateTimeConverterProviderTest {
 
         assertEquals(
                 converter.fromString("2019-01-01"),
-                LocalDateTime.of(2019, 1, 1, 0, 0 ,0)
+                LocalDateTime.of(2019, 1, 1, 0, 0,0)
         );
         assertEquals(
                 converter.fromString("2019-01-01T12:00:00"),

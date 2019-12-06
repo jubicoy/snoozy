@@ -2,8 +2,8 @@ package fi.jubic.snoozy;
 
 import fi.jubic.snoozy.filters.UrlRewrite;
 
-import java.util.Objects;
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public class StaticFiles {
     private final String path;

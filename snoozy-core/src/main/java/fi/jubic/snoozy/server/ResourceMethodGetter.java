@@ -1,7 +1,7 @@
 package fi.jubic.snoozy.server;
 
-import java.lang.reflect.Method;
 import javax.ws.rs.container.ContainerRequestContext;
+import java.lang.reflect.Method;
 
 public interface ResourceMethodGetter {
     Method getMethod(ContainerRequestContext requestContext);

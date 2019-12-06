@@ -8,5 +8,6 @@ import java.util.function.Supplier;
 
 public interface StaticFilesFilter {
     boolean filter(StaticFiles staticFiles, HttpServletRequest request);
+
     Supplier<Response> getResponseSupplier();
 }

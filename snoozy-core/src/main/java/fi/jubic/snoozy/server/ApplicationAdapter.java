@@ -1,11 +1,15 @@
 package fi.jubic.snoozy.server;
 
 import fi.jubic.snoozy.Application;
+import fi.jubic.snoozy.AuthenticatedApplication;
 import fi.jubic.snoozy.ServerConfiguration;
 import fi.jubic.snoozy.StaticFiles;
-import fi.jubic.snoozy.AuthenticatedApplication;
 import fi.jubic.snoozy.auth.UserPrincipal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ws.rs.ApplicationPath;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -13,10 +17,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.ws.rs.ApplicationPath;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Adapter class for adding built-in features to a {@link fi.jubic.snoozy.Application}.
