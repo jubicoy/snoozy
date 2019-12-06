@@ -32,7 +32,7 @@ public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplica
                         )
                 );
 
-        if (status == Response.Status.FOUND) {
+        if (status == Response.Status.FOUND && exception instanceof RedirectionException) {
             builder = builder.header("Location", ((RedirectionException) exception).getLocation());
         }
 
