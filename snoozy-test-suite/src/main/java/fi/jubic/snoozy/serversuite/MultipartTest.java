@@ -68,7 +68,7 @@ public interface MultipartTest<T extends Server> extends BaseTest<T> {
         );
     }
 
-    class MultipartApplication extends Application {
+    class MultipartApplication implements Application {
         @Override
         public Set<Object> getSingletons() {
             return Collections.singleton(new MultipartResource());

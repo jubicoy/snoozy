@@ -6,15 +6,17 @@ import java.util.Collections;
 import java.util.Set;
 
 /**
- * Extended JAX-RS {@link javax.ws.rs.core.Application} providing static files
- * and websockets.
+ * Basic application interface. Based loosely on {@link javax.ws.rs.core.Application}
+ * and {@link javax.ws.rs.core.Application#getSingletons()}.
  */
-public abstract class Application extends javax.ws.rs.core.Application {
-    public Set<StaticFiles> getStaticFiles() {
+public interface Application {
+    Set<Object> getSingletons();
+
+    default Set<StaticFiles> getStaticFiles() {
         return Collections.emptySet();
     }
 
-    public Set<WebSocketHandler> getWebSocketHandlers() {
+    default Set<WebSocketHandler> getWebSocketHandlers() {
         return Collections.emptySet();
     }
 }

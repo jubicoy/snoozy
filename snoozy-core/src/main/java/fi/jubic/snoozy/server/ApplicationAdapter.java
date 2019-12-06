@@ -81,13 +81,9 @@ public class ApplicationAdapter extends javax.ws.rs.core.Application {
             prefix = "/";
         }
 
-        return Stream.concat(
-                this.getSingletons()
-                        .stream()
-                        .map(Object::getClass),
-                application.getClasses()
-                        .stream()
-        )
+        return this.getSingletons()
+                .stream()
+                .map(Object::getClass)
                 .map(c -> Stream.of(c.getMethods())
                         .map(m -> RegisteredResource.of(
                                 prefix,

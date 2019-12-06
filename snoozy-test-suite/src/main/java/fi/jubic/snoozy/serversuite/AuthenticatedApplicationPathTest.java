@@ -199,7 +199,7 @@ public interface AuthenticatedApplicationPathTest<T extends Server> extends Base
     }
 
     @ApplicationPath("prefix")
-    class AnnotatedApplication extends AuthenticatedApplication<User> {
+    class AnnotatedApplication implements AuthenticatedApplication<User> {
         @Override
         public Set<Object> getSingletons() {
             return Collections.singleton(new ApplicationPathTest.ResourceClass());
@@ -211,7 +211,7 @@ public interface AuthenticatedApplicationPathTest<T extends Server> extends Base
         }
     }
 
-    class PlainApplication extends AuthenticatedApplication<User> {
+    class PlainApplication implements AuthenticatedApplication<User> {
         @Override
         public Set<Object> getSingletons() {
             return Collections.singleton(new ApplicationPathTest.ResourceClass());
@@ -224,7 +224,7 @@ public interface AuthenticatedApplicationPathTest<T extends Server> extends Base
     }
 
     @ApplicationPath("/prefix")
-    class LeadingSlashAnnotatedApplication extends AuthenticatedApplication<User> {
+    class LeadingSlashAnnotatedApplication implements AuthenticatedApplication<User> {
         @Override
         public Set<Object> getSingletons() {
             return Collections.singleton(new ApplicationPathTest.ResourceClass());
@@ -237,7 +237,7 @@ public interface AuthenticatedApplicationPathTest<T extends Server> extends Base
     }
 
     @ApplicationPath("/long/prefix")
-    class LongPathAnnotatedApplication extends AuthenticatedApplication<User> {
+    class LongPathAnnotatedApplication implements AuthenticatedApplication<User> {
         @Override
         public Set<Object> getSingletons() {
             return Collections.singleton(new ApplicationPathTest.ResourceClass());
