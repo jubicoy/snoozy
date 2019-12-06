@@ -3,7 +3,7 @@ package fi.jubic.snoozy.server;
 import fi.jubic.snoozy.Application;
 import fi.jubic.snoozy.ServerConfiguration;
 import fi.jubic.snoozy.StaticFiles;
-import fi.jubic.snoozy.auth.AuthenticatedApplication;
+import fi.jubic.snoozy.AuthenticatedApplication;
 import fi.jubic.snoozy.auth.UserPrincipal;
 
 import java.util.Comparator;
