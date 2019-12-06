@@ -1,6 +1,5 @@
 package fi.jubic.snoozy.converters.jsr310;
 
-import fi.jubic.snoozy.converters.jsr310.LocalDateConverterProvider;
 import org.junit.jupiter.api.Test;
 
 import javax.annotation.Nullable;
@@ -8,7 +7,10 @@ import javax.ws.rs.ext.ParamConverter;
 import java.lang.annotation.Annotation;
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 class LocalDateConverterProviderTest {
@@ -21,7 +23,7 @@ class LocalDateConverterProviderTest {
     }
 
     @Test
-    void parseCompliantISO8601Dates() {
+    void parseCompliantIso8601Dates() {
         ParamConverter<LocalDate> converter = provider.getConverter(
                 LocalDate.class,
                 null,

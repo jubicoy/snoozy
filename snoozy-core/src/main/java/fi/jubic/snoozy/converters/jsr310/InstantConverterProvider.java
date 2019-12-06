@@ -1,14 +1,13 @@
 package fi.jubic.snoozy.converters.jsr310;
 
+import javax.annotation.Nullable;
+import javax.ws.rs.ext.ParamConverter;
+import javax.ws.rs.ext.ParamConverterProvider;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.stream.Stream;
-
-import javax.annotation.Nullable;
-import javax.ws.rs.ext.ParamConverter;
-import javax.ws.rs.ext.ParamConverterProvider;
 
 public class InstantConverterProvider implements ParamConverterProvider {
     @Override

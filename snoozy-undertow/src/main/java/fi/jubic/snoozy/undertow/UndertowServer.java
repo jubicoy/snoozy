@@ -11,23 +11,21 @@ import fi.jubic.snoozy.auth.UserPrincipal;
 import fi.jubic.snoozy.filters.StaticFilesFilter;
 import fi.jubic.snoozy.server.ApplicationAdapter;
 import fi.jubic.snoozy.server.AuthFilterAdapter;
-
 import io.undertow.Undertow;
 import io.undertow.servlet.api.DeploymentInfo;
-
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Supplier;
-import javax.servlet.MultipartConfigElement;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Response;
-
 import org.jboss.resteasy.core.ResourceMethodInvoker;
 import org.jboss.resteasy.core.ResteasyContext;
 import org.jboss.resteasy.core.ResteasyDeploymentImpl;
 import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
 import org.jboss.resteasy.spi.ResteasyDeployment;
+
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Response;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Supplier;
 
 public class UndertowServer implements Server {
     private UndertowJaxrsServer server;

@@ -3,13 +3,13 @@ package fi.jubic.snoozy.auth.implementation;
 import fi.jubic.snoozy.auth.Authenticator;
 import fi.jubic.snoozy.auth.UserPrincipal;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 @Singleton
 public class StatefulAuthenticator<P extends UserPrincipal> implements Authenticator<P> {
