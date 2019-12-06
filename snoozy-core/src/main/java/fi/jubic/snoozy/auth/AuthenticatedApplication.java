@@ -2,6 +2,6 @@ package fi.jubic.snoozy.auth;
 
 import fi.jubic.snoozy.Application;
 
-public abstract class AuthenticatedApplication<P extends UserPrincipal> extends Application {
-    public abstract Authentication<P> getAuthentication();
+public interface AuthenticatedApplication<P extends UserPrincipal> extends Application {
+    Authentication<P> getAuthentication();
 }

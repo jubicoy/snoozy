@@ -175,14 +175,14 @@ public interface ApplicationPathTest<T extends Server> extends BaseTest<T> {
     }
 
     @ApplicationPath("prefix")
-    class AnnotatedApplication extends Application {
+    class AnnotatedApplication implements Application {
         @Override
         public Set<Object> getSingletons() {
             return Collections.singleton(new ResourceClass());
         }
     }
 
-    class PlainApplication extends Application {
+    class PlainApplication implements Application {
         @Override
         public Set<Object> getSingletons() {
             return Collections.singleton(new ResourceClass());
@@ -190,7 +190,7 @@ public interface ApplicationPathTest<T extends Server> extends BaseTest<T> {
     }
 
     @ApplicationPath("/prefix")
-    class LeadingSlashAnnotatedApplication extends Application {
+    class LeadingSlashAnnotatedApplication implements Application {
         @Override
         public Set<Object> getSingletons() {
             return Collections.singleton(new ResourceClass());
@@ -198,7 +198,7 @@ public interface ApplicationPathTest<T extends Server> extends BaseTest<T> {
     }
 
     @ApplicationPath("/long/prefix")
-    class LongPathAnnotatedApplication extends Application {
+    class LongPathAnnotatedApplication implements Application {
         @Override
         public Set<Object> getSingletons() {
             return Collections.singleton(new ResourceClass());
