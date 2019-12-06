@@ -43,18 +43,20 @@ public class LoggingFilter implements ContainerRequestFilter, ContainerResponseF
         long duration = System.currentTimeMillis() - startTime;
 
         logger.info(
-                "{} {} {} {} {} {}",
-                containerRequestContext.getMethod(),
-                String.format(
-                        "%s%s",
-                        request.getContextPath(),
-                        containerRequestContext.getUriInfo()
-                                .getPath()
-                ),
+                "{} {}{} {} {} {} {}ms",
+                containerRequestContext.getMethod()
+                        .replaceAll("[\r\n]",""),
+                request.getContextPath()
+                        .replaceAll("[\r\n]",""),
+                containerRequestContext.getUriInfo()
+                        .getPath()
+                        .replaceAll("[\r\n]",""),
                 containerResponseContext.getStatus(),
-                request.getRemoteHost(),
-                containerRequestContext.getHeaderString(HttpHeaders.USER_AGENT),
-                String.format("%dms", duration)
+                request.getRemoteHost()
+                        .replaceAll("[\r\n]",""),
+                containerRequestContext.getHeaderString(HttpHeaders.USER_AGENT)
+                        .replaceAll("[\r\n]",""),
+                duration
         );
     }
 }
