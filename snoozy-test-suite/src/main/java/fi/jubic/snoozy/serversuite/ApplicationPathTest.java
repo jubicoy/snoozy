@@ -1,7 +1,7 @@
 package fi.jubic.snoozy.serversuite;
 
-import fi.jubic.snoozy.Application;
 import fi.jubic.snoozy.Server;
+import fi.jubic.snoozy.test.TestApplication;
 
 import java.util.Collections;
 import java.util.Objects;
@@ -175,14 +175,14 @@ public interface ApplicationPathTest<T extends Server> extends BaseTest<T> {
     }
 
     @ApplicationPath("prefix")
-    class AnnotatedApplication implements Application {
+    class AnnotatedApplication extends TestApplication {
         @Override
         public Set<Object> getSingletons() {
             return Collections.singleton(new ResourceClass());
         }
     }
 
-    class PlainApplication implements Application {
+    class PlainApplication extends TestApplication {
         @Override
         public Set<Object> getSingletons() {
             return Collections.singleton(new ResourceClass());
@@ -190,7 +190,7 @@ public interface ApplicationPathTest<T extends Server> extends BaseTest<T> {
     }
 
     @ApplicationPath("/prefix")
-    class LeadingSlashAnnotatedApplication implements Application {
+    class LeadingSlashAnnotatedApplication extends TestApplication {
         @Override
         public Set<Object> getSingletons() {
             return Collections.singleton(new ResourceClass());
@@ -198,7 +198,7 @@ public interface ApplicationPathTest<T extends Server> extends BaseTest<T> {
     }
 
     @ApplicationPath("/long/prefix")
-    class LongPathAnnotatedApplication implements Application {
+    class LongPathAnnotatedApplication extends TestApplication {
         @Override
         public Set<Object> getSingletons() {
             return Collections.singleton(new ResourceClass());
