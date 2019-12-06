@@ -11,12 +11,10 @@ import fi.jubic.snoozy.auth.UserPrincipal;
 import fi.jubic.snoozy.filters.StaticFilesFilter;
 import fi.jubic.snoozy.server.ApplicationAdapter;
 import fi.jubic.snoozy.server.AuthFilterAdapter;
-import fi.jubic.snoozy.server.RegisteredResource;
 
 import io.undertow.Undertow;
 import io.undertow.servlet.api.DeploymentInfo;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -30,13 +28,8 @@ import org.jboss.resteasy.core.ResteasyContext;
 import org.jboss.resteasy.core.ResteasyDeploymentImpl;
 import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
 import org.jboss.resteasy.spi.ResteasyDeployment;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class UndertowServer implements Server {
-    private static final Logger logger = LoggerFactory
-            .getLogger(UndertowServer.class);
-
     private UndertowJaxrsServer server;
 
     @Override
@@ -66,7 +59,7 @@ public class UndertowServer implements Server {
                 }
         );
 
-        logResources(applicationAdapter.getRegisteredResources());
+        applicationAdapter.logStartup(serverConfigurator.getServerConfiguration());
     }
 
     @Override
@@ -80,12 +73,6 @@ public class UndertowServer implements Server {
                         "org.jboss.resteasy.core.ResourceMethodInvoker"
                 )).getMethod(),
                 ResteasyContext::pushContext
-        );
-
-        logger.info(
-                "\n\t::\n\t:: {}: v{} ::\n\t::\n",
-                application.getClass().getPackage().getImplementationTitle(),
-                application.getClass().getPackage().getImplementationVersion()
         );
 
         ApplicationAdapter applicationAdapter = new ApplicationAdapter(
@@ -104,7 +91,7 @@ public class UndertowServer implements Server {
                 authFilterAdapter
         );
 
-        logResources(applicationAdapter.getRegisteredResources());
+        applicationAdapter.logStartup(serverConfigurator.getServerConfiguration());
     }
 
     @Override
@@ -117,32 +104,27 @@ public class UndertowServer implements Server {
             ApplicationAdapter applicationAdapter,
             ServerConfigurator serverConfigurator
     ) {
-        ServerConfiguration configuration = serverConfigurator
-                .getServerConfiguration();
-
-        logger.info(
-                "Listening on {}:{}",
-                configuration.getHostname(),
-                configuration.getPort()
-        );
-
-        String path = "/"
-                + Optional.ofNullable(
-                        applicationAdapter.getApplicationClass()
-                                .getAnnotation(ApplicationPath.class)
-                )
-                .map(ApplicationPath::value)
-                .orElse("")
-                .replaceAll("^/", "");
-
         UndertowJaxrsServer undertowJaxrsServer = new UndertowJaxrsServer();
 
         ResteasyDeployment deployment = new ResteasyDeploymentImpl();
         deployment.setApplication(applicationAdapter);
         DeploymentInfo deploymentInfo = undertowJaxrsServer.undertowDeployment(deployment);
         deploymentInfo.setClassLoader(applicationAdapter.getClass().getClassLoader());
+
+        String path = "/"
+                + Optional.ofNullable(
+                applicationAdapter.getApplicationClass()
+                        .getAnnotation(ApplicationPath.class)
+        )
+                .map(ApplicationPath::value)
+                .orElse("")
+                .replaceAll("^/", "");
+
         deploymentInfo.setContextPath(path);
         deploymentInfo.setDeploymentName("Snoozy" + path);
+
+        ServerConfiguration configuration = serverConfigurator
+                .getServerConfiguration();
 
         MultipartConfig multipartConfig = configuration.getMultipartConfig();
         deploymentInfo.setDefaultMultipartConfig(
@@ -176,49 +158,5 @@ public class UndertowServer implements Server {
                                 .addWelcomeFiles("index.html")
                 )
         );
-
-        logStaticFiles(staticFilesSet);
-    }
-
-    private void logResources(List<RegisteredResource> resources) {
-        String list = resources.stream()
-                .map(RegisteredResource::toString)
-                .reduce("", (a, b) -> a + "\n\t" + b);
-
-        logger.info("The following paths were found: {}", list);
-    }
-
-    private void logStaticFiles(Set<StaticFiles> staticFiles) {
-        int pathWidth = 0;
-        int prefixWidth = 0;
-
-        for (StaticFiles s : staticFiles) {
-            String path = s.getPath().startsWith("/") ? s.getPath() : "/" + s.getPath();
-
-            if (path.length() > pathWidth) {
-                pathWidth = path.length();
-            }
-
-            if (s.getPrefix().length() > prefixWidth) {
-                prefixWidth = s.getPrefix().length();
-            }
-        }
-
-        int finalPathWidth = pathWidth;
-        int finalPrefixWidth = prefixWidth;
-        String list = staticFiles.stream()
-                .map(s -> String.format(
-                        "%-"
-                                + finalPathWidth
-                                + "s -> %-"
-                                + finalPrefixWidth
-                                + "s (%s)",
-                        s.getPath().startsWith("/") ? s.getPath() : "/" + s.getPath(),
-                        s.getPrefix(),
-                        s.getMethodAccess().getLevel()
-                ))
-                .reduce("", (a, b) -> a + "\n\t" + b);
-
-        logger.info("The following static paths were found: {}", list);
     }
 }

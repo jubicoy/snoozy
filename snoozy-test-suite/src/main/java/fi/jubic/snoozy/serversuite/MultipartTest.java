@@ -1,7 +1,7 @@
 package fi.jubic.snoozy.serversuite;
 
-import fi.jubic.snoozy.Application;
 import fi.jubic.snoozy.Server;
+import fi.jubic.snoozy.test.TestApplication;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -69,7 +69,7 @@ public interface MultipartTest<T extends Server> extends BaseTest<T> {
         );
     }
 
-    class MultipartApplication implements Application {
+    class MultipartApplication extends TestApplication {
         @Override
         public Set<Object> getSingletons() {
             return Collections.singleton(new MultipartResource());

@@ -1,9 +1,9 @@
 package fi.jubic.snoozy.serversuite;
 
 import fi.jubic.snoozy.Server;
-import fi.jubic.snoozy.auth.AuthenticatedApplication;
 import fi.jubic.snoozy.auth.Authentication;
 import fi.jubic.snoozy.auth.UserPrincipal;
+import fi.jubic.snoozy.test.TestAuthenticatedApplication;
 
 import java.util.Collections;
 import java.util.Objects;
@@ -199,7 +199,7 @@ public interface AuthenticatedApplicationPathTest<T extends Server> extends Base
     }
 
     @ApplicationPath("prefix")
-    class AnnotatedApplication implements AuthenticatedApplication<User> {
+    class AnnotatedApplication extends TestAuthenticatedApplication<User> {
         @Override
         public Set<Object> getSingletons() {
             return Collections.singleton(new ApplicationPathTest.ResourceClass());
@@ -211,7 +211,7 @@ public interface AuthenticatedApplicationPathTest<T extends Server> extends Base
         }
     }
 
-    class PlainApplication implements AuthenticatedApplication<User> {
+    class PlainApplication extends TestAuthenticatedApplication<User> {
         @Override
         public Set<Object> getSingletons() {
             return Collections.singleton(new ApplicationPathTest.ResourceClass());
@@ -224,7 +224,7 @@ public interface AuthenticatedApplicationPathTest<T extends Server> extends Base
     }
 
     @ApplicationPath("/prefix")
-    class LeadingSlashAnnotatedApplication implements AuthenticatedApplication<User> {
+    class LeadingSlashAnnotatedApplication extends TestAuthenticatedApplication<User> {
         @Override
         public Set<Object> getSingletons() {
             return Collections.singleton(new ApplicationPathTest.ResourceClass());
@@ -237,7 +237,7 @@ public interface AuthenticatedApplicationPathTest<T extends Server> extends Base
     }
 
     @ApplicationPath("/long/prefix")
-    class LongPathAnnotatedApplication implements AuthenticatedApplication<User> {
+    class LongPathAnnotatedApplication extends TestAuthenticatedApplication<User> {
         @Override
         public Set<Object> getSingletons() {
             return Collections.singleton(new ApplicationPathTest.ResourceClass());
