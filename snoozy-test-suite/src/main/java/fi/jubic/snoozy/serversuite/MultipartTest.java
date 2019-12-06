@@ -6,6 +6,7 @@ import fi.jubic.snoozy.Server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
@@ -83,9 +84,13 @@ public interface MultipartTest<T extends Server> extends BaseTest<T> {
         public String postParts(
                 @Context HttpServletRequest request
         ) throws IOException, ServletException {
-            return new BufferedReader(
-                    new InputStreamReader(request.getPart("file").getInputStream())
-            ).lines().collect(Collectors.joining("\n"));
+            InputStreamReader inputStreamReader = new InputStreamReader(
+                    request.getPart("file").getInputStream(),
+                    StandardCharsets.UTF_8
+            );
+            try (BufferedReader reader = new BufferedReader(inputStreamReader)) {
+                return reader.lines().collect(Collectors.joining("\n"));
+            }
         }
     }
 }
