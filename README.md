@@ -12,21 +12,23 @@ Current server selection consists of:
 
 ## Application
 
-Application is an extended version of `javax.ws.rs.core.Application` providing
+Application is an altered version of `javax.ws.rs.core.Application` providing
 additional feature declarations, such as static files. The additional features
 are defined using a declarative api keeping things implementation agnostic.
+
+`javax.ws.rs.core.Application#getClasses()` and
+`javax.ws.rs.core.Application#getProperties()` equivalent methods have been
+removed from the `Application` class. `getClasses()` approach for defining
+resources relies on the implementation specific dependency injection. Using
+only `getSingletons()` both mandates and allows external instance initialization.
+Once `getClasses()` was removed there was no reason to keep `getProperties()`
+around anymore.
+
 
 ### Example of Application class
 
 ```java
 public class App extends Application {
-    @Override
-    public Set<Object> getClasses() {
-        return Stream.of(
-                // Place your filter, provider and resource classes here
-        ).collect(Collectors.toSet());
-    }
-
     @Override
     public Set<Object> getSingletons() {
         return Stream.of(
@@ -56,13 +58,6 @@ implementation that provides additional feature declarations for authentication
 
 ```java
 public class App extends AuthenticatedApplication<User> {
-    @Override
-    public Set<Object> getClasses() {
-        return Stream.of(
-                // Place your filter, provider and resource classes here
-        ).collect(Collectors.toSet());
-    }
-
     @Override
     public Set<Object> getSingletons() {
         return Stream.of(
@@ -118,6 +113,7 @@ public Set<StaticFiles> getStaticFiles() {
             .setClassLoader(this.getClass().getClassLoader())
             .setMethodAccess(MethodAccess.anonymous())
             .setRewrite(
+                // Deprecated UrlRewrite usage.
                 UrlRewrite.build()
                     // Everything except paths starting with /api or /assets and
                     // paths ending with .html or .png will be rewrited to
