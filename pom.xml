@@ -174,7 +174,7 @@
                 <executions>
                     <execution>
                         <id>check</id>
-                        <phase>test</phase>
+                        <phase>validate</phase>
                         <goals>
                             <goal>check</goal>
                         </goals>
@@ -195,7 +195,8 @@
                 <artifactId>dependency-check-maven</artifactId>
                 <version>5.2.4</version>
                 <configuration>
-                    <failBuildOnCVSS>8</failBuildOnCVSS>
+                    <failBuildOnCVSS>1</failBuildOnCVSS>
+                    <cveValidForHours>168</cveValidForHours>
                 </configuration>
             </plugin>
             <plugin>
@@ -209,10 +210,14 @@
                     <failsOnError>true</failsOnError>
                     <failOnViolation>true</failOnViolation>
                     <linkXRef>false</linkXRef>
+                    <sourceDirectories>
+                        <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+                        <sourceDirectory>${project.build.testSourceDirectory}</sourceDirectory>
+                    </sourceDirectories>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>validate</id>
+                        <id>check</id>
                         <phase>validate</phase>
                         <goals>
                             <goal>check</goal>
@@ -223,7 +228,7 @@
                     <dependency>
                         <groupId>fi.jubic</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>0.1.0</version>
+                        <version>0.1.1</version>
                     </dependency>
                 </dependencies>
             </plugin>
