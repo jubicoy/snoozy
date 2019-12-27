@@ -35,7 +35,9 @@ class JavaTimeModuleObjectMapperTest {
         Instant instant;
 
         @SuppressWarnings("unused")
-        TestModel() {}
+        TestModel() {
+
+        }
 
         TestModel(Instant instant) {
             this.instant = instant;
