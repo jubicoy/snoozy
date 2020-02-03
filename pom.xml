@@ -228,12 +228,12 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>8.27</version>
+                        <version>8.29</version>
                     </dependency>
                     <dependency>
                         <groupId>fi.jubic</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>0.2.1</version>
+                        <version>0.3.0</version>
                     </dependency>
                 </dependencies>
             </plugin>
