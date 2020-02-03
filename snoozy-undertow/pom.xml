@@ -5,7 +5,7 @@
     <parent>
         <artifactId>snoozy-parent</artifactId>
         <groupId>fi.jubic</groupId>
-        <version>0.5.0</version>
+        <version>0.6.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -24,12 +24,12 @@
         <dependency>
             <groupId>fi.jubic</groupId>
             <artifactId>snoozy-auth</artifactId>
-            <version>0.5.0</version>
+            <version>0.6.0</version>
         </dependency>
         <dependency>
             <groupId>fi.jubic</groupId>
             <artifactId>snoozy-core</artifactId>
-            <version>0.5.0</version>
+            <version>0.6.0</version>
         </dependency>
         <dependency>
             <groupId>javax.ws.rs</groupId>
@@ -76,7 +76,7 @@
         <dependency>
             <groupId>fi.jubic</groupId>
             <artifactId>snoozy-test-suite</artifactId>
-            <version>0.5.0</version>
+            <version>0.6.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
