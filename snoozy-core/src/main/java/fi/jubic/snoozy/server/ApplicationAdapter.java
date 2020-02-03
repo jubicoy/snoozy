@@ -5,7 +5,6 @@ import fi.jubic.snoozy.AuthenticatedApplication;
 import fi.jubic.snoozy.ServerConfiguration;
 import fi.jubic.snoozy.StaticFiles;
 import fi.jubic.snoozy.auth.UserPrincipal;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
