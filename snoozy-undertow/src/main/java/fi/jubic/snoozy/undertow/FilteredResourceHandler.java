@@ -1,16 +1,14 @@
 package fi.jubic.snoozy.undertow;
 
-import fi.jubic.snoozy.StaticFiles;
 import fi.jubic.snoozy.filters.StaticFilesFilter;
+import fi.jubic.snoozy.staticfiles.StaticFiles;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.server.handlers.resource.ClassPathResourceManager;
 import io.undertow.server.handlers.resource.ResourceHandler;
 import io.undertow.servlet.spec.HttpServletRequestImpl;
-import io.undertow.servlet.spec.HttpServletResponseImpl;
 import io.undertow.util.HttpString;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Response;
 
 class FilteredResourceHandler extends ResourceHandler {
@@ -50,13 +48,9 @@ class FilteredResourceHandler extends ResourceHandler {
             return;
         }
 
-        if (
-                staticFiles.getRewrite() != null
-                && httpServerExchange.getRelativePath()
-                        .matches(staticFiles.getRewrite().getFrom())
-        ) {
-            httpServerExchange.setRelativePath(staticFiles.getRewrite().getTo());
-        }
+        staticFiles.getRewrite()
+                .filter(rewrite -> httpServerExchange.getRelativePath().matches(rewrite.getFrom()))
+                .ifPresent(rewrite -> httpServerExchange.setRelativePath(rewrite.getTo()));
 
         super.handleRequest(httpServerExchange);
     }

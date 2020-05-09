@@ -1,6 +1,6 @@
 package fi.jubic.snoozy.filters;
 
-import fi.jubic.snoozy.StaticFiles;
+import fi.jubic.snoozy.staticfiles.StaticFiles;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
