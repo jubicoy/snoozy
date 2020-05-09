@@ -25,6 +25,7 @@ public class ApplicationAdapter extends javax.ws.rs.core.Application {
     private static final Logger logger = LoggerFactory.getLogger(ApplicationAdapter.class);
 
     private final Application application;
+    private final ServerConfiguration serverConfiguration;
     private Set<Object> filters;
 
     /**
@@ -34,8 +35,12 @@ public class ApplicationAdapter extends javax.ws.rs.core.Application {
      *     <li>Request logging</li>
      * </ul>
      */
-    public ApplicationAdapter(Application application) {
+    public ApplicationAdapter(
+            Application application,
+            ServerConfiguration serverConfiguration
+    ) {
         this.application = application;
+        this.serverConfiguration = serverConfiguration;
         this.filters = new HashSet<>();
         this.filters.add(application.getLoggingFilter());
     }
@@ -52,9 +57,10 @@ public class ApplicationAdapter extends javax.ws.rs.core.Application {
      */
     public <P extends UserPrincipal> ApplicationAdapter(
             AuthenticatedApplication<P> application,
+            ServerConfiguration serverConfiguration,
             AuthFilterAdapter<P> authFilterAdapter
     ) {
-        this(application);
+        this(application, serverConfiguration);
 
         filters.add(authFilterAdapter);
     }
@@ -78,7 +84,7 @@ public class ApplicationAdapter extends javax.ws.rs.core.Application {
     /**
      * Performs startup logging. Server implementation should always call this method.
      */
-    public void logStartup(ServerConfiguration serverConfiguration) {
+    public void logStartup() {
         application.getBanner().ifPresent(banner -> {
             logger.info(banner);
 
