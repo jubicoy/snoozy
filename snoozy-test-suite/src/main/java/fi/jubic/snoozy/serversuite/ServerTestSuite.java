@@ -10,5 +10,6 @@ import fi.jubic.snoozy.Server;
 public interface ServerTestSuite<T extends Server> extends
         ApplicationPathTest<T>,
         AuthenticatedApplicationPathTest<T>,
-        MultipartTest<T> {
+        MultipartTest<T>,
+        SwaggerTest<T> {
 }
