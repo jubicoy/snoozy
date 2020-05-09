@@ -1,12 +1,12 @@
 package fi.jubic.snoozy.server;
 
 import fi.jubic.snoozy.MethodAccess;
-import fi.jubic.snoozy.StaticFiles;
 import fi.jubic.snoozy.auth.Authentication;
 import fi.jubic.snoozy.auth.Authenticator;
 import fi.jubic.snoozy.auth.Authorizer;
 import fi.jubic.snoozy.auth.UserPrincipal;
 import fi.jubic.snoozy.filters.StaticFilesFilter;
+import fi.jubic.snoozy.staticfiles.StaticFiles;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;

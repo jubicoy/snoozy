@@ -2,6 +2,7 @@ package fi.jubic.snoozy;
 
 import fi.jubic.snoozy.logging.DefaultLoggingFilter;
 import fi.jubic.snoozy.logging.LoggingFilter;
+import fi.jubic.snoozy.staticfiles.StaticFiles;
 import fi.jubic.snoozy.websocket.WebSocketHandler;
 
 import java.util.Collections;

@@ -3,6 +3,7 @@ package fi.jubic.snoozy;
 import fi.jubic.snoozy.converters.Converters;
 import fi.jubic.snoozy.filters.UrlRewrite;
 import fi.jubic.snoozy.mappers.Mappers;
+import fi.jubic.snoozy.staticfiles.StaticFiles;
 
 import java.util.Set;
 import java.util.stream.Collectors;

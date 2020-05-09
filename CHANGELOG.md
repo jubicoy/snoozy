@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres poorly to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Refactor `StaticFiles` into an interface and use the value class version as a default implementation.
+
+### Removed
+- Deprecated `StaticFiles` getters without the `get` prefix.
 
 ## [0.6.2] - 2020-03-06
 ### Security
@@ -20,8 +25,7 @@ and this project adheres poorly to [Semantic Versioning](https://semver.org/spec
 - Add support for configurable startup banner.
 
 ### Changed
-- `Application` no longer extends `javax.ws.rs.core.Application`.
-  `getClasses()` and `getProperties()` methods are removed.
+- `Application` no longer extends `javax.ws.rs.core.Application`. `getClasses()` and `getProperties()` methods are removed.
 - Move `AuthenticatedApplication` to root package.
 
 ### Fixed
@@ -34,16 +38,14 @@ and this project adheres poorly to [Semantic Versioning](https://semver.org/spec
 - Add 'default' frontend `StaticFiles` definition.
 
 ### Changed
-- Set `@ApplicationPath` manually instead of mirroring the value to 
-  `ApplicationAdapter`.
+- Set `@ApplicationPath` manually instead of mirroring the value to `ApplicationAdapter`.
 
 ### Removed
 - Remove `fi.jubic:easyvalue` dependency.
 - Remove experimental converters.
 
 ### Fixed
-- Fix invalid paths when `@ApplicationPath` is defined with a leading
-  slash.
+- Fix invalid paths when `@ApplicationPath` is defined with a leading slash.
 
 ## [0.4.0] - 2019-11-01
 ### Added
@@ -57,8 +59,7 @@ and this project adheres poorly to [Semantic Versioning](https://semver.org/spec
 
 ## [0.3.0] - 2019-10-15
 ### Changed
-- Introduced breaking changes in `fi.jubic:easyconfig` dependency
-  upgrade.
+- Introduced breaking changes in `fi.jubic:easyconfig` dependency upgrade.
 
 ## [0.2.1] - 2019-10-15
 
@@ -70,8 +71,7 @@ and this project adheres poorly to [Semantic Versioning](https://semver.org/spec
 - Print application version on startup.
 
 ### Changed
-- Moved other `java.time.*` parameter converters out of `experimental`
-  package.
+- Moved other `java.time.*` parameter converters out of `experimental` package.
 - Reflection is no longer used for `ApplicationAdapter` creation.
 
 ## [0.1.2] - 2019-04-10
