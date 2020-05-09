@@ -35,7 +35,10 @@ public class UndertowServer implements Server {
             Application application,
             ServerConfigurator serverConfigurator
     ) {
-        ApplicationAdapter applicationAdapter = new ApplicationAdapter(application);
+        ApplicationAdapter applicationAdapter = new ApplicationAdapter(
+                application,
+                serverConfigurator.getServerConfiguration()
+        );
 
         server = startServer(applicationAdapter, serverConfigurator);
 
@@ -57,7 +60,7 @@ public class UndertowServer implements Server {
                 }
         );
 
-        applicationAdapter.logStartup(serverConfigurator.getServerConfiguration());
+        applicationAdapter.logStartup();
     }
 
     @Override
@@ -75,6 +78,7 @@ public class UndertowServer implements Server {
 
         ApplicationAdapter applicationAdapter = new ApplicationAdapter(
                 application,
+                serverConfigurator.getServerConfiguration(),
                 authFilterAdapter
         );
 
@@ -89,7 +93,7 @@ public class UndertowServer implements Server {
                 authFilterAdapter
         );
 
-        applicationAdapter.logStartup(serverConfigurator.getServerConfiguration());
+        applicationAdapter.logStartup();
     }
 
     @Override
