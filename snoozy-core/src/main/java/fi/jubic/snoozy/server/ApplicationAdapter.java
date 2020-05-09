@@ -71,6 +71,10 @@ public class ApplicationAdapter extends javax.ws.rs.core.Application {
         ).collect(Collectors.toSet());
     }
 
+    public Set<StaticFiles> getStaticFiles() {
+        return application.getStaticFiles();
+    }
+
     /**
      * Performs startup logging. Server implementation should always call this method.
      */

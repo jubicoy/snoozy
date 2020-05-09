@@ -41,7 +41,7 @@ public class UndertowServer implements Server {
 
         addStaticFiles(
                 server,
-                application.getStaticFiles(),
+                applicationAdapter.getStaticFiles(),
                 // Allow all filter
                 new StaticFilesFilter() {
                     @Override
@@ -85,7 +85,7 @@ public class UndertowServer implements Server {
 
         addStaticFiles(
                 server,
-                application.getStaticFiles(),
+                applicationAdapter.getStaticFiles(),
                 authFilterAdapter
         );
 
