@@ -5,7 +5,8 @@ import fi.jubic.snoozy.AuthenticatedApplication;
 import fi.jubic.snoozy.ServerConfiguration;
 import fi.jubic.snoozy.auth.UserPrincipal;
 import fi.jubic.snoozy.staticfiles.StaticFiles;
-
+import fi.jubic.snoozy.swagger.SwaggerResource;
+import fi.jubic.snoozy.swagger.SwaggerStaticFiles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -71,14 +73,33 @@ public class ApplicationAdapter extends javax.ws.rs.core.Application {
 
     @Override
     public Set<Object> getSingletons() {
-        return Stream.concat(
-                filters.stream(),
-                application.getSingletons().stream()
-        ).collect(Collectors.toSet());
+        boolean includeSwagger = serverConfiguration.isDevMode()
+                || serverConfiguration.getSwaggerConfig().alwaysServeOpenApi();
+
+        return Stream
+                .of(
+                        filters.stream(),
+                        application.getSingletons().stream(),
+                        includeSwagger
+                                ? Stream.of(new SwaggerResource(application))
+                                : Stream.empty()
+                )
+                .flatMap(Function.identity())
+                .collect(Collectors.toSet());
     }
 
     public Set<StaticFiles> getStaticFiles() {
-        return application.getStaticFiles();
+        boolean includeSwagger = serverConfiguration.isDevMode()
+                || serverConfiguration.getSwaggerConfig().alwaysServeSwaggerUi();
+        return Stream
+                .of(
+                        application.getStaticFiles().stream(),
+                        includeSwagger
+                                ? Stream.<StaticFiles>of(new SwaggerStaticFiles())
+                                : Stream.<StaticFiles>empty()
+                )
+                .flatMap(Function.identity())
+                .collect(Collectors.toSet());
     }
 
     /**
