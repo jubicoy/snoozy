@@ -18,6 +18,7 @@ and this project adheres poorly to [Semantic Versioning](https://semver.org/spec
 ### Removed
 - Deprecated `StaticFiles` getters without the `get` prefix.
 - Deprecated `Authentication` getters without the `get` prefix.
+- Deprecated getters and builder from `UrlRewrite`.
 
 ### Fixed
 - Return correct HTTP 401/403 from `AuthFilterAdapter`.
