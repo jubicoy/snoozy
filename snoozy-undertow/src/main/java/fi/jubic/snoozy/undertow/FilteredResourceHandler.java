@@ -10,6 +10,7 @@ import io.undertow.util.HttpString;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
+import java.util.Optional;
 
 class FilteredResourceHandler extends ResourceHandler {
     private final StaticFilesFilter filter;
@@ -38,8 +39,9 @@ class FilteredResourceHandler extends ResourceHandler {
                 null
         );
 
-        if (!filter.filter(staticFiles, request)) {
-            Response response = filter.getResponseSupplier().get();
+        Optional<Response> optionalResponse = filter.filter(staticFiles, request);
+        if (optionalResponse.isPresent()) {
+            Response response = optionalResponse.get();
             httpServerExchange.setStatusCode(response.getStatus());
             response.getStringHeaders().forEach(
                     (name, value) -> httpServerExchange.getResponseHeaders()

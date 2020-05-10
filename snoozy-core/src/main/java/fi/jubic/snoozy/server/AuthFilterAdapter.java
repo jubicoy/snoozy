@@ -8,6 +8,7 @@ import fi.jubic.snoozy.auth.UserPrincipal;
 import fi.jubic.snoozy.filters.StaticFilesFilter;
 import fi.jubic.snoozy.staticfiles.StaticFiles;
 
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -17,7 +18,6 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 public class AuthFilterAdapter<P extends UserPrincipal>
         implements ContainerRequestFilter, StaticFilesFilter {
@@ -78,52 +78,59 @@ public class AuthFilterAdapter<P extends UserPrincipal>
             methodAccessCache.put(method, methodAccess);
         }
 
-        Optional<P> principal = authentication.getTokenParser()
+        Optional<P> optionalPrincipal = authentication.getTokenParser()
                 .parse(servletRequest)
                 .flatMap(authenticator::authenticate);
 
-        principal.ifPresent(p -> contextPusher.push(authentication.getUserClass(), p));
+        optionalPrincipal.ifPresent(
+                principal -> contextPusher.push(authentication.getUserClass(), principal)
+        );
 
-        if (!isAuthorized(methodAccess, principal)) {
-            containerRequestContext.abortWith(authentication.getUnauthorized().get());
-        }
+        getAuthErrorResponseSupplier(methodAccess, optionalPrincipal.orElse(null))
+                .ifPresent(containerRequestContext::abortWith);
     }
 
     @Override
-    public boolean filter(StaticFiles staticFiles, HttpServletRequest request) {
-        Optional<P> principal = authentication.getTokenParser()
+    public Optional<Response> filter(StaticFiles staticFiles, HttpServletRequest request) {
+        Optional<P> optionalPrincipal = authentication.getTokenParser()
                 .parse(request)
                 .flatMap(authenticator::authenticate);
 
-        return isAuthorized(staticFiles.getMethodAccess(), principal);
+        return getAuthErrorResponseSupplier(
+                staticFiles.getMethodAccess(),
+                optionalPrincipal.orElse(null)
+        );
     }
 
-    @Override
-    public Supplier<Response> getResponseSupplier() {
-        return authentication.getUnauthorized();
-    }
-
-    private boolean isAuthorized(MethodAccess methodAccess, Optional<P> principal) {
+    private Optional<Response> getAuthErrorResponseSupplier(
+            MethodAccess methodAccess,
+            @Nullable P principal
+    ) {
         if (methodAccess.getLevel().equals(MethodAccess.Level.DenyAll)) {
-            return false;
+            return Optional.of(authentication.getForbidden().get());
         }
 
         if (methodAccess.getLevel().equals(MethodAccess.Level.Anonymous)) {
-            return true;
+            return Optional.empty();
         }
 
-        if (!principal.isPresent()) return false;
+        if (principal == null) {
+            return Optional.of(authentication.getUnauthorized().get());
+        }
 
         if (methodAccess.getLevel().equals(MethodAccess.Level.Authenticated)) {
-            return true;
+            return Optional.empty();
         }
 
         if (methodAccess.getLevel().equals(MethodAccess.Level.Roles)) {
-            return methodAccess.getValues()
+            boolean roleAuthorized = methodAccess.getValues()
                     .stream()
-                    .anyMatch(role -> authorizer.authorize(principal.get(), role));
+                    .anyMatch(role -> authorizer.authorize(principal, role));
+            if (roleAuthorized) {
+                return Optional.empty();
+            }
         }
 
-        return false;
+        return Optional.of(authentication.getForbidden().get());
     }
 }
