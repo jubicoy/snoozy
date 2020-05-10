@@ -1,9 +1,7 @@
 package fi.jubic.snoozy.server;
 
 import fi.jubic.snoozy.Application;
-import fi.jubic.snoozy.AuthenticatedApplication;
 import fi.jubic.snoozy.ServerConfiguration;
-import fi.jubic.snoozy.auth.UserPrincipal;
 import fi.jubic.snoozy.staticfiles.StaticFiles;
 import fi.jubic.snoozy.swagger.SwaggerResource;
 import fi.jubic.snoozy.swagger.SwaggerStaticFiles;
@@ -47,26 +45,6 @@ public class ApplicationAdapter extends javax.ws.rs.core.Application {
         this.filters.add(application.getLoggingFilter());
     }
 
-    /**
-     * Wrap an authenticated Application injecting the following built-ins.
-     *
-     * <ul>
-     *     <li>Request logging</li>
-     *     <li>Auth filter</li>
-     * </ul>
-     *
-     * @param <P> User principal type
-     */
-    public <P extends UserPrincipal> ApplicationAdapter(
-            AuthenticatedApplication<P> application,
-            ServerConfiguration serverConfiguration,
-            AuthFilterAdapter<P> authFilterAdapter
-    ) {
-        this(application, serverConfiguration);
-
-        filters.add(authFilterAdapter);
-    }
-
     public Class<?> getApplicationClass() {
         return application.getClass();
     }
@@ -103,7 +81,7 @@ public class ApplicationAdapter extends javax.ws.rs.core.Application {
     }
 
     /**
-     * Performs startup logging. Server implementation should always call this method.
+     * Performs startup logging.
      */
     public void logStartup() {
         application.getBanner().ifPresent(banner -> {
