@@ -1,15 +1,13 @@
 package fi.jubic.snoozy.undertow;
 
-import fi.jubic.snoozy.Application;
-import fi.jubic.snoozy.AuthenticatedApplication;
 import fi.jubic.snoozy.MultipartConfig;
 import fi.jubic.snoozy.Server;
 import fi.jubic.snoozy.ServerConfiguration;
-import fi.jubic.snoozy.ServerConfigurator;
 import fi.jubic.snoozy.auth.UserPrincipal;
 import fi.jubic.snoozy.filters.StaticFilesFilter;
 import fi.jubic.snoozy.server.ApplicationAdapter;
 import fi.jubic.snoozy.server.AuthFilterAdapter;
+import fi.jubic.snoozy.server.AuthenticatedApplicationAdapter;
 import fi.jubic.snoozy.staticfiles.StaticFiles;
 import io.undertow.Undertow;
 import io.undertow.servlet.api.DeploymentInfo;
@@ -32,15 +30,10 @@ public class UndertowServer implements Server {
 
     @Override
     public void start(
-            Application application,
-            ServerConfigurator serverConfigurator
+            ApplicationAdapter applicationAdapter,
+            ServerConfiguration serverConfiguration
     ) {
-        ApplicationAdapter applicationAdapter = new ApplicationAdapter(
-                application,
-                serverConfigurator.getServerConfiguration()
-        );
-
-        server = startServer(applicationAdapter, serverConfigurator);
+        server = startServer(applicationAdapter, serverConfiguration);
 
         addStaticFiles(
                 server,
@@ -59,32 +52,26 @@ public class UndertowServer implements Server {
                     }
                 }
         );
-
-        applicationAdapter.logStartup();
     }
 
     @Override
     public <P extends UserPrincipal> void start(
-            AuthenticatedApplication<P> application,
-            ServerConfigurator serverConfigurator
+            AuthenticatedApplicationAdapter<P> applicationAdapter,
+            ServerConfiguration serverConfiguration
     ) {
         AuthFilterAdapter<P> authFilterAdapter = AuthFilterAdapter.of(
-                application.getAuthentication(),
+                applicationAdapter.getAuthentication(),
                 crc -> ((ResourceMethodInvoker) crc.getProperty(
                         "org.jboss.resteasy.core.ResourceMethodInvoker"
                 )).getMethod(),
                 ResteasyContext::pushContext
         );
 
-        ApplicationAdapter applicationAdapter = new ApplicationAdapter(
-                application,
-                serverConfigurator.getServerConfiguration(),
-                authFilterAdapter
-        );
+        applicationAdapter.setAuthFilterAdapter(authFilterAdapter);
 
         server = startServer(
                 applicationAdapter,
-                serverConfigurator
+                serverConfiguration
         );
 
         addStaticFiles(
@@ -92,8 +79,6 @@ public class UndertowServer implements Server {
                 applicationAdapter.getStaticFiles(),
                 authFilterAdapter
         );
-
-        applicationAdapter.logStartup();
     }
 
     @Override
@@ -104,7 +89,7 @@ public class UndertowServer implements Server {
 
     private UndertowJaxrsServer startServer(
             ApplicationAdapter applicationAdapter,
-            ServerConfigurator serverConfigurator
+            ServerConfiguration serverConfiguration
     ) {
         UndertowJaxrsServer undertowJaxrsServer = new UndertowJaxrsServer();
 
@@ -125,10 +110,7 @@ public class UndertowServer implements Server {
         deploymentInfo.setContextPath(path);
         deploymentInfo.setDeploymentName("Snoozy" + path);
 
-        ServerConfiguration configuration = serverConfigurator
-                .getServerConfiguration();
-
-        MultipartConfig multipartConfig = configuration.getMultipartConfig();
+        MultipartConfig multipartConfig = serverConfiguration.getMultipartConfig();
         deploymentInfo.setDefaultMultipartConfig(
                 new MultipartConfigElement(
                         multipartConfig.getCacheLocation(),
@@ -142,8 +124,8 @@ public class UndertowServer implements Server {
                 .start(
                         Undertow.builder()
                                 .addHttpListener(
-                                        configuration.getPort(),
-                                        configuration.getHostname()
+                                        serverConfiguration.getPort(),
+                                        serverConfiguration.getHostname()
                                 )
                 );
     }

@@ -7,9 +7,11 @@ and this project adheres poorly to [Semantic Versioning](https://semver.org/spec
 ## [Unreleased]
 ### Added
 - Swagger intergation. The OpenAPI JSON is automatically generated and served along with Swagger UI when in development mode or explicitly configured.
+- `AuthenticatedApplicationAdapter` for explicitly wrapping an `AuthenticatedApplication`.
 
 ### Changed
 - Refactor `StaticFiles` into an interface and use the value class version as a default implementation.
+- Refactor `Server` to allow its implementations to be defined using only the `ApplicationAdapter` or `AuthenticatedApplicationAdapter`.
 
 ### Removed
 - Deprecated `StaticFiles` getters without the `get` prefix.
