@@ -18,12 +18,9 @@ import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
 import org.jboss.resteasy.spi.ResteasyDeployment;
 
 import javax.servlet.MultipartConfigElement;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Response;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Supplier;
 
 public class UndertowServer implements Server {
     private UndertowJaxrsServer server;
@@ -39,18 +36,7 @@ public class UndertowServer implements Server {
                 server,
                 applicationAdapter.getStaticFiles(),
                 // Allow all filter
-                new StaticFilesFilter() {
-                    @Override
-                    public boolean filter(StaticFiles staticFiles, HttpServletRequest request) {
-                        return true;
-                    }
-
-                    @Override
-                    public Supplier<Response> getResponseSupplier() {
-                        return () -> Response.status(Response.Status.UNAUTHORIZED)
-                                .build();
-                    }
-                }
+                (staticFiles, request) -> Optional.empty()
         );
     }
 

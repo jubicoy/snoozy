@@ -12,9 +12,15 @@ and this project adheres poorly to [Semantic Versioning](https://semver.org/spec
 ### Changed
 - Refactor `StaticFiles` into an interface and use the value class version as a default implementation.
 - Refactor `Server` to allow its implementations to be defined using only the `ApplicationAdapter` or `AuthenticatedApplicationAdapter`.
+- Refactor `Authentication` into an interface and use the value class version as a default implementation.
+- Return `Optional` of auth error response from `StaticFilesFilter`.
 
 ### Removed
 - Deprecated `StaticFiles` getters without the `get` prefix.
+- Deprecated `Authentication` getters without the `get` prefix.
+
+### Fixed
+- Return correct HTTP 401/403 from `AuthFilterAdapter`.
 
 ## [0.6.2] - 2020-03-06
 ### Security

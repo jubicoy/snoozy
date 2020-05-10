@@ -1,160 +1,64 @@
 package fi.jubic.snoozy.auth;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 import java.util.function.Supplier;
 
-public class Authentication<P extends UserPrincipal> {
-    private final Authenticator<P> authenticator;
-    private final Authorizer<P> authorizer;
-    private final TokenParser tokenParser;
-    private final Class<P> userClass;
-    private final Supplier<Response> unauthorized;
+public interface Authentication<P extends UserPrincipal> {
+    /**
+     * The {@link Authenticator} is responsible for mapping a token to a {@link UserPrincipal}.
+     */
+    Authenticator<P> getAuthenticator();
 
-    private Authentication(
-            Authenticator<P> authenticator,
-            Authorizer<P> authorizer,
-            TokenParser tokenParser,
-            Class<P> userClass,
-            Supplier<Response> unauthorized
-    ) {
-        this.authenticator = authenticator;
-        this.authorizer = authorizer;
-        this.tokenParser = tokenParser;
-        this.userClass = userClass;
-        this.unauthorized = unauthorized;
+    /**
+     * The {@link Authorizer} is responsible for checking {@link UserPrincipal} authorization
+     * against a provided role.
+     */
+    Authorizer<P> getAuthorizer();
+
+    /**
+     * The {@link TokenParser} is responsible for extracting the authentication token from a
+     * {@link HttpServletRequest}.
+     */
+    TokenParser getTokenParser();
+
+    /**
+     * Most implementations require a {@link Class} reference for the {@link UserPrincipal}.
+     */
+    Class<P> getUserClass();
+
+    /**
+     * A custom unauthorized response can be set to provide consistent behavior for both static
+     * files and JAX-RS responses.
+     */
+    default Supplier<Response> getUnauthorized() {
+        return () -> Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
-    @Deprecated
-    public Authenticator<P> authenticator() {
-        return getAuthenticator();
+    /**
+     * A custom forbidden response can be set to provide consistent behavior for both static files
+     * and JAX-RS responses.
+     */
+    default Supplier<Response> getForbidden() {
+        return () -> Response.status(Response.Status.FORBIDDEN).build();
     }
 
-    public Authenticator<P> getAuthenticator() {
-        return authenticator;
+    default AuthenticationBuilder<P> toBuilder() {
+        return new AuthenticationBuilder<>(
+                getAuthenticator(),
+                getAuthorizer(),
+                getTokenParser(),
+                getUserClass(),
+                getUnauthorized(),
+                getForbidden()
+        );
     }
 
-    @Deprecated
-    public Authorizer<P> authorizer() {
-        return getAuthorizer();
-    }
-
-    public Authorizer<P> getAuthorizer() {
-        return authorizer;
-    }
-
-    @Deprecated
-    public TokenParser tokenParser() {
-        return getTokenParser();
-    }
-
-    public TokenParser getTokenParser() {
-        return tokenParser;
-    }
-
-    @Deprecated
-    public Class<P> userClass() {
-        return getUserClass();
-    }
-
-    public Class<P> getUserClass() {
-        return userClass;
-    }
-
-    public Supplier<Response> getUnauthorized() {
-        return unauthorized;
-    }
-
-    public static <P extends UserPrincipal> Builder<P> builder() {
-        return new Builder<P>()
+    static <P extends UserPrincipal> AuthenticationBuilder<P> builder() {
+        return new AuthenticationBuilder<P>()
                 .setUnauthorized(
                         () -> Response.status(Response.Status.UNAUTHORIZED)
                                 .build()
                 );
-    }
-
-    public static class Builder<P extends UserPrincipal> {
-        private final Authenticator<P> authenticator;
-        private final Authorizer<P> authorizer;
-        private final TokenParser tokenParser;
-        private final Class<P> userClass;
-        private final Supplier<Response> unauthorized;
-
-        private Builder() {
-            this(null, null, null, null, null);
-        }
-
-        private Builder(
-                Authenticator<P> authenticator,
-                Authorizer<P> authorizer,
-                TokenParser tokenParser,
-                Class<P> userClass,
-                Supplier<Response> unauthorized
-        ) {
-            this.authenticator = authenticator;
-            this.authorizer = authorizer;
-            this.tokenParser = tokenParser;
-            this.userClass = userClass;
-            this.unauthorized = unauthorized;
-        }
-
-        public Builder<P> setAuthenticator(Authenticator<P> authenticator) {
-            return new Builder<>(
-                    authenticator,
-                    authorizer,
-                    tokenParser,
-                    userClass,
-                    unauthorized
-            );
-        }
-
-        public Builder<P> setAuthorizer(Authorizer<P> authorizer) {
-            return new Builder<>(
-                    authenticator,
-                    authorizer,
-                    tokenParser,
-                    userClass,
-                    unauthorized
-            );
-        }
-
-        public Builder<P> setTokenParser(TokenParser tokenParser) {
-            return new Builder<>(
-                    authenticator,
-                    authorizer,
-                    tokenParser,
-                    userClass,
-                    unauthorized
-            );
-        }
-
-        public Builder<P> setUserClass(Class<P> userClass) {
-            return new Builder<>(
-                    authenticator,
-                    authorizer,
-                    tokenParser,
-                    userClass,
-                    unauthorized
-            );
-        }
-
-        public Builder<P> setUnauthorized(Supplier<Response> unauthorized) {
-            return new Builder<>(
-                    authenticator,
-                    authorizer,
-                    tokenParser,
-                    userClass,
-                    unauthorized
-            );
-        }
-
-        public Authentication<P> build() {
-            return new Authentication<>(
-                    authenticator,
-                    authorizer,
-                    tokenParser,
-                    userClass,
-                    unauthorized
-            );
-        }
     }
 }
