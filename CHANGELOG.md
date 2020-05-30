@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres poorly to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.7.0] - 2020-05-30
 ### Added
 - Swagger intergation. The OpenAPI JSON is automatically generated and served along with Swagger UI when in development mode or explicitly configured.
 - `AuthenticatedApplicationAdapter` for explicitly wrapping an `AuthenticatedApplication`.
