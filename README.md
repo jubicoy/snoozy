@@ -1,6 +1,6 @@
 # Snoozy
 
-[![Build Status](https://travis-ci.org/jubicoy/snoozy.svg?branch=master)](https://travis-ci.org/jubicoy/snoozy)
+![Build](https://github.com/jubicoy/snoozy/workflows/Build/badge.svg)
 
 Snoozy allows building JAX-RS applications without depending on the
 specific app-server or Servlet container implementation.
