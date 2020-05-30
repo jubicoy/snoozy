@@ -1,0 +1,38 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java: [8, 11, 12, 13]
+
+    name: JDK ${{ matrix.java }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache .m2/repository
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-m2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ matrix.java }}
+          restore-keys: |
+            ${{ runner.os  }}-build-${{ env.cache-name }}-${{ matrix.java }}
+            ${{ runner.os  }}-build-${{ env.cache-name }}
+            ${{ runner.os  }}-build-
+            ${{ runner.os  }}-
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+      - name: Build with Maven
+        run: mvn -B package
