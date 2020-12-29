@@ -6,6 +6,11 @@ and this project adheres poorly to [Semantic Versioning](https://semver.org/spec
 
 ## [Unreleased]
 
+## [0.7.1] - 2020-12-29
+### Security
+- Update dependencies.
+- Use an Undertow 2.2.X release instead of 2.0.X bundled with RESTEasy.
+
 ## [0.7.0] - 2020-05-30
 ### Added
 - Swagger intergation. The OpenAPI JSON is automatically generated and served along with Swagger UI when in development mode or explicitly configured.
