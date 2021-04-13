@@ -9,6 +9,7 @@
 
     <name>snoozy</name>
     <description>Web application library</description>
+    <url>https://github.com/jubicoy/snoozy</url>
     <licenses>
         <license>
             <name>MIT License</name>
@@ -30,24 +31,14 @@
         </developer>
     </developers>
 
-    <repositories>
-        <repository>
-            <id>jcenter</id>
-            <url>https://jcenter.bintray.com/</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>jcenter</id>
-            <url>https://jcenter.bintray.com/</url>
-        </pluginRepository>
-    </pluginRepositories>
-
     <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
         <repository>
-            <id>bintray-jubicoy-maven</id>
-            <name>jubicoy-maven</name>
-            <url>https://api.bintray.com/maven/jubicoy/maven/snoozy-parent/;publish=1</url>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 
@@ -126,6 +117,22 @@
                 <executions>
                     <execution>
                         <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <source>8</source>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
                         <goals>
                             <goal>jar</goal>
                         </goals>
@@ -233,7 +240,7 @@
                     <dependency>
                         <groupId>fi.jubic</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>0.3.0</version>
+                        <version>0.4.0</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -255,6 +262,37 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.8</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -12,14 +12,6 @@
     <artifactId>snoozy-undertow</artifactId>
     <packaging>jar</packaging>
 
-    <distributionManagement>
-        <repository>
-            <id>bintray-jubicoy-maven</id>
-            <name>jubicoy-maven</name>
-            <url>https://api.bintray.com/maven/jubicoy/maven/snoozy-undertow/;publish=1</url>
-        </repository>
-    </distributionManagement>
-
     <properties>
         <resteasy.version>4.5.8.Final</resteasy.version>
         <undertow.version>2.2.3.Final</undertow.version>

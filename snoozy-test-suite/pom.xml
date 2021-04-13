@@ -12,14 +12,6 @@
     <artifactId>snoozy-test-suite</artifactId>
     <packaging>jar</packaging>
 
-    <distributionManagement>
-        <repository>
-            <id>bintray-jubicoy-maven</id>
-            <name>jubicoy-maven</name>
-            <url>https://api.bintray.com/maven/jubicoy/maven/snoozy-test-suite/;publish=1</url>
-        </repository>
-    </distributionManagement>
-
     <dependencies>
         <dependency>
             <groupId>fi.jubic</groupId>
@@ -35,7 +27,6 @@
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
         </dependency>
-
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>

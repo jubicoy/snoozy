@@ -12,14 +12,6 @@
     <artifactId>snoozy-core</artifactId>
     <packaging>jar</packaging>
 
-    <distributionManagement>
-        <repository>
-            <id>bintray-jubicoy-maven</id>
-            <name>jubicoy-maven</name>
-            <url>https://api.bintray.com/maven/jubicoy/maven/snoozy-core/;publish=1</url>
-        </repository>
-    </distributionManagement>
-
     <dependencies>
         <dependency>
             <groupId>javax.annotation</groupId>
