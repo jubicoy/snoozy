@@ -1,10 +1,15 @@
 package fi.jubic.snoozy.staticfiles;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import fi.jubic.snoozy.MethodAccess;
 import fi.jubic.snoozy.filters.UrlRewrite;
 
 import java.util.Optional;
 
+@SuppressFBWarnings(
+        value = "EI_EXPOSE_REP",
+        justification = "Intended behavior"
+)
 public class DefaultStaticFiles implements StaticFiles {
     private final String path;
     private final String prefix;

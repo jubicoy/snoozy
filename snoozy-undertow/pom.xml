@@ -71,7 +71,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.3</version>
+            <version>1.2.7</version>
         </dependency>
         <dependency>
             <groupId>com.mattbertolini</groupId>
@@ -84,14 +84,6 @@
             <version>3.0.12</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-        </dependency>
         <dependency>
             <groupId>fi.jubic</groupId>
             <artifactId>snoozy-test-suite</artifactId>

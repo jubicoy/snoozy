@@ -39,7 +39,7 @@ public class MethodAccess {
     }
 
     public Set<String> getValues() {
-        return values;
+        return Collections.unmodifiableSet(values);
     }
 
     /**

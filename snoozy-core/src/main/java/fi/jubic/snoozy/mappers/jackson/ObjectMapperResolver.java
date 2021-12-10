@@ -3,9 +3,14 @@ package fi.jubic.snoozy.mappers.jackson;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import javax.ws.rs.ext.ContextResolver;
 
+@SuppressFBWarnings(
+        value = "EI_EXPOSE_REP",
+        justification = "Intended behavior"
+)
 public class ObjectMapperResolver implements ContextResolver<ObjectMapper> {
     private final ObjectMapper objectMapper;
 

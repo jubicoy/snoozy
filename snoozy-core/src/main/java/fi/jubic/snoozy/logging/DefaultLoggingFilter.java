@@ -30,16 +30,9 @@ public class DefaultLoggingFilter implements LoggingFilter {
             ContainerRequestContext containerRequestContext,
             ContainerResponseContext containerResponseContext
     ) {
-        long startTime = System.currentTimeMillis();
-
-        try {
-            startTime = (long) containerRequestContext.getProperty(START_TIME);
-        }
-        catch (NullPointerException ignored) {
-
-        }
-
-        long duration = System.currentTimeMillis() - startTime;
+        long duration = Optional.ofNullable(containerRequestContext.getProperty(START_TIME))
+                .map(startTime -> System.currentTimeMillis() - (long)startTime)
+                .orElse(-1L);
 
         logger.info(
                 String.format(
