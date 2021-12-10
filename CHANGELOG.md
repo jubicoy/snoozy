@@ -6,6 +6,14 @@ and this project adheres poorly to [Semantic Versioning](https://semver.org/spec
 
 ## [Unreleased]
 
+## [0.7.2] - 2021-12-10
+### Added
+- Full Java 17 support.
+
+### Security
+- Update dependencies.
+- Use Undertow 2.2.9 release instead of the version shipping with RESTEasy.
+
 ## [0.7.1] - 2020-12-29
 ### Security
 - Update dependencies.
