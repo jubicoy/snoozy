@@ -6,6 +6,9 @@ and this project adheres poorly to [Semantic Versioning](https://semver.org/spec
 
 ## [Unreleased]
 
+### Fixed
+- Rethrow unsupported exceptions when mapping exceptions to responses.
+
 ## [0.7.2] - 2021-12-10
 ### Added
 - Full Java 17 support.

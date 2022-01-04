@@ -53,6 +53,6 @@ public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplica
             return Response.Status.INTERNAL_SERVER_ERROR;
         }
 
-        throw new IllegalArgumentException("Unsupported WebApplicationException");
+        throw new IllegalArgumentException("Unsupported WebApplicationException", exception);
     }
 }
