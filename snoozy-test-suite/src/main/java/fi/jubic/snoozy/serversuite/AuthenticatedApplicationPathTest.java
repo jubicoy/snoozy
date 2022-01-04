@@ -4,8 +4,6 @@ import fi.jubic.snoozy.Server;
 import fi.jubic.snoozy.auth.Authentication;
 import fi.jubic.snoozy.auth.UserPrincipal;
 import fi.jubic.snoozy.test.TestAuthenticatedApplication;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import org.junit.jupiter.api.Test;
 
 import javax.annotation.security.PermitAll;
@@ -15,6 +13,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,34 +30,30 @@ public interface AuthenticatedApplicationPathTest<T extends Server> extends Base
         withServer(
                 instance(),
                 new AnnotatedApplication(),
-                (hostname, port) -> {
-                    OkHttpClient client = new OkHttpClient();
+                (uriBuilder) -> {
+                    var client = HttpClient.newHttpClient();
 
                     {
-                        okhttp3.Response response = client.newCall(
-                                new Request.Builder()
-                                        .url(String.format("http://%s:%d/prefix", hostname, port))
-                                        .get()
-                                        .build()
-                        ).execute();
+                        var response = client.send(
+                                HttpRequest.newBuilder(uriBuilder.build("/prefix"))
+                                        .GET()
+                                        .build(),
+                                HttpResponse.BodyHandlers.ofString()
+                        );
 
-                        assertEquals(200, response.code());
-                        assertEquals("TEST", Objects.requireNonNull(response.body()).string());
-
-                        response.close();
+                        assertEquals(200, response.statusCode());
+                        assertEquals("TEST", Objects.requireNonNull(response.body()));
                     }
 
                     {
-                        okhttp3.Response response = client.newCall(
-                                new Request.Builder()
-                                        .url(String.format("http://%s:%d/", hostname, port))
-                                        .get()
-                                        .build()
-                        ).execute();
+                        var response = client.send(
+                                HttpRequest.newBuilder(uriBuilder.build("/"))
+                                        .GET()
+                                        .build(),
+                                HttpResponse.BodyHandlers.ofString()
+                        );
 
-                        assertEquals(404, response.code());
-
-                        response.close();
+                        assertEquals(404, response.statusCode());
                     }
                 }
         );
@@ -67,34 +64,30 @@ public interface AuthenticatedApplicationPathTest<T extends Server> extends Base
         withServer(
                 instance(),
                 new LeadingSlashAnnotatedApplication(),
-                (hostname, port) -> {
-                    OkHttpClient client = new OkHttpClient();
+                (uriBuilder) -> {
+                    var client = HttpClient.newHttpClient();
 
                     {
-                        okhttp3.Response response = client.newCall(
-                                new Request.Builder()
-                                        .url(String.format("http://%s:%d/prefix", hostname, port))
-                                        .get()
-                                        .build()
-                        ).execute();
+                        var response = client.send(
+                                HttpRequest.newBuilder(uriBuilder.build("/prefix"))
+                                        .GET()
+                                        .build(),
+                                HttpResponse.BodyHandlers.ofString()
+                        );
 
-                        assertEquals(200, response.code());
-                        assertEquals("TEST", Objects.requireNonNull(response.body()).string());
-
-                        response.close();
+                        assertEquals(200, response.statusCode());
+                        assertEquals("TEST", Objects.requireNonNull(response.body()));
                     }
 
                     {
-                        okhttp3.Response response = client.newCall(
-                                new Request.Builder()
-                                        .url(String.format("http://%s:%d/", hostname, port))
-                                        .get()
-                                        .build()
-                        ).execute();
+                        var response = client.send(
+                                HttpRequest.newBuilder(uriBuilder.build("/"))
+                                        .GET()
+                                        .build(),
+                                HttpResponse.BodyHandlers.ofString()
+                        );
 
-                        assertEquals(404, response.code());
-
-                        response.close();
+                        assertEquals(404, response.statusCode());
                     }
                 }
         );
@@ -105,34 +98,30 @@ public interface AuthenticatedApplicationPathTest<T extends Server> extends Base
         withServer(
                 instance(),
                 new LongPathAnnotatedApplication(),
-                (hostname, port) -> {
-                    OkHttpClient client = new OkHttpClient();
+                (uriBuilder) -> {
+                    var client = HttpClient.newHttpClient();
 
                     {
-                        okhttp3.Response response = client.newCall(
-                                new Request.Builder()
-                                        .url(String.format("http://%s:%d/long/prefix", hostname, port))
-                                        .get()
-                                        .build()
-                        ).execute();
+                        var response = client.send(
+                                HttpRequest.newBuilder(uriBuilder.build("/long/prefix"))
+                                        .GET()
+                                        .build(),
+                                HttpResponse.BodyHandlers.ofString()
+                        );
 
-                        assertEquals(200, response.code());
-                        assertEquals("TEST", Objects.requireNonNull(response.body()).string());
-
-                        response.close();
+                        assertEquals(200, response.statusCode());
+                        assertEquals("TEST", Objects.requireNonNull(response.body()));
                     }
 
                     {
-                        okhttp3.Response response = client.newCall(
-                                new Request.Builder()
-                                        .url(String.format("http://%s:%d/", hostname, port))
-                                        .get()
-                                        .build()
-                        ).execute();
+                        var response = client.send(
+                                HttpRequest.newBuilder(uriBuilder.build("/"))
+                                        .GET()
+                                        .build(),
+                                HttpResponse.BodyHandlers.ofString()
+                        );
 
-                        assertEquals(404, response.code());
-
-                        response.close();
+                        assertEquals(404, response.statusCode());
                     }
                 }
         );
@@ -143,34 +132,30 @@ public interface AuthenticatedApplicationPathTest<T extends Server> extends Base
         withServer(
                 instance(),
                 new PlainApplication(),
-                (hostname, port) -> {
-                    OkHttpClient client = new OkHttpClient();
+                (uriBuilder) -> {
+                    var client = HttpClient.newHttpClient();
 
                     {
-                        okhttp3.Response response = client.newCall(
-                                new Request.Builder()
-                                        .url(String.format("http://%s:%d/", hostname, port))
-                                        .get()
-                                        .build()
-                        ).execute();
+                        var response = client.send(
+                                HttpRequest.newBuilder(uriBuilder.build("/"))
+                                        .GET()
+                                        .build(),
+                                HttpResponse.BodyHandlers.ofString()
+                        );
 
-                        assertEquals(200, response.code());
-                        assertEquals("TEST", Objects.requireNonNull(response.body()).string());
-
-                        response.close();
+                        assertEquals(200, response.statusCode());
+                        assertEquals("TEST", Objects.requireNonNull(response.body()));
                     }
 
                     {
-                        okhttp3.Response response = client.newCall(
-                                new Request.Builder()
-                                        .url(String.format("http://%s:%d/prefix", hostname, port))
-                                        .get()
-                                        .build()
-                        ).execute();
+                        var response = client.send(
+                                HttpRequest.newBuilder(uriBuilder.build("/prefix"))
+                                        .GET()
+                                        .build(),
+                                HttpResponse.BodyHandlers.ofString()
+                        );
 
-                        assertEquals(404, response.code());
-
-                        response.close();
+                        assertEquals(404, response.statusCode());
                     }
                 }
         );

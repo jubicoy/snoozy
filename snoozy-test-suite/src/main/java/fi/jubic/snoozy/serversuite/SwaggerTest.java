@@ -9,8 +9,6 @@ import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.models.OpenAPI;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -26,6 +24,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -56,8 +57,8 @@ public interface SwaggerTest<T extends Server> extends BaseTest<T> {
                 instance(),
                 new SwaggerApplication(),
                 configuration,
-                (hostname, port) -> {
-                    OkHttpClient client = new OkHttpClient();
+                (uriBuilder) -> {
+                    var client = HttpClient.newHttpClient();
 
                     List<String> resources = Arrays.asList(
                             "",
@@ -69,21 +70,21 @@ public interface SwaggerTest<T extends Server> extends BaseTest<T> {
                             "swagger-ui-standalone-preset.js"
                     );
                     for (String resource : resources) {
-                        okhttp3.Response response = client.newCall(
-                                new Request.Builder()
-                                        .url(
-                                                String.format(
-                                                        "http://%s:%d/swagger/%s",
-                                                        hostname,
-                                                        port,
-                                                        resource
+                        var response = client.send(
+                                HttpRequest
+                                        .newBuilder(
+                                                uriBuilder.build(
+                                                        String.format(
+                                                                "/swagger/%s",
+                                                                resource
+                                                        )
                                                 )
                                         )
-                                        .get()
-                                        .build()
-                        ).execute();
-                        assertEquals(httpStatus, response.code());
-
+                                        .GET()
+                                        .build(),
+                                HttpResponse.BodyHandlers.ofString()
+                        );
+                        assertEquals(httpStatus, response.statusCode());
                     }
                 }
         );
@@ -105,26 +106,20 @@ public interface SwaggerTest<T extends Server> extends BaseTest<T> {
                 instance(),
                 new SwaggerApplication(),
                 configuration,
-                (hostname, port) -> {
-                    OkHttpClient client = new OkHttpClient();
+                (uriBuilder) -> {
+                    var client = HttpClient.newHttpClient();
 
-                    okhttp3.Response response = client.newCall(
-                            new Request.Builder()
-                                    .url(
-                                            String.format(
-                                                    "http://%s:%d/swagger.json",
-                                                    hostname,
-                                                    port
-                                            )
-                                    )
-                                    .get()
-                                    .build()
-                    ).execute();
-                    assertEquals(200, response.code());
+                    var response = client.send(
+                            HttpRequest.newBuilder(uriBuilder.build("/swagger.json"))
+                                    .GET()
+                                    .build(),
+                            HttpResponse.BodyHandlers.ofString()
+                    );
+                    assertEquals(200, response.statusCode());
 
                     OpenAPI oapi = Json.mapper()
                             .readValue(
-                                    Objects.requireNonNull(response.body()).string(),
+                                    Objects.requireNonNull(response.body()),
                                     OpenAPI.class
                             );
                     assertEquals("Test application", oapi.getInfo().getTitle());
@@ -146,22 +141,16 @@ public interface SwaggerTest<T extends Server> extends BaseTest<T> {
         withServer(
                 instance(),
                 new SwaggerApplication(),
-                (hostname, port) -> {
-                    OkHttpClient client = new OkHttpClient();
+                (uriBuilder) -> {
+                    var client = HttpClient.newHttpClient();
 
-                    okhttp3.Response response = client.newCall(
-                            new Request.Builder()
-                                    .url(
-                                            String.format(
-                                                    "http://%s:%d/swagger.json",
-                                                    hostname,
-                                                    port
-                                            )
-                                    )
-                                    .get()
-                                    .build()
-                    ).execute();
-                    assertEquals(404, response.code());
+                    var response = client.send(
+                            HttpRequest.newBuilder(uriBuilder.build("/swagger.json"))
+                                    .GET()
+                                    .build(),
+                            HttpResponse.BodyHandlers.ofString()
+                    );
+                    assertEquals(404, response.statusCode());
                 }
         );
     }
