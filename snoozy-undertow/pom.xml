@@ -14,7 +14,7 @@
 
     <properties>
         <resteasy.version>5.0.1.Final</resteasy.version>
-        <undertow.version>2.2.9.Final</undertow.version>
+        <undertow.version>2.2.14.Final</undertow.version>
     </properties>
 
     <dependencies>
@@ -68,7 +68,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.7</version>
+            <version>1.2.10</version>
         </dependency>
 
         <dependency>
