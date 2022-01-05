@@ -9,7 +9,7 @@
     <parent>
         <groupId>fi.jubic</groupId>
         <artifactId>easyparent</artifactId>
-        <version>0.1.3</version>
+        <version>0.1.4</version>
     </parent>
 
     <name>snoozy</name>
@@ -85,18 +85,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
     <modules>
         <module>snoozy-auth</module>
