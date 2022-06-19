@@ -1,18 +1,19 @@
 package fi.jubic.snoozy.serversuite;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import fi.jubic.snoozy.Server;
 import fi.jubic.snoozy.auth.Authentication;
 import fi.jubic.snoozy.auth.UserPrincipal;
 import fi.jubic.snoozy.test.TestAuthenticatedApplication;
+import jakarta.ws.rs.ApplicationPath;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
 
 import javax.annotation.security.PermitAll;
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -24,6 +25,7 @@ import java.util.Set;
 import static fi.jubic.snoozy.test.TestUtil.withServer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SuppressFBWarnings("THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION")
 public interface AuthenticatedApplicationPathTest<T extends Server> extends BaseTest<T> {
     @Test
     default void annotatedAuthApplicationServedWithPrefix() throws Exception {

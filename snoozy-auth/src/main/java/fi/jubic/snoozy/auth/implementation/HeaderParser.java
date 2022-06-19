@@ -1,8 +1,8 @@
 package fi.jubic.snoozy.auth.implementation;
 
 import fi.jubic.snoozy.auth.TokenParser;
+import jakarta.servlet.http.HttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 public class HeaderParser implements TokenParser {

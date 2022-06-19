@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface StaticFiles {
     /**
-     * Absolute path prefix of the static files bundle. {@link javax.ws.rs.ApplicationPath} has no
+     * Absolute path prefix of the static files bundle. {@link jakarta.ws.rs.ApplicationPath} has no
      * effect on {@link StaticFiles} paths.
      *
      * @return Absolute URL path to static bundle root

@@ -13,8 +13,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <resteasy.version>5.0.1.Final</resteasy.version>
-        <undertow.version>2.2.14.Final</undertow.version>
+        <resteasy.version>6.0.1.Final</resteasy.version>
     </properties>
 
     <dependencies>
@@ -29,8 +28,8 @@
             <version>0.8.2</version>
         </dependency>
         <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
+            <groupId>jakarta.ws.rs</groupId>
+            <artifactId>jakarta.ws.rs-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
@@ -50,15 +49,15 @@
 
         <!-- RESTEasy dependency patches -->
         <dependency>
-                    <groupId>io.undertow</groupId>
-                    <artifactId>undertow-servlet</artifactId>
-                    <version>${undertow.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>io.undertow</groupId>
-                    <artifactId>undertow-core</artifactId>
-                    <version>${undertow.version}</version>
-                </dependency>
+            <groupId>io.undertow</groupId>
+            <artifactId>undertow-servlet-jakartaee9</artifactId>
+            <version>2.2.13.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>io.undertow</groupId>
+            <artifactId>undertow-core</artifactId>
+            <version>2.2.18.Final</version>
+        </dependency>
         <!-- End of RESTEasy dependency patches -->
 
         <dependency>

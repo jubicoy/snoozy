@@ -10,8 +10,8 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Basic application interface. Based loosely on {@link javax.ws.rs.core.Application}
- * and {@link javax.ws.rs.core.Application#getSingletons()}.
+ * Basic application interface. Based loosely on {@link jakarta.ws.rs.core.Application}
+ * and {@link jakarta.ws.rs.core.Application#getSingletons()}.
  */
 public interface Application {
     Set<Object> getSingletons();

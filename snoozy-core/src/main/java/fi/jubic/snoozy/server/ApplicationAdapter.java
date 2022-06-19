@@ -5,10 +5,10 @@ import fi.jubic.snoozy.ServerConfiguration;
 import fi.jubic.snoozy.staticfiles.StaticFiles;
 import fi.jubic.snoozy.swagger.SwaggerResource;
 import fi.jubic.snoozy.swagger.SwaggerStaticFiles;
+import jakarta.ws.rs.ApplicationPath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.ApplicationPath;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 /**
  * Adapter class for adding built-in features to a {@link fi.jubic.snoozy.Application}.
  */
-public class ApplicationAdapter extends javax.ws.rs.core.Application {
+public class ApplicationAdapter extends jakarta.ws.rs.core.Application {
     private static final Logger logger = LoggerFactory.getLogger(ApplicationAdapter.class);
 
     private final Application application;

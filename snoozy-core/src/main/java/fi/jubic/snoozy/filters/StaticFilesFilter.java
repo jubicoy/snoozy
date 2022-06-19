@@ -1,9 +1,9 @@
 package fi.jubic.snoozy.filters;
 
 import fi.jubic.snoozy.staticfiles.StaticFiles;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.core.Response;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.Response;
 import java.util.Optional;
 
 public interface StaticFilesFilter {

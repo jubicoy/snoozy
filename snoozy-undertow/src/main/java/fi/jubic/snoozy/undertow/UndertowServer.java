@@ -11,14 +11,14 @@ import fi.jubic.snoozy.server.AuthenticatedApplicationAdapter;
 import fi.jubic.snoozy.staticfiles.StaticFiles;
 import io.undertow.Undertow;
 import io.undertow.servlet.api.DeploymentInfo;
+import jakarta.servlet.MultipartConfigElement;
+import jakarta.ws.rs.ApplicationPath;
 import org.jboss.resteasy.core.ResourceMethodInvoker;
 import org.jboss.resteasy.core.ResteasyContext;
 import org.jboss.resteasy.core.ResteasyDeploymentImpl;
 import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
 import org.jboss.resteasy.spi.ResteasyDeployment;
 
-import javax.servlet.MultipartConfigElement;
-import javax.ws.rs.ApplicationPath;
 import java.util.Optional;
 import java.util.Set;
 

@@ -1,9 +1,9 @@
 package fi.jubic.snoozy.converters.jsr310;
 
+import jakarta.ws.rs.ext.ParamConverter;
 import org.junit.jupiter.api.Test;
 
 import javax.annotation.Nullable;
-import javax.ws.rs.ext.ParamConverter;
 import java.lang.annotation.Annotation;
 import java.time.Instant;
 import java.time.LocalDateTime;

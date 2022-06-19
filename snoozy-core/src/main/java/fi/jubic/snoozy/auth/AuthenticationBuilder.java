@@ -1,6 +1,7 @@
 package fi.jubic.snoozy.auth;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
+
 import java.util.function.Supplier;
 
 public class AuthenticationBuilder<P extends UserPrincipal> {

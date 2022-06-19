@@ -1,5 +1,6 @@
 package fi.jubic.snoozy.undertow;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import fi.jubic.snoozy.filters.StaticFilesFilter;
 import fi.jubic.snoozy.staticfiles.StaticFiles;
 import io.undertow.server.HttpServerExchange;
@@ -7,11 +8,12 @@ import io.undertow.server.handlers.resource.ClassPathResourceManager;
 import io.undertow.server.handlers.resource.ResourceHandler;
 import io.undertow.servlet.spec.HttpServletRequestImpl;
 import io.undertow.util.HttpString;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.core.Response;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.Response;
 import java.util.Optional;
 
+@SuppressFBWarnings("THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION")
 class FilteredResourceHandler extends ResourceHandler {
     private final StaticFilesFilter filter;
     private final StaticFiles staticFiles;

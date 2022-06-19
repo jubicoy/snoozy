@@ -1,6 +1,6 @@
 package fi.jubic.snoozy.websocket;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface WebSocketHandler {
     void onConnect(HttpServletRequest request, Session session);

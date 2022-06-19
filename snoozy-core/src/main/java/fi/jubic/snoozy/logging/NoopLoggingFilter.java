@@ -1,7 +1,7 @@
 package fi.jubic.snoozy.logging;
 
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerResponseContext;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.container.ContainerResponseContext;
 
 public class NoopLoggingFilter implements LoggingFilter {
     @Override
