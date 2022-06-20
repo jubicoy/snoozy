@@ -12,12 +12,12 @@ Current server selection consists of:
 
 ## Application
 
-Application is an altered version of `javax.ws.rs.core.Application` providing
+Application is an altered version of `jakarta.ws.rs.core.Application` providing
 additional feature declarations, such as static files. The additional features
 are defined using a declarative api keeping things implementation agnostic.
 
-`javax.ws.rs.core.Application#getClasses()` and
-`javax.ws.rs.core.Application#getProperties()` equivalent methods have been
+`jakarta.ws.rs.core.Application#getClasses()` and
+`jakarta.ws.rs.core.Application#getProperties()` equivalent methods have been
 removed from the `Application` class. `getClasses()` approach for defining
 resources relies on the implementation specific dependency injection. Using
 only `getSingletons()` both mandates and allows external instance initialization.
