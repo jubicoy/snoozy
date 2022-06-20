@@ -1,3 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+    <suppress>
+        <notes><![CDATA[
+        This is a transitive dependency of a test library.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven\/org\.jetbrains\.kotlin\/kotlin-stdlib.*@.+$</packageUrl>
+        <vulnerabilityName>CVE-2022-24329</vulnerabilityName>
+    </suppress>
 </suppressions>
