@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <resteasy.version>6.0.1.Final</resteasy.version>
+        <resteasy.version>6.1.0.Final</resteasy.version>
     </properties>
 
     <dependencies>
@@ -67,7 +67,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.10</version>
+            <version>1.4.0</version>
         </dependency>
 
         <dependency>
