@@ -9,7 +9,7 @@
     <parent>
         <groupId>fi.jubic</groupId>
         <artifactId>easyparent</artifactId>
-        <version>0.1.5</version>
+        <version>0.1.7</version>
     </parent>
 
     <name>snoozy</name>
