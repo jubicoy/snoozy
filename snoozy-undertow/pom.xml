@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <resteasy.version>6.2.3.Final</resteasy.version>
+        <resteasy.version>6.2.6.Final</resteasy.version>
     </properties>
 
     <dependencies>
