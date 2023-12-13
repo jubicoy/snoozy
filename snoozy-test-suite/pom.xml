@@ -5,7 +5,7 @@
     <parent>
         <artifactId>snoozy-parent</artifactId>
         <groupId>fi.jubic</groupId>
-        <version>0.9.1</version>
+        <version>0.10.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,12 +16,12 @@
         <dependency>
             <groupId>fi.jubic</groupId>
             <artifactId>snoozy-core</artifactId>
-            <version>0.9.1</version>
+            <version>0.10.0</version>
         </dependency>
         <dependency>
             <groupId>fi.jubic</groupId>
             <artifactId>snoozy-test</artifactId>
-            <version>0.9.1</version>
+            <version>0.10.0</version>
         </dependency>
         <dependency>
             <groupId>javax.annotation</groupId>
