@@ -6,6 +6,16 @@ and this project adheres poorly to [Semantic Versioning](https://semver.org/spec
 
 ## [Unreleased]
 
+## [0.10.1] - 2024-05-06
+### Changed
+- Bump fi.jubic:easyparent from 0.1.11 to 0.1.12.
+- Bump com.fasterxml.jackson.datatype:jackson-datatype-jsr310 from 2.16.0 to 2.17.1.
+- Bump io.swagger.core.v3:swagger-jaxrs2-jakarta from 2.2.19 to 2.2.21.
+- Bump resteasy.version from 6.2.6.Final to 6.2.8.Final.
+- Bump org.slf4j:slf4j-api from 2.0.9 to 2.0.13.
+- Bump io.undertow:undertow-core from 2.3.10.Final to 2.3.13.Final.
+- Bump ch.qos.logback:logback-classic from 1.4.14 to 1.5.6.
+
 ## [0.10.0] - 2023-12-13
 ### Changed
 - Bump fi.jubic:easyparent from 0.1.10 to 0.1.11.
