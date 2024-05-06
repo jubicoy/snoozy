@@ -1,6 +1,7 @@
 package fi.jubic.snoozy.swagger;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import fi.jubic.snoozy.Application;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.jaxrs2.Reader;
@@ -13,6 +14,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@SuppressFBWarnings("CT_CONSTRUCTOR_THROW")
 @Path("")
 public class SwaggerResource {
     private final JsonNode openApiJson;
