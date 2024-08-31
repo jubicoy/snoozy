@@ -6,6 +6,19 @@ and this project adheres poorly to [Semantic Versioning](https://semver.org/spec
 
 ## [Unreleased]
 
+## [0.10.2] - 2024-08-31
+### Changed
+- Bump io.undertow:undertow-core from 2.3.13.Final to 2.3.16.Final.
+- Bump io.swagger.core.v3:swagger-jaxrs2-jakarta from 2.2.21 to 2.2.23.
+- Bump resteasy.version from 6.2.8.Final to 6.2.10.Final.
+- Bump jakarta.servlet:jakarta.servlet-api from 6.0.0 to 6.1.0.
+- Bump com.fasterxml.jackson.datatype:jackson-datatype-jsr310 from 2.17.1 to 2.17.2.
+- Bump org.junit.jupiter:junit-jupiter from 5.10.2 to 5.11.0.
+- Bump org.junit.jupiter:junit-jupiter-engine from 5.10.2 to 5.11.0.
+- Bump fi.jubic:easyparent from 0.1.12 to 0.1.13.
+- Bump ch.qos.logback:logback-classic from 1.5.6 to 1.5.7.
+- Bump org.slf4j:slf4j-api from 2.0.13 to 2.0.16.
+
 ## [0.10.1] - 2024-05-06
 ### Changed
 - Bump fi.jubic:easyparent from 0.1.11 to 0.1.12.

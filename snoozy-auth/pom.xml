@@ -9,14 +9,14 @@
     <parent>
         <groupId>fi.jubic</groupId>
         <artifactId>snoozy-parent</artifactId>
-        <version>0.10.1</version>
+        <version>0.10.2</version>
     </parent>
 
     <dependencies>
         <dependency>
             <groupId>fi.jubic</groupId>
             <artifactId>snoozy-core</artifactId>
-            <version>0.10.1</version>
+            <version>0.10.2</version>
         </dependency>
         <dependency>
             <groupId>jakarta.ws.rs</groupId>
