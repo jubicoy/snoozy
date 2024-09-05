@@ -6,6 +6,11 @@ and this project adheres poorly to [Semantic Versioning](https://semver.org/spec
 
 ## [Unreleased]
 
+## [0.10.3] - 2024-09-05
+### Changed
+- Bump fi.jubic:easyparent from 0.1.13 to 0.1.14.
+- Bump io.undertow:undertow-core from 2.3.16.Final to 2.3.17.Final.
+
 ## [0.10.2] - 2024-08-31
 ### Changed
 - Bump io.undertow:undertow-core from 2.3.13.Final to 2.3.16.Final.
