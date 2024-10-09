@@ -6,6 +6,15 @@ and this project adheres poorly to [Semantic Versioning](https://semver.org/spec
 
 ## [Unreleased]
 
+## [0.10.4] - 2024-10-09
+### Changed
+- Bump fi.jubic:easyparent from 0.1.14 to 0.1.15.
+- Bump ch.qos.logback:logback-classic from 1.5.7 to 1.5.9.
+- Bump io.swagger.core.v3:swagger-jaxrs2-jakarta from 2.2.23 to 2.2.25.
+- Bump com.fasterxml.jackson.datatype:jackson-datatype-jsr310 from 2.17.2 to 2.18.0.
+- Bump org.junit.jupiter:junit-jupiter from 5.11.0 to 5.11.2.
+- Bump org.junit.jupiter:junit-jupiter-engine from 5.11.0 to 5.11.2.
+
 ## [0.10.3] - 2024-09-05
 ### Changed
 - Bump fi.jubic:easyparent from 0.1.13 to 0.1.14.
