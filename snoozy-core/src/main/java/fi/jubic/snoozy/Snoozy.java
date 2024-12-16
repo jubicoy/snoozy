@@ -26,10 +26,8 @@ public final class Snoozy {
     }
 
     /**
-     * <p>
-     *     {@link StaticFiles} definition for the default frontend server from
-     *     static directory under resources.
-     * </p>
+     * {@link StaticFiles} definition for the default frontend server from
+     * static directory under resources.
      *
      * <ul>
      *     <li>api, assets, images, fonts and css directories are server normally</li>

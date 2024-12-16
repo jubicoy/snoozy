@@ -61,10 +61,8 @@ public interface Server {
     }
 
     /**
-     * <p>
-     *     Start an {@link ApplicationAdapter} in a new thread(s). The main control flow can reach
-     *     its end after calling this function without stopping the application.
-     * </p>
+     * Start an {@link ApplicationAdapter} in a new thread(s). The main control flow can reach
+     * its end after calling this function without stopping the application.
      *
      * <p>
      *     A {@link Server} implementation should not override the non-adapter methods to avoid
@@ -77,10 +75,8 @@ public interface Server {
     );
 
     /**
-     * <p>
-     *     Start an {@link AuthenticatedApplicationAdapter} in a new thread(s). The main control
-     *     flow can reach its end after calling this function without stopping the application.
-     * </p>
+     * Start an {@link AuthenticatedApplicationAdapter} in a new thread(s). The main control
+     * flow can reach its end after calling this function without stopping the application.
      *
      * <p>
      *     A {@link Server} implementation should not override the non-adapter methods to avoid
