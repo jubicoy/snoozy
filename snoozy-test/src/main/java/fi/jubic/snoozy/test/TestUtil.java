@@ -19,11 +19,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.Charset;
 
-@SuppressFBWarnings(value = {
-        "UNENCRYPTED_SERVER_SOCKET",
-        "THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION",
-        "THROWS_METHOD_THROWS_RUNTIMEEXCEPTION"
-})
+@SuppressFBWarnings("UNENCRYPTED_SERVER_SOCKET")
 public final class TestUtil {
     /**
      * Starts the application with the given server instance at an automatically selected port on

@@ -1,6 +1,5 @@
 package fi.jubic.snoozy.serversuite;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import fi.jubic.snoozy.DefaultServerConfiguration;
 import fi.jubic.snoozy.Server;
 import fi.jubic.snoozy.ServerConfiguration;
@@ -39,7 +38,6 @@ import static fi.jubic.snoozy.test.TestUtil.withServer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SuppressFBWarnings("THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION")
 public interface SwaggerTest<T extends Server> extends BaseTest<T> {
     static Stream<Arguments> provideStaticResourceConfigurations() {
         return Stream.of(

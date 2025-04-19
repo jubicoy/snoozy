@@ -1,6 +1,5 @@
 package fi.jubic.snoozy.serversuite;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import fi.jubic.snoozy.Server;
 import fi.jubic.snoozy.auth.Authentication;
 import fi.jubic.snoozy.auth.UserPrincipal;
@@ -25,7 +24,6 @@ import java.util.Set;
 import static fi.jubic.snoozy.test.TestUtil.withServer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SuppressFBWarnings("THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION")
 public interface AuthenticatedApplicationPathTest<T extends Server> extends BaseTest<T> {
     @Test
     default void annotatedAuthApplicationServedWithPrefix() throws Exception {
